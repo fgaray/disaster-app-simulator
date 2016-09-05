@@ -5,7 +5,7 @@ CPP=g++
 CFLAGS=$(STD) -Wall -Werror -Wextra -Wshadow -Wredundant-decls -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wredundant-decls -Wformat=2 -Wmissing-format-attribute -Wformat-nonliteral -I$(LIBCPPSIM_HEADERS) -Wno-unused-parameter
 EXEC=simulator
 
-OBJS=main.o Source.o
+OBJS=main.o Source.o PE.o PEGraph.o
 
 all: simulador
 
@@ -18,6 +18,12 @@ main.o: main.cpp
 
 Source.o: Source.cpp Source.hpp
 	$(CPP) -c $(STD) $(CFLAGS) Source.cpp -o Source.o
+
+PE.o: PE.cpp PE.hpp
+	$(CPP) -c $(STD) $(CFLAGS) PE.cpp -o PE.o
+
+PEGraph.o: PEGraph.cpp PEGraph.hpp
+	$(CPP) -c $(STD) $(CFLAGS) PEGraph.cpp -o PEGraph.o
 
 clean:
 	rm -f *.o $(EXEC)
