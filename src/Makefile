@@ -5,28 +5,35 @@ CPP=g++
 CFLAGS=$(STD) -Wall -Werror -Wextra -Wshadow -Wredundant-decls -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wredundant-decls -Wformat=2 -Wmissing-format-attribute -Wformat-nonliteral -I$(LIBCPPSIM_HEADERS) -Wno-unused-parameter
 EXEC=simulator
 
-OBJS=main.o Source.o PE.o PEGraph.o
+OBJS=main.o Source.o pe/pe.o cpu/cpu.o
+
+SRCS=$(wildcard *.cpp)
+OBJS=$(SRCS:.cpp=.o) pe/pe.o cpu/cpu.o
+HEADERS=$(SRCS:.cpp=.hpp)
 
 all: simulador
-
 
 simulador: $(OBJS)
 	g++ $(CFLAGS) $(OBJS) $(LIBCPPSIM) -o $(EXEC)
 
-main.o: main.cpp
-	$(CPP) -c $(STD) $(CFLAGS) main.cpp -o main.o
+%.o: %.cpp %.hpp 
+	gcc $(CFLAGS) -c $< -o $@
 
-Source.o: Source.cpp Source.hpp
-	$(CPP) -c $(STD) $(CFLAGS) Source.cpp -o Source.o
+pe/pe.o:
+	make -C pe
 
-PE.o: PE.cpp PE.hpp
-	$(CPP) -c $(STD) $(CFLAGS) PE.cpp -o PE.o
+cpu/cpu.o:
+	make -C cpu
 
-PEGraph.o: PEGraph.cpp PEGraph.hpp
-	$(CPP) -c $(STD) $(CFLAGS) PEGraph.cpp -o PEGraph.o
+mobile/mobile.o:
+	make -C mobile
+
 
 clean:
 	rm -f *.o $(EXEC)
+	cd pe && make clean
+	cd cpu && make clean
+	cd mobile && make clean
 
 test:
 	./$(EXEC)
