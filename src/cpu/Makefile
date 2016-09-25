@@ -8,10 +8,12 @@ CFLAGS=$(STD) -Wall -Wextra -Werror -Wshadow -Wredundant-decls -Wcast-align -Wmi
 all: cpu.o
 
 cpu.o: $(OBJS)
-	ld -r $(OBJS) -o cpu.o
+	@echo [LD] $(OBJS)
+	@ld -r $(OBJS) -o cpu.o
 
 %.o: %.cpp %.hpp 
-	gcc $(CFLAGS) -c $< -o $@
+	@echo [CPP] $@
+	@g++ $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f *.o

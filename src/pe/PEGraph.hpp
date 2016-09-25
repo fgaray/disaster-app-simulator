@@ -7,9 +7,10 @@
 #include <memory>
 
 #include "PE.hpp"
+#include "../common/UniqueIdGenerator.hpp"
 
 typedef std::vector<std::shared_ptr<PE>> pe_vector;
-typedef std::unordered_map<size_t, pe_vector> adjacency_table;
+typedef std::unordered_map<Id, pe_vector> adjacency_table;
 
 /**
  * El grafo de PE. Indica que PE va contectado con cual.

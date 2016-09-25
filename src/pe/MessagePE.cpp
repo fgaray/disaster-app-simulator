@@ -1,10 +1,10 @@
 #include "MessagePE.hpp"
 
-MessagePE::MessagePE(size_t destino){
+MessagePE::MessagePE(Id destino){
   this->d = destino;
 }
 
-size_t MessagePE::getDestino(){
+Id MessagePE::getDestino(){
   return this->d;
 }
 
