@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo docker run --rm -it -v $PWD/src:/simulador felipegaray/enviroment-simulacion bash
+
