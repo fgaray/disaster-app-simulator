@@ -5,6 +5,8 @@
 #include <string>
 #include "../common/UniqueIdGenerator.hpp"
 #include "MessagePE.hpp"
+#include <memory>
+
 
 
 /**
@@ -49,5 +51,7 @@ class PE{
     virtual double getCostTime() = 0;
 
 };
+
+typedef std::shared_ptr<PE> PE_ptr;
 
 #endif

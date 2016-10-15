@@ -22,6 +22,7 @@ class MessagePE{
     Id d;
   public:
     MessagePE(Id destino);
+    MessagePE();
     Id getDestino();
 };
 

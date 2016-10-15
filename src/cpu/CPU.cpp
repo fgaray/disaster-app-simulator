@@ -8,26 +8,56 @@ void CPU::inner_body(){
     }
 
     if(!this->planificacion.empty()){
-      //ejemcutamos el PE
-      auto pe = this->planificacion.front();
+      //ejecutamos el PE
+      PE_ptr pe;
+      MessagePE message;
+      std::tie(pe, message) = this->planificacion.front();
 
-      //TODO: Ejecutar PE
+      hold(pe->getCostTime());
 
       this->planificacion.pop();
     }
     
     if(!this->input_buffer.empty()){
-      //TODO: Planfiicar el mensaje
+      //planificacion simple
+      Id pe_id;
+      MessagePE message;
+      std::tie(pe_id, message) = this->input_buffer.front();
 
+      auto found = std::find_if(this->pes.begin(), this->pes.end(), [pe_id](const PE_ptr &pe1){
+            return pe_id == pe1->getId();
+          });
+
+      if(found == this->pes.end()){
+        std::cerr << "El PE no se encuentra en la CPU de destino, ERROR DE PROGRAMACIÓN" << std::endl;
+        exit(-1);
+      }else{
+        this->planificacion.push(std::make_tuple(*found, message));
+        this->input_buffer.pop();
+      }
     }
 
   }
 }
 
-CPU::CPU(std::initializer_list<PE*> il, IP _ip): NetworkComponent("CPU", _ip){
+CPU::CPU(std::initializer_list<PE*> il): process("CPU"){
   for(PE *p: il){
     this->pes.push_back(std::shared_ptr<PE>(p));
   }
   this->numero_cores = 4;
+  this->run = true;
 }
 
+void CPU::recibirMessage(Id destino, MessagePE message){
+  this->activate();
+  this->input_buffer.push(std::make_pair(destino, message));
+}
+
+void CPU::enviarMensaje(Id destino, MessagePE message){
+
+}
+
+
+void CPU::enviarMensaje3G(Id destino, MessageMD message){
+
+}
