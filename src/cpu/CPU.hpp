@@ -12,7 +12,6 @@
 #include "../pe/MessagePE.hpp"
 #include "../mobile/MessageMD.hpp"
 #include "../pe/PE.hpp"
-#include "../common/IP.hpp"
 
 /**
  * Un CPU tiene varios Cores para el cual se debe hacer planificación de los PE
@@ -46,5 +45,7 @@ class CPU: public process{
     void inner_body();
     void recibirMessage(Id destino, MessagePE message);
 };
+
+typedef std::shared_ptr<CPU> CPU_ptr;
 
 #endif
