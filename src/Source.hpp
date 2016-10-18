@@ -2,6 +2,7 @@
 #define _H_SOURCE_
 
 #include <cppsim.hh>
+#include <vector>
 
 /**Esta es la fuente de todos los eventos del sistema. Probablemente sea el
  * Adapter del flujo de datos del sistema de streamming, dependiendo de cual es la aplicación que vamos a construir.*/
@@ -10,9 +11,17 @@ class Source: public process {
     double end_time;
     void inner_body();
     void porcentaje();
+
+    std::vector<std::function<void()>> end_callbacks;
+
   public:
     Source(double et);
     ~Source();
+
+    /**
+     * Agrega una función que va a ser llamada cuando se termine la simulación
+     * */
+    void addEndCallback(std::function<void()> callback);
 };
 
 #endif

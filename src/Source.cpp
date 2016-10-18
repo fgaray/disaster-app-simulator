@@ -17,9 +17,16 @@ void Source::inner_body(){
   }
 
 
+  // Esperamos a que termine la simulación, vamos mostrando el porcentaje de
+  // ejecución completo
   while(time() < this->end_time){
     this->porcentaje();
+  }
 
+  //Hay que notificar a los demás objetos de la simulación que terminen de procesar
+
+  for(auto callback: this->end_callbacks){
+    callback();
   }
 }
 
@@ -29,4 +36,10 @@ void Source::porcentaje(){
   if(por % 10 == 0){
     std::cout << "Completado: " << por << "%" << std::endl;
   }
+}
+
+
+
+void Source::addEndCallback(std::function<void()> callback){
+  this->end_callbacks.push_back(callback);
 }
