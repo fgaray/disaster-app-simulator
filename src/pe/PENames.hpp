@@ -2,7 +2,7 @@
 #define _H_PE_NAMES_H_
 
 // Definir los nombres de los PE aqui
-enum class PENames{
+enum class PEName{
 
 
 };

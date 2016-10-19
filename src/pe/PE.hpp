@@ -7,6 +7,8 @@
 #include "MessagePE.hpp"
 #include <memory>
 
+#include "PENames.hpp"
+
 
 
 /**
@@ -36,7 +38,7 @@ class PE{
      * @return El Id el siguiente PE
      *
      * */
-    virtual Id nextPE(const MessagePE &message) = 0;
+    virtual PEName nextPE(const MessagePE &message) = 0;
 
     /**
      * Transforma el mensaje. Por defecto la transformación es la identidad.
