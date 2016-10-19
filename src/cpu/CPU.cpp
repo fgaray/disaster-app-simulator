@@ -61,3 +61,18 @@ void CPU::enviarMensaje(Id destino, MessagePE message){
 void CPU::enviarMensaje3G(Id destino, MessageMD message){
 
 }
+
+
+
+void CPU::setEnvioMensajeCallback(std::function<void(Id, MessagePE)> fn){
+  this->envio_mensaje_callback = fn;
+}
+
+bool CPU::contienePE(Id id){
+  for(auto pe: this->pes){
+    if(pe->getId() == id){
+      return true;
+    }
+  }
+  return false;
+}

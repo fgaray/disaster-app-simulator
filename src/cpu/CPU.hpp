@@ -38,11 +38,14 @@ class CPU: public Process{
     std::queue<std::tuple<PE_ptr, MessagePE>> planificacion;
     void enviarMensaje(Id destino, MessagePE message);
     void enviarMensaje3G(Id destino, MessageMD message);
+    std::function<void(Id, MessagePE)> envio_mensaje_callback;
 
   public:
     CPU(std::initializer_list<PE*> il);
     void inner_body();
     void recibirMessage(Id destino, MessagePE message);
+    void setEnvioMensajeCallback(std::function<void(Id, MessagePE)>);
+    bool contienePE(Id id);
 };
 
 typedef std::shared_ptr<CPU> CPU_ptr;

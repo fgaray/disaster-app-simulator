@@ -20,10 +20,12 @@ enum class TipoMensajePE{
 class MessagePE{
   private:
     Id d;
+    unsigned int size;
   public:
-    MessagePE(Id destino);
+    MessagePE(Id destino, unsigned int s);
     MessagePE();
     Id getDestino();
+    unsigned int getSize();
 };
 
 #endif
