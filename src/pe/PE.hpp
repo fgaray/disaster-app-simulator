@@ -46,7 +46,8 @@ class PE{
     }
 
     /**
-     * Retorna el costo de ejecutar este PE
+     * Retorna el costo de ejecutar este PE.
+     * Cada 1000 es 1 segundo
      * */
     virtual double getCostTime() = 0;
 

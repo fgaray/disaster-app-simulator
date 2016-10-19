@@ -6,14 +6,14 @@ RoutingTablePE::RoutingTablePE(){
 
 }
 
-void RoutingTablePE::addDevice(Id id, IP ip){
-  this->table.insert(std::make_pair<>(id, ip));
+void RoutingTablePE::addDevice(PENames name, Id id){
+  this->table.insert(std::make_pair<>(name, id));
 }
 
 
 
-IP RoutingTablePE::getIP(Id id){
-  auto ip = this->table.find(id);
-  assert(ip != this->table.end());
-  return (*ip).second;
+Id RoutingTablePE::getId(PENames name){
+  auto id = this->table.find(name);
+  assert(id != this->table.end());
+  return (*id).second;
 }

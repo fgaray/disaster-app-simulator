@@ -7,7 +7,9 @@
 #include "../common/IP.hpp"
 #include "../common/UniqueIdGenerator.hpp"
 
-typedef std::unordered_map<Id, IP> routing_table;
+#include "PENames.hpp"
+
+typedef std::unordered_map<PENames, Id> routing_table;
 
 
 class RoutingTablePE{
@@ -16,9 +18,8 @@ class RoutingTablePE{
 
   public:
     RoutingTablePE();
-    void addDevice(Id id, IP ip);
-    IP getIP(Id id);
-
+    void addDevice(PENames name, Id id);
+    Id getId(PENames id);
 };
 
 

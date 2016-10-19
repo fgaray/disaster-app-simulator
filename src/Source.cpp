@@ -1,8 +1,9 @@
 #include "Source.hpp"
 
 
-Source::Source(double et): process("source"){
+Source::Source(double et, std::shared_ptr<RedTubo> red): process("source"){
   this->end_time = end_time;
+  this->red_tubo = red;
 }
 
 Source::~Source(){
@@ -13,6 +14,8 @@ void Source::inner_body(){
     this->porcentaje();
     // TODO: Hacer el envío de los mensajes a la red
     // Cuando se terminen de enviar mensajes, hacer break
+    
+    //this->red_tubo->enviarMensaje(destino, mensaje);
 
   }
 
@@ -24,6 +27,7 @@ void Source::inner_body(){
   }
 
   //Hay que notificar a los demás objetos de la simulación que terminen de procesar
+
 
   for(auto callback: this->end_callbacks){
     callback();
