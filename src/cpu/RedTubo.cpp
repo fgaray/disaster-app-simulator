@@ -1,7 +1,7 @@
 #include "RedTubo.hpp"
 
 
-RedTubo::RedTubo(std::initializer_list<CPU*> il): process("RedTubo"){
+RedTubo::RedTubo(std::initializer_list<CPU*> il): Process("RedTubo"){
   for(CPU *cpu: il){
     this->cpus.push_back(std::shared_ptr<CPU>(cpu));
   }

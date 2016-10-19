@@ -1,14 +1,14 @@
 #ifndef _H_RED_TUBO_
 #define _H_RED_TUBO_
 
-#include <process.hh>
 #include <vector>
 
 #include "CPU.hpp"
 #include "../pe/PE.hpp"
 #include "../common/Undefined.hpp"
+#include "../common/Process.hpp"
 
-class RedTubo: process{
+class RedTubo: Process{
   private:
     vector<CPU_ptr> cpus;
     bool run;

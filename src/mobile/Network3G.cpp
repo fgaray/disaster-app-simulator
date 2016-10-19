@@ -1,7 +1,7 @@
 #include "Network3G.hpp"
 
 
-Network3G::Network3G(): process("Network"){
+Network3G::Network3G(): Process("Network"){
 
 }
 

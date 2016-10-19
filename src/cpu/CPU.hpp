@@ -7,11 +7,11 @@
 #include <algorithm>
 #include <queue>
 
-#include <process.hh>
 
 #include "../pe/MessagePE.hpp"
 #include "../mobile/MessageMD.hpp"
 #include "../pe/PE.hpp"
+#include "../common/Process.hpp"
 
 /**
  * Un CPU tiene varios Cores para el cual se debe hacer planificación de los PE
@@ -28,7 +28,7 @@
  * selecciona ese PE y se agrega a la cola de planificación. Desde esa cola 
  *
  * */
-class CPU: public process{
+class CPU: public Process{
   protected:
     //Los PEs asignados a esta CPU. Ellos comparten el número de cores que
     //existen.
@@ -36,7 +36,6 @@ class CPU: public process{
     std::vector<PE_ptr> pes;
     std::queue<std::tuple<Id, MessagePE>> input_buffer;
     std::queue<std::tuple<PE_ptr, MessagePE>> planificacion;
-    bool run;
     void enviarMensaje(Id destino, MessagePE message);
     void enviarMensaje3G(Id destino, MessageMD message);
 

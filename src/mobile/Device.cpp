@@ -1,7 +1,7 @@
 #include "Device.hpp"
 
 
-Device::Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_callback _send_message): process("Device"){
+Device::Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_callback _send_message): Process("Device"){
   this->move_device = _move_device;
   this->send_message = _send_message;
   this->x = 0;

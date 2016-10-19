@@ -40,7 +40,7 @@ void CPU::inner_body(){
   }
 }
 
-CPU::CPU(std::initializer_list<PE*> il): process("CPU"){
+CPU::CPU(std::initializer_list<PE*> il): Process("CPU"){
   for(PE *p: il){
     this->pes.push_back(std::shared_ptr<PE>(p));
   }

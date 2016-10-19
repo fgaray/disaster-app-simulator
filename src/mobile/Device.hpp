@@ -1,7 +1,7 @@
 #ifndef _H_DEVICE_H_
 #define _H_DEVICE_H_
 
-#include <process.hh>
+#include "../common/Process.hpp"
 #include <functional>
 #include <memory>
 #include <queue>
@@ -13,7 +13,7 @@
 typedef std::function<void(Id, MessageMD)> send_callback;
 typedef std::tuple<double, double, double> position;
 
-class Device: public process{
+class Device: public Process{
   private:
     std::function<void(std::shared_ptr<Device>)> move_device;
     send_callback send_message;
