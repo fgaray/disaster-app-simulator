@@ -7,6 +7,13 @@
 // Cuanto se demora cada paquete en viajar por la red
 const double LATENCIA_RED = 100;
 const double UNIGRAM_COST = 1500;
+const double BIGRAM_COST = 1500;
+const double POSTAGS_COST = 1500; //Creo que este proceso es el más costoso o no? (Tito?)
+const double NMENTIONS_COST = 1500;
+const double PMENTIONS_COST = 1500;
+const double NHASHTAGS_COST = 1500;
+const double PHASHTAGS_COST = 1500;
+const double SIZETWEET_COST = 1500;
 
 
 // El tiempo en que la simulación termina de ejecutar todo

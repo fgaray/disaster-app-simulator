@@ -4,6 +4,13 @@
 // Definir los nombres de los PE aqui
 enum class PEName{
 	PEUnigram,
+	PEBigram,
+	PEPOStag,
+	PENMentions,
+	PEPMentions,
+	PENHashtags,
+	PEPHashtags,
+	PESizetweet,
 	PEAssembler
 
 };
