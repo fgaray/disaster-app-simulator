@@ -3,7 +3,8 @@
 
 // Definir los nombres de los PE aqui
 enum class PEName{
-
+	PEUnigram,
+	PEAssembler
 
 };
 

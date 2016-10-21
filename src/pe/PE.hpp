@@ -7,7 +7,7 @@
 #include "MessagePE.hpp"
 #include <memory>
 
-#include "PENames.hpp"
+#include "PEName.hpp"
 
 
 
@@ -16,9 +16,10 @@
  * */
 
 class PE{
-  private:
+  protected:
     Id id;
     std::string nombre;
+    double currentTime;
   public:
     PE(const std::string &nombre_pe){
       this->nombre = nombre_pe;
@@ -45,6 +46,10 @@ class PE{
      * */
     MessagePE transform(const MessagePE &message){
       return message;
+    }
+
+    void setCurrentTime(double currentTime){
+        this->currentTime = currentTime;
     }
 
     /**

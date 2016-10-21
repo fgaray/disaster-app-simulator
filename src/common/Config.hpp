@@ -6,6 +6,7 @@
 
 // Cuanto se demora cada paquete en viajar por la red
 const double LATENCIA_RED = 100;
+const double UNIGRAM_COST = 1500;
 
 
 // El tiempo en que la simulación termina de ejecutar todo

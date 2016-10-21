@@ -8,7 +8,7 @@
 #include "../common/IP.hpp"
 #include "../common/UniqueIdGenerator.hpp"
 
-#include "PENames.hpp"
+#include "PEName.hpp"
 
 typedef std::unordered_map<PEName, std::vector<Id>> routing_table;
 
