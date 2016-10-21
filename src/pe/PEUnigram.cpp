@@ -5,6 +5,7 @@ double  PEUnigram::getCostTime(){
 	return cost;
 }
 
-PEName PEUnigram::nextPE(const MessagePE &message){
-	return PEName::PEAssembler;
+std::vector<std::tuple<PEName, MessagePE>> PEUnigram::nextPE(const MessagePE &message){
+  //envía el mismo mensaje sin modificar a PEAssembler
+	return {std::make_tuple(PEName::PEAssembler, message)};
 }

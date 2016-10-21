@@ -3,6 +3,8 @@
 
 #include <cstdio>
 #include <string>
+#include <vector>
+#include <tuple>
 #include "../common/UniqueIdGenerator.hpp"
 #include "MessagePE.hpp"
 #include <memory>
@@ -39,14 +41,8 @@ class PE{
      * @return El Id el siguiente PE
      *
      * */
-    virtual PEName nextPE(const MessagePE &message) = 0;
+    virtual std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message) = 0;
 
-    /**
-     * Transforma el mensaje. Por defecto la transformación es la identidad.
-     * */
-    MessagePE transform(const MessagePE &message){
-      return message;
-    }
 
     void setCurrentTime(double currentTime){
         this->currentTime = currentTime;

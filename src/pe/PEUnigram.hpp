@@ -10,7 +10,7 @@ class PEUnigram: public PE{
 
 	public:
 		double getCostTime();
-		PEName nextPE(const MessagePE &message);
+		std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message);
 };
 
 #endif
