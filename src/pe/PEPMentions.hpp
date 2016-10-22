@@ -3,7 +3,7 @@
 
 #include "PE.hpp"
 #include "../common/Config.hpp"
-#include "PEPame.hpp"
+#include "PEName.hpp"
 
 class PEPMentions: public PE{
 	private:
