@@ -12,7 +12,7 @@
 #include "../common/Config.hpp"
 
 
-typedef std::queue<std::tuple<Id, Packet>> buffer;
+typedef std::vector<std::tuple<Id, Packet>> buffer;
 
 /**
  * La red tubo funciona como si fuera un solo switch que comunica todo
@@ -23,10 +23,11 @@ class RedTubo: Process{
     std::unordered_map<Id, CPU_ptr> cpus;
     buffer input_buffer;
 
-    //TODO: Creo que en vez de vector podría ser una lista enlazada ya que nos
-    //da O(1) vs O(n) el vector al eliminar un elemento al inicio pero puede que
-    //sea más lento al ordenar
     std::vector<std::tuple<Id, Packet>> current;
+
+    // Esta tabla nos indica si el mensaje ya se encuentra siendo procesado en
+    // la red y por lo tanto debemos evitar agregarlo
+    std::unordered_map<Id, bool> existe;
 
   public:
     RedTubo(std::initializer_list<std::shared_ptr<CPU>> il);

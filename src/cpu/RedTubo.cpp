@@ -26,12 +26,11 @@ void RedTubo::enviarMensaje(Id destino, MessagePE message){
   bool last = false;
 
   for(unsigned int restante = message.getSize();restante > 0;restante = restante - PACKET_SIZE, number++){
-    auto pkt = Packet(ptr, number, PACKET_SIZE, last);
-    this->input_buffer.push(std::make_tuple(destino, pkt));
-    if(!(restante - PACKET_SIZE*2 > 0)){
-      last = true;
-    }
+    auto pkt = Packet(ptr, number, last);
+    this->input_buffer.push_back(std::make_tuple(destino, pkt));
   }
+
+  std::get<1>(this->input_buffer.at(this->input_buffer.size() - 1)).setLast(true);
 
   this->activate();
 }
@@ -81,9 +80,11 @@ void RedTubo::inner_body(){
             //sacamos el elemento del heap
             this->current.erase(it);
             std::pop_heap(this->current.begin(), this->current.end());
+            //ahora sacamos el mensaje de la tabla hash de manera de permitir
+            //que entre otro posible paquete del mismo mensjae
+            this->existe.erase(p.getMessage()->getId());
         }
       }
-
       this->intentarAgregarPaquete();
     }
   }
@@ -105,10 +106,21 @@ bool RedTubo::tuboLleno(){
 void RedTubo::intentarAgregarPaquete(){
   if(!this->input_buffer.empty()){
     if(!this->tuboLleno()){
-      auto packets = this->input_buffer.front();
-      this->input_buffer.pop();
-      this->current.push_back(packets);
-      std::push_heap(this->current.begin(), this->current.end());
+      //intentamos poner un nuevo paquete que no sea parte de los mensajes que
+      //ya están en la red
+
+      for(auto t: this->input_buffer){
+        Packet p;
+        std::tie(std::ignore, p) = t;
+
+        auto existe = this->existe.find(p.getMessage()->getId());
+        if(existe == this->existe.end()){
+          //el mensaje no se encuentra en la red, por lo tanto podemos enviarlo
+          this->current.push_back(t);
+          std::push_heap(this->current.begin(), this->current.end());
+          this->existe.insert({p.getMessage()->getId(), true});
+        }
+      }
     }
   }
 }

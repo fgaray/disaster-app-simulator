@@ -1,10 +1,9 @@
 #include "Packet.hpp"
 
-Packet::Packet(std::shared_ptr<MessagePE> msg, unsigned int number, unsigned int size, bool last){
+Packet::Packet(std::shared_ptr<MessagePE> msg, unsigned int number, unsigned int size){
   this->message = message;
   this->number = number;
   this->size = size;
-  this->last = last;
 
   // El tiempo restante es el tamaño del paquete en bits divivido por la
   // velocidad en bps de la red tubo. Dado que 1s = 1000, entonces SIZE /
@@ -31,6 +30,10 @@ std::shared_ptr<MessagePE> Packet::getMessage(){
 
 bool Packet::isLast(){
   return this->last;
+}
+
+void Packet::setLast(bool last){
+  this->last = last;
 }
 
 

@@ -22,14 +22,16 @@ enum class TipoMensajePE{
 class MessagePE{
   private:
     Id d;
+    Id id_message;
     unsigned int size;
   public:
-    MessagePE(Id destino, unsigned int size);
+    MessagePE(Id id_message, Id destino, unsigned int size);
     MessagePE();
     Id getDestino();
     unsigned int getSize();
     std::shared_ptr<MessagePE> getPointer();
     MessagePE getScalar();
+    Id getId();
 };
 
 #endif
