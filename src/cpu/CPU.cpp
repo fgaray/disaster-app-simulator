@@ -76,3 +76,13 @@ bool CPU::contienePE(Id id){
   }
   return false;
 }
+
+
+std::vector<Id> CPU::getIdsPEs(){
+  std::vector<Id> ids;
+  for(auto &pe: this->pes){
+    ids.push_back(pe->getId());
+  }
+
+  return ids;
+}

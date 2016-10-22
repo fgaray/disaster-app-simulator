@@ -46,6 +46,7 @@ class CPU: public Process{
     void recibirMessage(Id destino, MessagePE message);
     void setEnvioMensajeCallback(std::function<void(Id, MessagePE)>);
     bool contienePE(Id id);
+    std::vector<Id> getIdsPEs();
 };
 
 typedef std::shared_ptr<CPU> CPU_ptr;

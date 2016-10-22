@@ -2,6 +2,8 @@
 #define _H_MESSAGE_
 
 #include <cstdlib>
+#include <memory>
+#include <memory>
 
 #include "../common/UniqueIdGenerator.hpp"
 
@@ -22,10 +24,12 @@ class MessagePE{
     Id d;
     unsigned int size;
   public:
-    MessagePE(Id destino, unsigned int s);
+    MessagePE(Id destino, unsigned int size);
     MessagePE();
     Id getDestino();
     unsigned int getSize();
+    std::shared_ptr<MessagePE> getPointer();
+    MessagePE getScalar();
 };
 
 #endif
