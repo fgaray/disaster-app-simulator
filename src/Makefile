@@ -8,9 +8,16 @@ EXEC=simulator
 
 SRCS=$(wildcard *.cpp)
 OBJS=$(SRCS:.cpp=.o) pe/pe.o cpu/cpu.o metric/metric.o common/common.o mobile/mobile.o
+OBJS_NO_MAIN=pe/pe.o cpu/cpu.o metric/metric.o common/common.o mobile/mobile.o
 HEADERS=$(SRCS:.cpp=.hpp)
 
 all: simulador
+
+test: $(OBJS_NO_MAIN)
+	@echo [CPP] test.o
+	@g++ -c $(CFLAGS) -DTEST test.cpp -o test.o
+	@echo [CPP] $@
+	@g++ $(CFLAGS) $(OBJS_NO_MAIN) test.o $(LIBCPPSIM) -o test
 
 simulador: $(OBJS)
 	@echo [CPP] $@
@@ -42,6 +49,3 @@ clean:
 	cd mobile && make clean
 	cd metric && make clean
 	cd common && make clean
-
-test:
-	./$(EXEC)
