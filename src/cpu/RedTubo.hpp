@@ -36,6 +36,7 @@ class RedTubo: Process{
     bool tuboLleno();
     void intentarAgregarPaquete();
     void entregarMensaje(Id id, Packet p);
+    void enviarMensaje(PEName name, MessagePE message);
 
 };
 

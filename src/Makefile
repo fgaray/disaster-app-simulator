@@ -13,11 +13,11 @@ HEADERS=$(SRCS:.cpp=.hpp)
 
 all: simulador
 
-test: $(OBJS_NO_MAIN)
+test: $(OBJS_NO_MAIN) test.cpp Source.o
 	@echo [CPP] test.o
 	@g++ -c $(CFLAGS) -DTEST test.cpp -o test.o
 	@echo [CPP] $@
-	@g++ $(CFLAGS) $(OBJS_NO_MAIN) test.o $(LIBCPPSIM) -o test
+	@g++ $(CFLAGS) $(OBJS_NO_MAIN) Source.o test.o $(LIBCPPSIM) -o test
 
 simulador: $(OBJS)
 	@echo [CPP] $@

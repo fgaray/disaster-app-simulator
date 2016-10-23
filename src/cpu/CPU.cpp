@@ -40,9 +40,9 @@ void CPU::inner_body(){
   }
 }
 
-CPU::CPU(std::initializer_list<PE*> il): Process("CPU"){
-  for(PE *p: il){
-    this->pes.push_back(std::shared_ptr<PE>(p));
+CPU::CPU(std::initializer_list<std::shared_ptr<PE>> il): Process("CPU"){
+  for(auto p: il){
+    this->pes.push_back(p);
   }
   this->numero_cores = 4;
   this->run = true;

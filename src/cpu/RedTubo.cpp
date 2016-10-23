@@ -35,6 +35,10 @@ void RedTubo::enviarMensaje(Id destino, MessagePE message){
   this->activate();
 }
 
+void RedTubo::enviarMensaje(PEName name, MessagePE message){
+
+}
+
 
 void RedTubo::inner_body(){
   while(this->run){

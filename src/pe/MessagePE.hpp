@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <memory>
 #include <memory>
+#include "PEName.hpp"
 
 #include "../common/UniqueIdGenerator.hpp"
 

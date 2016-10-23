@@ -11,8 +11,11 @@ enum class PEName{
 	PENHashtags,
 	PEPHashtags,
 	PESizetweet,
-	PEAssembler
-
+	PEAssembler,
+  END,
+  //Testing
+  SinkNode,
+  MockPE
 };
 
 

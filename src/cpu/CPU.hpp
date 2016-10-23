@@ -41,7 +41,7 @@ class CPU: public Process{
     std::function<void(Id, MessagePE)> envio_mensaje_callback;
 
   public:
-    CPU(std::initializer_list<PE*> il);
+    CPU(std::initializer_list<std::shared_ptr<PE>> il);
     void inner_body();
     void recibirMessage(Id destino, MessagePE message);
     void setEnvioMensajeCallback(std::function<void(Id, MessagePE)>);
