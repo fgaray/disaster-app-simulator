@@ -5,7 +5,12 @@ double  PESizetweet::getCostTime(){
 	return cost;
 }
 
-std::vector<std::tuple<PEName, MessagePE>> PESizetweet::nextPE(const MessagePE &message){
+std::vector<std::tuple<PEName, MessagePE>> PESizetweet::nextPE(MessagePE message){
   //envía el mismo mensaje sin modificar a PEAssembler
 	return {std::make_tuple(PEName::PEAssembler, message)};
+}
+
+
+PEName PESizetweet::getName(){
+  return PEName::PESizetweet;
 }

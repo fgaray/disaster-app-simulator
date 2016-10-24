@@ -10,7 +10,8 @@ class PESizetweet: public PE{
 
 	public:
 		double getCostTime();
-		std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message);
+		std::vector<std::tuple<PEName, MessagePE>> nextPE(MessagePE message);
+    PEName getName();
 };
 
 #endif

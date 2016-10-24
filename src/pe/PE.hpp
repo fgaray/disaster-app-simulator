@@ -21,11 +21,9 @@
 class PE{
   protected:
     Id id;
-    std::string nombre;
     double currentTime;
   public:
-    PE(const std::string &nombre_pe){
-      this->nombre = nombre_pe;
+    PE(){
       //cremos un ID de acuerdo a UniqueIdGenerator
       this->id = unique_id();
     }

@@ -1,9 +1,5 @@
 #include "SinkNode.hpp"
 
-SinkNode::SinkNode(const char *nombre): PE(nombre){
-
-}
-
 double SinkNode::getCostTime(){
   return 1000;
 }

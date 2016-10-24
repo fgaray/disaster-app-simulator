@@ -5,7 +5,11 @@ double  PEPOStag::getCostTime(){
 	return cost;
 }
 
-std::vector<std::tuple<PEName, MessagePE>> PEPOStag::nextPE(const MessagePE &message){
+std::vector<std::tuple<PEName, MessagePE>> PEPOStag::nextPE(MessagePE message){
   //envía el mismo mensaje sin modificar a PEAssembler
 	return {std::make_tuple(PEName::PEAssembler, message)};
+}
+
+PEName PEPOStag::getName(){
+  return PEName::PEPOStag;
 }

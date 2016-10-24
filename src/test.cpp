@@ -10,14 +10,25 @@
 #include "cpu/RedTubo.hpp"
 #include "Source.hpp"
 #include "common/Traza.hpp"
+
+
+#include "pe/PEBigram.hpp"
+#include "pe/PENHashtags.hpp"
+#include "pe/PENMentions.hpp"
+#include "pe/PEPHashtags.hpp"
+#include "pe/PEPMentions.hpp"
+#include "pe/PEPOStag.hpp"
+#include "pe/PESizetweet.hpp"
+#include "pe/PEUnigram.hpp"
+
+
 using namespace std;
 
+void test_simulacion_basica();
+void test_simulacion_completa();
 
 class MockPE: public PE{
   public:
-    MockPE(const char *nombre): PE(nombre){
-
-    }
     double getCostTime(){
       return 1000;
     }
@@ -84,11 +95,7 @@ class TestBasicSource: public Source{
 };
 
 
-
-
-int main(int argc, char *argv[])
-{
-
+void test_simulacion_basica(){
   auto sim = std::unique_ptr<simulation>(simulation::instance());
   sim->begin_simulation(new sqsDll());
 
@@ -100,8 +107,8 @@ int main(int argc, char *argv[])
 
   auto traza = std::shared_ptr<Traza>(new Traza);
 
-  auto mock_pe = std::shared_ptr<PE>(new MockPE("MockPE"));
-  auto sink_node = std::shared_ptr<PE>(new SinkNode("SinkNode"));
+  auto mock_pe = std::shared_ptr<PE>(new MockPE);
+  auto sink_node = std::shared_ptr<PE>(new SinkNode);
 
   //una vez tenemos los PEs, tenemos que asignarlos a una CPU
 
@@ -128,6 +135,81 @@ int main(int argc, char *argv[])
 
   // Listo!
   sim->end_simulation();
+}
+
+
+void test_simulacion_completa(){
+  auto sim = std::unique_ptr<simulation>(simulation::instance());
+  sim->begin_simulation(new sqsDll());
+
+  //probemos primero la red tubo con una CPU básica 
+
+  //creamos una CPU que va a ejecutar dos PEs, uno que es el sink node y otro
+  //que es el mockPE, entonces desde el source se va a enviar el mensaje a
+  //MockPE y de ahi al sinknode
+
+  auto traza = std::shared_ptr<Traza>(new Traza);
+
+  auto peBigram = std::shared_ptr<PE>(new PEBigram);
+  auto peNHashtags = std::shared_ptr<PE>(new PENHashtags);
+  auto peNMentions = std::shared_ptr<PE>(new PENMentions);
+  auto pePHashtags = std::shared_ptr<PE>(new PEPHashtags);
+  auto pePMentions = std::shared_ptr<PE>(new PEPMentions);
+  auto pePOStag = std::shared_ptr<PE>(new PEPOStag);
+  auto pePSizetweet = std::shared_ptr<PE>(new PESizetweet);
+  auto peUnigram = std::shared_ptr<PE>(new PEUnigram);
+
+
+  //una vez tenemos los PEs, tenemos que asignarlos a una CPU
+
+  auto cpu1 = handle<CPU>(new CPU({
+        peBigram,
+        peNHashtags,
+        peNMentions,
+        pePHashtags
+      }));
+
+  auto cpu2 = handle<CPU>(new CPU({
+        pePMentions,
+        pePOStag,
+        pePSizetweet,
+        peUnigram
+      }));
+
+
+  cpu1->setTraza(traza);
+  cpu2->setTraza(traza);
+
+  auto red_tubo = handle<RedTubo>(new RedTubo{
+        cpu1,
+        cpu2
+      });
+
+  red_tubo->setTraza(traza);
+
+  handle<TestBasicSource> src(new TestBasicSource(END_SIM_TIME, red_tubo));
+  src->setTraza(traza);
+  src->activate();
+
+  src->addEndCallback(red_tubo);
+  src->addEndCallback(cpu1);
+  src->addEndCallback(cpu2);
+
+  sim->run();
+
+  // Listo!
+  sim->end_simulation();
+
+
+}
+
+
+
+
+int main(int argc, char *argv[])
+{
+  test_simulacion_basica();
+  test_simulacion_completa();
   
   return 0;
 }

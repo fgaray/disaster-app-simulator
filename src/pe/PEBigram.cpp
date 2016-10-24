@@ -1,5 +1,8 @@
 #include "PEBigram.hpp"
 
+
+
+
 double  PEBigram::getCostTime(){
 	double cost = BIGRAM_COST;
 	return cost;
