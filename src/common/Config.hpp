@@ -14,6 +14,11 @@ const double PMENTIONS_COST = 1500;
 const double NHASHTAGS_COST = 1500;
 const double PHASHTAGS_COST = 1500;
 const double SIZETWEET_COST = 1500;
+const double BROKER_COST = 0;
+const double FILTER_COST = 0;
+const double ASSEMBLER_COST = 1500;
+const double FSELECTION_COST = 1500;
+const double MODEL_COST = 2000;
 
 // El tiempo en que la simulación termina de ejecutar todo
 const double END_SIM_TIME = 100000;
@@ -33,7 +38,7 @@ const unsigned int VELOCIDAD_RED_TUBO = 10000*1000; // 1MB/s
 //red en un momento.
 const unsigned int ANCHO_BANDA_INSTANTE = 1000;
 
-// En bits
+// En bitss
 const unsigned int DEFAULT_MESSAGE_SIZE = 200;
 
 #endif

@@ -14,6 +14,10 @@ enum class PEName{
 	PEPHashtags,
 	PESizetweet,
 	PEAssembler,
+	PEBroker,
+	PEFilter,
+	PEFSelection,
+	PEModel,
   END,
   //Testing
   SinkNode,
