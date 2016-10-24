@@ -8,7 +8,6 @@ Process::Process(const std::string &name): process(name){
 void Process::endSimulation(){
   this->run = false;
   this->traza->puntoFin(time(), "Terminando de ejecutar " + this->name);
-  this->end_simulation();
 }
 
 void Process::setTraza(std::shared_ptr<Traza> traza){

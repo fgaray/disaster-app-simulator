@@ -59,7 +59,8 @@ class TestBasicSource: public Source{
       ss << this->end_time;
 
       this->traza->puntoSource(time(), ss);
-      while(time() < this->end_time){
+      unsigned int cantidad_menajes = 0;
+      while(time() < this->end_time && cantidad_menajes < MAXIMO_MENSAJES){
         //this->porcentaje();
         // TODO: Hacer el envío de los mensajes a la red
         // Cuando se terminen de enviar mensajes, hacer break
@@ -68,8 +69,9 @@ class TestBasicSource: public Source{
         auto mensaje = MessagePE(DEFAULT_MESSAGE_SIZE);
 
         this->red_tubo->enviarMensaje(destino, mensaje);
-        //enviamos un solo mensaje
-        break;
+        //enviamos un mensaje cada 0.5 segundos
+        hold(500);
+        cantidad_menajes++;
       }
 
 
@@ -209,7 +211,7 @@ void test_simulacion_completa(){
 int main(int argc, char *argv[])
 {
   test_simulacion_basica();
-  test_simulacion_completa();
+  //test_simulacion_completa();
   
   return 0;
 }

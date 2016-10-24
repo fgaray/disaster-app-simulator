@@ -15,6 +15,7 @@ void Source::inner_body(){
     // TODO: Hacer el envío de los mensajes a la red
     // Cuando se terminen de enviar mensajes, hacer break
     
+
     //this->red_tubo->enviarMensaje(destino, mensaje);
 
   }
