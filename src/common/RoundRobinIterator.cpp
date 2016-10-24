@@ -2,9 +2,9 @@
 
 
 
-RoundRobinIterator::RoundRobinIterator(const std::vector<Id> &v){
-  assert(v.size() != 0);
-  this->max = v.size();
+RoundRobinIterator::RoundRobinIterator(size_t max){
+  assert(max != 0);
+  this->max = max;
   this->current = 0;
 }
 

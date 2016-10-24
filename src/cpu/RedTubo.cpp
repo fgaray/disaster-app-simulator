@@ -28,7 +28,7 @@ RedTubo::RedTubo(std::initializer_list<handle<CPU>> il): Process("RedTubo"){
     for(auto pair: this->translation_table_tmp){
       auto v = pair.second;
       PEName name = pair.first;
-      this->translation_table.insert({name, RoundRobinIterator(v)});
+      this->translation_table.insert({name, RoundRobinIterator(static_cast<size_t>(v.size()))});
     }
   }
 

@@ -26,7 +26,7 @@ class RoundRobinIterator{
     size_t max;
 
   public:
-    RoundRobinIterator(const std::vector<Id> &v);
+    RoundRobinIterator(size_t max);
     size_t getNext();
 
 };
