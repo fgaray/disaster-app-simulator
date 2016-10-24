@@ -18,7 +18,7 @@ const double SIZETWEET_COST = 1500;
 // El tiempo en que la simulación termina de ejecutar todo
 const double END_SIM_TIME = 100000;
 
-const unsigned int MAXIMO_MENSAJES = 1;
+const unsigned int MAXIMO_MENSAJES = 10;
 
 
 // Tamaño del paquete maximo a enviar por la red en bits

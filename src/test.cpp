@@ -70,10 +70,11 @@ class TestBasicSource: public Source{
 
         this->red_tubo->enviarMensaje(destino, mensaje);
         //enviamos un mensaje cada 0.5 segundos
-        hold(500);
+        hold(10);
         cantidad_menajes++;
       }
 
+      this->traza->puntoSource(time(), "No hay más mensajes a generar");
 
       // Esperamos a que termine la simulación, vamos mostrando el porcentaje de
       // ejecución completo
