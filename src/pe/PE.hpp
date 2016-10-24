@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <iostream>
 #include "../common/UniqueIdGenerator.hpp"
 #include "MessagePE.hpp"
 #include <memory>
@@ -25,6 +26,8 @@ class PE{
   public:
     PE(const std::string &nombre_pe){
       this->nombre = nombre_pe;
+      //cremos un ID de acuerdo a UniqueIdGenerator
+      this->id = unique_id();
     }
 
     Id getId(){
@@ -43,6 +46,10 @@ class PE{
      * */
     virtual std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message) = 0;
 
+    /**
+     * Retorna el nombre del PE
+     * */
+    virtual PEName getName() = 0;
 
     void setCurrentTime(double currentTime){
         this->currentTime = currentTime;

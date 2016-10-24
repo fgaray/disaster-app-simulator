@@ -2,7 +2,7 @@
 
 
 Source::Source(double et, std::shared_ptr<RedTubo> red): process("source"){
-  this->end_time = end_time;
+  this->end_time = et;
   this->red_tubo = red;
 }
 
@@ -44,6 +44,10 @@ void Source::porcentaje(){
 
 
 
-void Source::addEndCallback(std::function<void()> callback){
-  this->end_callbacks.push_back(callback);
+void Source::addEndCallback(Process &p){
+  this->end_callbacks.push_back(p.getEndCallback());
+}
+
+void Source::addEndCallback(std::shared_ptr<Process> p){
+  this->end_callbacks.push_back(p->getEndCallback());
 }

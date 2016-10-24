@@ -4,9 +4,6 @@
 
 typedef unsigned int Id;
 
-class UniqueIdGenerator{
-
-
-};
+Id unique_id();
 
 #endif

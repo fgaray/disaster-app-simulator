@@ -2,7 +2,7 @@ LIBCPPSIM=$(LIBCPPSIM_ROOT)/src/libcppsim.a
 LIBCPPSIM_HEADERS=$(LIBCPPSIM_ROOT)/src/
 STD=-std=c++14
 CPP=g++
-CFLAGS=$(STD) -g -Wall -Werror -Wextra -Wredundant-decls -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wredundant-decls -Wformat=2 -Wmissing-format-attribute -Wformat-nonliteral -I$(LIBCPPSIM_HEADERS) -Wno-unused-parameter
+CFLAGS=$(STD) -g -Wall -Werror -Wextra -Wredundant-decls -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wredundant-decls -Wformat=2 -Wmissing-format-attribute -I$(LIBCPPSIM_HEADERS) -Wno-unused-parameter
 EXEC=simulator
 
 

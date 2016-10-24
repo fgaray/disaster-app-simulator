@@ -9,11 +9,32 @@ void CPU::inner_body(){
 
     if(!this->planificacion.empty()){
       //ejecutamos el PE
-      PE_ptr pe;
-      MessagePE message;
-      std::tie(pe, message) = this->planificacion.front();
+      PE_ptr pe = std::get<0>(this->planificacion.front());
+      MessagePE message = std::get<1>(this->planificacion.front());
 
-      hold(pe->getCostTime());
+      pe->setCurrentTime(time());
+      double to_hold = pe->getCostTime();
+
+      std::stringstream ss;
+      ss << "Ejecutando el PE " << pe->getId();
+      ss << " con el mensaje " << message.getId();
+      ss << ", vamos a esperar " << to_hold;
+      this->traza->puntoCPU(time(), ss);
+
+      hold(to_hold);
+      //Ahora enviamos el mensaje al siguiente PE
+
+      auto nexts = pe->nextPE(message);
+
+      for(auto t: nexts){
+        PEName name = std::get<0>(t);
+        MessagePE m = std::get<1>(t);
+
+        std::stringstream ss;
+        ss << "Enviando el mensaje " << m.getId();
+        this->traza->puntoCPU(time(), ss);
+        this->enviarMensaje(name, m);
+      }
 
       this->planificacion.pop();
     }
@@ -53,8 +74,8 @@ void CPU::recibirMessage(Id destino, MessagePE message){
   this->input_buffer.push(std::make_pair(destino, message));
 }
 
-void CPU::enviarMensaje(Id destino, MessagePE message){
-
+void CPU::enviarMensaje(PEName destino, MessagePE message){
+  this->envio_mensaje_callback(destino, message);
 }
 
 
@@ -64,7 +85,7 @@ void CPU::enviarMensaje3G(Id destino, MessageMD message){
 
 
 
-void CPU::setEnvioMensajeCallback(std::function<void(Id, MessagePE)> fn){
+void CPU::setEnvioMensajeCallback(std::function<void(PEName, MessagePE)> fn){
   this->envio_mensaje_callback = fn;
 }
 
@@ -85,4 +106,15 @@ std::vector<Id> CPU::getIdsPEs(){
   }
 
   return ids;
+}
+
+
+
+std::vector<std::tuple<PEName, Id>> CPU::getNamesPEs(){
+  std::vector<std::tuple<PEName, Id>> names;
+  for(auto pe: this->pes){
+    names.push_back(std::make_tuple(pe->getName(), pe->getId()));
+  }
+
+  return names;
 }

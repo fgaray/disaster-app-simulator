@@ -6,6 +6,7 @@
 #include <memory>
 #include <algorithm>
 #include <queue>
+#include <iostream>
 
 
 #include "../pe/MessagePE.hpp"
@@ -36,17 +37,23 @@ class CPU: public Process{
     std::vector<PE_ptr> pes;
     std::queue<std::tuple<Id, MessagePE>> input_buffer;
     std::queue<std::tuple<PE_ptr, MessagePE>> planificacion;
-    void enviarMensaje(Id destino, MessagePE message);
+    void enviarMensaje(PEName destino, MessagePE message);
     void enviarMensaje3G(Id destino, MessageMD message);
-    std::function<void(Id, MessagePE)> envio_mensaje_callback;
+    std::function<void(PEName, MessagePE)> envio_mensaje_callback;
 
   public:
     CPU(std::initializer_list<std::shared_ptr<PE>> il);
     void inner_body();
     void recibirMessage(Id destino, MessagePE message);
-    void setEnvioMensajeCallback(std::function<void(Id, MessagePE)>);
+
+    /**
+     * Si la CPU quiere enviar un archivo, entonces tiene que mandar el mensaje
+     * mediante el callaback que le pasó la red tubo
+     * */
+    void setEnvioMensajeCallback(std::function<void(PEName, MessagePE)> fn);
     bool contienePE(Id id);
     std::vector<Id> getIdsPEs();
+    std::vector<std::tuple<PEName, Id>> getNamesPEs();
 };
 
 typedef std::shared_ptr<CPU> CPU_ptr;

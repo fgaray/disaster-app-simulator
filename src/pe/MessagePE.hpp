@@ -26,13 +26,13 @@ class MessagePE{
     Id id_message;
     unsigned int size;
   public:
-    MessagePE(Id id_message, Id destino, unsigned int size);
+    MessagePE(Id destino, unsigned int size);
+    MessagePE(unsigned int size);
     MessagePE();
     Id getDestino();
     unsigned int getSize();
-    std::shared_ptr<MessagePE> getPointer();
-    MessagePE getScalar();
     Id getId();
+    void setDestino(Id id);
 };
 
 #endif

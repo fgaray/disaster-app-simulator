@@ -9,3 +9,8 @@ std::vector<std::tuple<PEName, MessagePE>> PEBigram::nextPE(const MessagePE &mes
   //envía el mismo mensaje sin modificar a PEAssembler
 	return {std::make_tuple(PEName::PEAssembler, message)};
 }
+
+
+PEName PEBigram::getName(){
+  return PEName::PEBigram;
+}

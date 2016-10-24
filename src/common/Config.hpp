@@ -31,4 +31,7 @@ const unsigned int VELOCIDAD_RED_TUBO = 10000*1000; // 1MB/s
 //red en un momento.
 const unsigned int ANCHO_BANDA_INSTANTE = 1000;
 
+// En bits
+const unsigned int DEFAULT_MESSAGE_SIZE = 200;
+
 #endif

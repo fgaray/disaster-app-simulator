@@ -12,3 +12,7 @@ double SinkNode::getCostTime(){
 std::vector<std::tuple<PEName, MessagePE>> SinkNode::nextPE(const MessagePE &message){
   return {std::make_tuple(PEName::END, message)};
 }
+
+PEName SinkNode::getName(){
+  return PEName::SinkNode;
+}

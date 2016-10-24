@@ -18,5 +18,6 @@ enum class PEName{
   MockPE
 };
 
+const char* peNameToString(PEName name);
 
 #endif

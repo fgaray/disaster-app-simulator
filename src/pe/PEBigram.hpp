@@ -11,6 +11,7 @@ class PEBigram: public PE{
 	public:
 		double getCostTime();
 		std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message);
+    PEName getName();
 };
 
 #endif

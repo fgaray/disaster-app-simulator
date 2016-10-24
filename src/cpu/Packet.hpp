@@ -14,7 +14,7 @@
  * */
 class Packet{
   private:
-    std::shared_ptr<MessagePE> message;
+    MessagePE message;
     unsigned int number, size;
     bool last;
 
@@ -29,14 +29,14 @@ class Packet{
      * @param last Si es el último paquete que componen el mensaje
      *
      * */
-    Packet(std::shared_ptr<MessagePE> message, unsigned int number, unsigned int size);
-    Packet();
+    Packet(MessagePE message, unsigned int number, bool last);
 
     unsigned int getMessageSize();
     unsigned int getPacketSize();
-    std::shared_ptr<MessagePE> getMessage();
+    MessagePE getMessage();
     bool isLast();
     void setLast(bool last);
+    unsigned int getNumber();
 
     /**
      * Resta el tiempo t al remaining time de este paquete

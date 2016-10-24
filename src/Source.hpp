@@ -23,7 +23,9 @@ class Source: public process {
     /**
      * Agrega una función que va a ser llamada cuando se termine la simulación
      * */
-    void addEndCallback(std::function<void()> callback);
+    void addEndCallback(Process &p);
+
+    void addEndCallback(std::shared_ptr<Process> p);
 };
 
 #endif
