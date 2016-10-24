@@ -24,7 +24,6 @@ Id MessagePE::getDestino(){
 
 
 unsigned int MessagePE::getSize(){
-  assert(this->size_seteado == true);
   return this->size;
 }
 

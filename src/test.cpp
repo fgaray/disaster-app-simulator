@@ -23,7 +23,7 @@ class MockPE: public PE{
     }
 
     std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message){
-      return {std::make_tuple(PEName::SinkNode, MessagePE())};
+      return {std::make_tuple(PEName::SinkNode, message)};
     }
 
     PEName getName(){

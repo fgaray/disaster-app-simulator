@@ -137,6 +137,7 @@ void RedTubo::inner_body(){
 
 
       //sabemos cuanto esperar, esperamos...
+      assert(to_hold != 0);
       hold(to_hold);
 
       //ahora, a todos los paquetes que están esperando, tenemos que restarle el
