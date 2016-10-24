@@ -82,11 +82,17 @@ void RedTubo::enviarMensaje(PEName name, MessagePE message){
   // ese nombre, entonces se hace round robin sobre el PE.
   //
 
+  if(name == PEName::END){
+    // es el mensaje final, no es necesario enviar más mensajes
+    std::stringstream ss2;
+    ss2 << "Recibido un mensaje final, se termina...";
+    this->traza->puntoRedTubo(time(), ss2);
+    return;
+  }
 
   std::stringstream ss2;
   ss2 << "Recibido un mensaje, buscando destino hacia ";
   ss2 << peNameToString(name);
-
   this->traza->puntoRedTubo(time(), ss2);
 
   auto found_index = this->translation_table.find(name);
