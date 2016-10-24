@@ -17,6 +17,7 @@ void CPU::inner_body(){
 
       std::stringstream ss;
       ss << "Ejecutando el PE " << pe->getId();
+      ss << " que es " << peNameToString(pe->getName());
       ss << " con el mensaje " << message.getId();
       ss << ", vamos a esperar " << to_hold;
       this->traza->puntoCPU(time(), ss);
