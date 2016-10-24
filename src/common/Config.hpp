@@ -19,6 +19,13 @@ const double FILTER_COST = 0;
 const double ASSEMBLER_COST = 1500;
 const double FSELECTION_COST = 1500;
 const double MODEL_COST = 2000;
+const double PYBOSSA_COST = 1500;
+const double TRAINER_COST = 1500;
+const double ADAPTER_COST = 1500;
+const double COLLECTOR_COST = 1500;
+
+const double TWEET_PER_SECOND = 2;
+const double AMOUNT_OF_TWEETS = 10000;
 
 // El tiempo en que la simulación termina de ejecutar todo
 const double END_SIM_TIME = 100000;

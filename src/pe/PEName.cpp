@@ -43,6 +43,18 @@ const char* peNameToString(PEName name){
     case PEName::PEModel:
       return "PEModel";
       break;
+    case PEName::PEPybossa:
+      return "PEPybossa";
+      break;
+    case PEName::PEAdapter:
+      return "PEAdapter";
+      break;
+    case PEName::PETrainer:
+      return "PETrainer";
+      break;
+    case PEName::PECollector:
+      return "PECollector";
+      break;
     case PEName::END:
       return "END";
       break;
