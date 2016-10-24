@@ -36,7 +36,7 @@ class TestBasicSource: public Source{
     std::shared_ptr<Traza> traza;
 
   public:
-    TestBasicSource(double et, std::shared_ptr<RedTubo> red_tubo): Source(et, red_tubo){
+    TestBasicSource(double et, handle<RedTubo> red_tubo): Source(et, red_tubo){
 
     }
 
@@ -105,13 +105,13 @@ int main(int argc, char *argv[])
 
   //una vez tenemos los PEs, tenemos que asignarlos a una CPU
 
-  auto cpu = std::shared_ptr<CPU>(new CPU({
+  auto cpu = handle<CPU>(new CPU({
         mock_pe,
         sink_node
       }));
   cpu->setTraza(traza);
 
-  auto red_tubo = std::shared_ptr<RedTubo>(new RedTubo{
+  auto red_tubo = handle<RedTubo>(new RedTubo{
         cpu
       });
 

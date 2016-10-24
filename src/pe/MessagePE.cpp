@@ -4,15 +4,18 @@ MessagePE::MessagePE(Id destino, unsigned int size){
   this->d = destino;
   this->size = size;
   this->id_message = unique_id();
+  this->size_seteado = true;
 }
 
 MessagePE::MessagePE(unsigned int size){
   this->size = size;
   this->id_message = unique_id();
+  this->size_seteado = true;
 }
 
 MessagePE::MessagePE(){
   this->id_message = unique_id();
+  this->size_seteado = false;
 }
 
 Id MessagePE::getDestino(){
@@ -21,6 +24,7 @@ Id MessagePE::getDestino(){
 
 
 unsigned int MessagePE::getSize(){
+  assert(this->size_seteado == true);
   return this->size;
 }
 

@@ -56,6 +56,6 @@ class CPU: public Process{
     std::vector<std::tuple<PEName, Id>> getNamesPEs();
 };
 
-typedef std::shared_ptr<CPU> CPU_ptr;
+typedef handle<CPU> CPU_ptr;
 
 #endif

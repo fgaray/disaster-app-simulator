@@ -29,7 +29,6 @@ class RedTubo: public Process{
     std::unordered_map<Id, CPU_ptr> cpus;
     buffer input_buffer;
 
-    std::shared_ptr<Traza> traza;
 
     std::vector<std::tuple<Id, Packet>> current;
 
@@ -50,7 +49,7 @@ class RedTubo: public Process{
   public:
     std::unordered_map<PEName, RoundRobinIterator> translation_table;
 
-    RedTubo(std::initializer_list<std::shared_ptr<CPU>> il);
+    RedTubo(std::initializer_list<handle<CPU>> il);
     void enviarMensaje(Id destino, MessagePE message);
     void inner_body();
     bool tuboLleno();

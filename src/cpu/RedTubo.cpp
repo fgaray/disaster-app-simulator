@@ -1,7 +1,7 @@
 #include "RedTubo.hpp"
 
 
-RedTubo::RedTubo(std::initializer_list<std::shared_ptr<CPU>> il): Process("RedTubo"){
+RedTubo::RedTubo(std::initializer_list<handle<CPU>> il): Process("RedTubo"){
   for(auto cpu: il){
     cpu->setEnvioMensajeCallback([this](PEName destino, MessagePE message){
         this->enviarMensaje(destino, message);
@@ -40,8 +40,10 @@ void RedTubo::enviarMensaje(Id destino, MessagePE message){
   // el mensaje es dividido en paquetes que son puestos en un buffer de entrada
   // de la red tubo a la espera de ser enviados por la red.
 
-  this->traza->puntoRedTubo(time(), "Recibido un mensaje con destino " + destino);
-
+  std::stringstream ss2;
+  ss2 << "Recibido un mensaje con destino ";
+  ss2 << destino;
+  this->traza->puntoRedTubo(time(), ss2);
 
   unsigned int number = 0;
   bool last = false;
@@ -86,13 +88,6 @@ void RedTubo::enviarMensaje(PEName name, MessagePE message){
   ss2 << peNameToString(name);
 
   this->traza->puntoRedTubo(time(), ss2);
-
-  std::cout << "Antes" << std::endl;
-  for(auto it: this->translation_table_tmp){
-    std::cout << peNameToString(it.first) << std::endl;
-  }
-  std::cout << "Despues" << std::endl;
-
 
   auto found_index = this->translation_table.find(name);
   auto found = this->translation_table_tmp.find(name);

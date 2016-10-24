@@ -41,9 +41,8 @@ void CPU::inner_body(){
     
     if(!this->input_buffer.empty()){
       //planificacion simple
-      Id pe_id;
-      MessagePE message;
-      std::tie(pe_id, message) = this->input_buffer.front();
+      Id pe_id = std::get<0>(this->input_buffer.front());
+      MessagePE message = std::get<1>(this->input_buffer.front());
 
       auto found = std::find_if(this->pes.begin(), this->pes.end(), [pe_id](const PE_ptr &pe1){
             return pe_id == pe1->getId();

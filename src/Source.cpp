@@ -1,7 +1,7 @@
 #include "Source.hpp"
 
 
-Source::Source(double et, std::shared_ptr<RedTubo> red): process("source"){
+Source::Source(double et, handle<RedTubo> red): process("source"){
   this->end_time = et;
   this->red_tubo = red;
 }
@@ -48,6 +48,6 @@ void Source::addEndCallback(Process &p){
   this->end_callbacks.push_back(p.getEndCallback());
 }
 
-void Source::addEndCallback(std::shared_ptr<Process> p){
+void Source::addEndCallback(handle<Process> p){
   this->end_callbacks.push_back(p->getEndCallback());
 }

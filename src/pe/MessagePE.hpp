@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <memory>
 #include <memory>
+#include <cassert>
 #include "PEName.hpp"
 
 #include "../common/UniqueIdGenerator.hpp"
@@ -25,6 +26,7 @@ class MessagePE{
     Id d;
     Id id_message;
     unsigned int size;
+    bool size_seteado;
   public:
     MessagePE(Id destino, unsigned int size);
     MessagePE(unsigned int size);

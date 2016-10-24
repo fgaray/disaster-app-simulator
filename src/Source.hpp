@@ -10,14 +10,14 @@
 class Source: public process {
   protected:
     std::vector<std::function<void()>> end_callbacks;
-    std::shared_ptr<RedTubo> red_tubo;
+    handle<RedTubo> red_tubo;
 
     double end_time;
     void inner_body();
     void porcentaje();
 
   public:
-    Source(double et, std::shared_ptr<RedTubo> red_tubo);
+    Source(double et, handle<RedTubo> red_tubo);
     ~Source();
 
     /**
@@ -25,7 +25,7 @@ class Source: public process {
      * */
     void addEndCallback(Process &p);
 
-    void addEndCallback(std::shared_ptr<Process> p);
+    void addEndCallback(handle<Process> p);
 };
 
 #endif
