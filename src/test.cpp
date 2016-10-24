@@ -60,13 +60,14 @@ class TestBasicSource: public Source{
 
       this->traza->puntoSource(time(), ss);
       unsigned int cantidad_menajes = 0;
-      while(time() < this->end_time && cantidad_menajes < MAXIMO_MENSAJES){
+      while(time() < this->end_time && cantidad_menajes < 1){
         //this->porcentaje();
         // TODO: Hacer el envío de los mensajes a la red
         // Cuando se terminen de enviar mensajes, hacer break
 
         auto destino = PEName::MockPE;
         auto mensaje = MessagePE(DEFAULT_MESSAGE_SIZE);
+        this->traza->puntoSource(time(), "Generando un nuevo mensaje");
 
         this->red_tubo->enviarMensaje(destino, mensaje);
         //enviamos un mensaje cada 0.5 segundos

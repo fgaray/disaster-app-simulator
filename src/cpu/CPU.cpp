@@ -10,7 +10,6 @@ void CPU::inner_body(){
 
     if(this->existePlanificacion()){
 
-
       //buscamos la CPU/PE que tenga el tiempo más proximo a salir desde la CPU
 
 
@@ -30,7 +29,7 @@ void CPU::inner_body(){
       this->traza->puntoCPU(time(), ss2);
       
       //restamos el tiempo esperado a todos los cores
-      for(auto p: this->cores){
+      for(auto &p: this->cores){
         p.ejecutar(core.restante());
       }
 
@@ -46,7 +45,7 @@ void CPU::inner_body(){
       }
 
       //eliminar los PEs que hayan cumplido sus tiempos
-      for(auto p: this->cores){
+      for(auto &p: this->cores){
         if(p.restante() <= 0){
           p.remove();
         }
@@ -66,6 +65,11 @@ CPU::CPU(std::initializer_list<std::shared_ptr<PE>> il): Process("CPU"){
   }
   this->numero_cores = 4;
   this->run = true;
+
+  for(unsigned int i = 0; i < this->numero_cores; i++){
+    this->cores.push_back(Planificacion());
+  }
+
 }
 
 void CPU::recibirMessage(Id destino, MessagePE message){
@@ -140,7 +144,7 @@ void CPU::intentar_agregar(){
       }else{
         //podemos intentar agregar un nuevo PE, hay que ver si hay una
         //planificacion que esté libre
-        for(auto p: this->cores){
+        for(auto &p: this->cores){
           if(!p.contienePlanificacion()){
             //buscamos un PE con ese ID
 
