@@ -18,9 +18,11 @@ void CPU::inner_body(){
             return p1.restante() < p2.restante();
           });
 
-      Planificacion &core = this->cores.at(0);
+      //seleccionamos un core que esté vacio
 
-      core.getPE()->setCurrentTime(time());
+      Planificacion &core = this->getCorePlanificado();
+
+      core.setCurrentTime(time());
 
       //vamos a esperar el tiempo que le queda a este core por ejecutarse
       std::stringstream ss2;
@@ -181,13 +183,19 @@ bool CPU::existePlanificacion(){
 }
 
 
+Planificacion &CPU::getCorePlanificado(){
+  for(auto &p: this->cores){
+    if(p.contienePlanificacion()){
+      return p;
+    }
+  }
+  assert(false);
+}
+
 
 /*********** PLANIFICACION *******************/
 
 
-Planificacion::Planificacion(std::tuple<PE_ptr, MessagePE> planificacion){
-  this->set(planificacion);
-}
 
 Planificacion::Planificacion(){
   this->contiene = false; 
@@ -202,6 +210,7 @@ void Planificacion::set(std::tuple<PE_ptr, MessagePE> planificacion){
   this->pe = std::get<0>(planificacion);
   this->message = std::get<1>(planificacion);
   this->contiene = true;
+  this->tiempo_restante = this->pe->getCostTime();
 }
 
 void Planificacion::ejecutar(double t){
@@ -223,7 +232,13 @@ bool Planificacion::contienePlanificacion(){
 
 
 PE_ptr Planificacion::getPE(){
+  assert(this->contiene == true);
   return this->pe;
+}
+
+void Planificacion::setCurrentTime(double t){
+  assert(this->contiene == true);
+  return this->pe->setCurrentTime(t);
 }
 
 

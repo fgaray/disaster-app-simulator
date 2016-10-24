@@ -24,7 +24,6 @@ class Planificacion{
     double tiempo_restante;
 
   public:
-    Planificacion(std::tuple<PE_ptr, MessagePE> planificacion);
     Planificacion();
     std::tuple<PE_ptr, MessagePE> get();
     void set(std::tuple<PE_ptr, MessagePE> planificacion);
@@ -34,6 +33,7 @@ class Planificacion{
     double restante() const;
     void remove();
     PE_ptr getPE();
+    void setCurrentTime(double t);
 };
 
 
@@ -82,6 +82,7 @@ class CPU: public Process{
     std::vector<Id> getIdsPEs();
     std::vector<std::tuple<PEName, Id>> getNamesPEs();
     bool existePlanificacion();
+    Planificacion &getCorePlanificado();
 };
 
 typedef handle<CPU> CPU_ptr;
