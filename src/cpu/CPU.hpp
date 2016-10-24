@@ -7,12 +7,36 @@
 #include <algorithm>
 #include <queue>
 #include <iostream>
+#include <unordered_map>
 
 
 #include "../pe/MessagePE.hpp"
 #include "../mobile/MessageMD.hpp"
 #include "../pe/PE.hpp"
 #include "../common/Process.hpp"
+
+
+class Planificacion{
+  private:
+    bool contiene;
+    PE_ptr pe;
+    MessagePE message;
+    double tiempo_restante;
+
+  public:
+    Planificacion(std::tuple<PE_ptr, MessagePE> planificacion);
+    Planificacion();
+    std::tuple<PE_ptr, MessagePE> get();
+    void set(std::tuple<PE_ptr, MessagePE> planificacion);
+    void ejecutar(double t);
+    bool contienePlanificacion();
+    MessagePE getMessage();
+    double restante() const;
+    void remove();
+    PE_ptr getPE();
+};
+
+
 
 /**
  * Un CPU tiene varios Cores para el cual se debe hacer planificación de los PE
@@ -35,11 +59,14 @@ class CPU: public Process{
     //existen.
     size_t numero_cores;
     std::vector<PE_ptr> pes;
-    std::queue<std::tuple<Id, MessagePE>> input_buffer;
-    std::queue<std::tuple<PE_ptr, MessagePE>> planificacion;
+    std::vector<std::tuple<Id, MessagePE>> input_buffer;
     void enviarMensaje(PEName destino, MessagePE message);
     void enviarMensaje3G(Id destino, MessageMD message);
     std::function<void(PEName, MessagePE)> envio_mensaje_callback;
+    std::vector<Planificacion> cores;
+    std::unordered_map<Id, bool> ejecutando;
+    
+    void intentar_agregar();
 
   public:
     CPU(std::initializer_list<std::shared_ptr<PE>> il);
@@ -54,6 +81,7 @@ class CPU: public Process{
     bool contienePE(Id id);
     std::vector<Id> getIdsPEs();
     std::vector<std::tuple<PEName, Id>> getNamesPEs();
+    bool existePlanificacion();
 };
 
 typedef handle<CPU> CPU_ptr;
