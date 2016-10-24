@@ -15,7 +15,7 @@ class SinkNode: public PE{
 	public:
     SinkNode(const char *nombre);
 		double getCostTime();
-		std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message);
+		std::vector<std::tuple<PEName, MessagePE>> nextPE(MessagePE message);
     PEName getName();
 };
 

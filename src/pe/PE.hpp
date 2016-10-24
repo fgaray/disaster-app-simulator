@@ -44,7 +44,7 @@ class PE{
      * @return El Id el siguiente PE
      *
      * */
-    virtual std::vector<std::tuple<PEName, MessagePE>> nextPE(const MessagePE &message) = 0;
+    virtual std::vector<std::tuple<PEName, MessagePE>> nextPE(MessagePE message) = 0;
 
     /**
      * Retorna el nombre del PE

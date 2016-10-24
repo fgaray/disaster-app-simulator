@@ -5,7 +5,7 @@ double  PEBigram::getCostTime(){
 	return cost;
 }
 
-std::vector<std::tuple<PEName, MessagePE>> PEBigram::nextPE(const MessagePE &message){
+std::vector<std::tuple<PEName, MessagePE>> PEBigram::nextPE(MessagePE message){
   //envía el mismo mensaje sin modificar a PEAssembler
 	return {std::make_tuple(PEName::PEAssembler, message)};
 }

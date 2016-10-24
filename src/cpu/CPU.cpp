@@ -25,7 +25,7 @@ void CPU::inner_body(){
       hold(to_hold);
       //Ahora enviamos el mensaje al siguiente PE
 
-      auto nexts = pe->nextPE(message);
+      std::vector<std::tuple<PEName, MessagePE>> nexts = pe->nextPE(message);
 
       for(auto t: nexts){
         PEName name = std::get<0>(t);

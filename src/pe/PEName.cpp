@@ -41,6 +41,7 @@ const char* peNameToString(PEName name){
       return "MockPE";
       break;
     default:
+      std::cout << static_cast<int>(name) << std::endl;
       return "Caso no existe";
       break;
   }
