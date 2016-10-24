@@ -18,6 +18,10 @@ enum class PEName{
 	PEFilter,
 	PEFSelection,
 	PEModel,
+	PETrainer,
+	PEPybossa,
+	PEAdapter,
+	PECollector,
   END,
   //Testing
   SinkNode,
