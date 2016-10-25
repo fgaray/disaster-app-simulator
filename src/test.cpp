@@ -60,7 +60,7 @@ class TestBasicSource: public Source{
 
       this->traza->puntoSource(time(), ss);
       unsigned int cantidad_menajes = 0;
-      while(time() < this->end_time && cantidad_menajes < 1){
+      while(time() < this->end_time && cantidad_menajes < 10){
         //this->porcentaje();
         // TODO: Hacer el envío de los mensajes a la red
         // Cuando se terminen de enviar mensajes, hacer break

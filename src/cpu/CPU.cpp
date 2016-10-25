@@ -23,41 +23,59 @@ void CPU::inner_body(){
       Planificacion &core = this->getCorePlanificado();
 
       core.setCurrentTime(time());
+      double to_hold = core.restante();
+
+      //restamos el tiempo esperado a todos los cores
+      for(auto &p: this->cores){
+        if(p.contienePlanificacion()){
+          p.ejecutar(to_hold);
+          std::stringstream ss2;
+          ss2 << ">>>Ejecutando en core, ";
+          ss2 << peNameToString(p.getPE()->getName());
+          ss2 << ", le quedan a este PE ";
+          ss2 << "" << p.restante();
+          ss2 << " en próxima ejecución";
+          this->traza->puntoCPU(time(), ss2);
+        }
+      }
 
       //vamos a esperar el tiempo que le queda a este core por ejecutarse
       std::stringstream ss2;
-      ss2 << "Ejecutando core, tenemos que esperar ";
-      ss2 << core.restante();
+      ss2 << "Ejecutando en core, tenemos que esperar ";
+      ss2 << to_hold;
       this->traza->puntoCPU(time(), ss2);
-      
-      //restamos el tiempo esperado a todos los cores
-      for(auto &p: this->cores){
-        p.ejecutar(core.restante());
-      }
+      hold(to_hold);
 
-      auto nexts = core.getPE()->nextPE(core.getMessage());
+      std::vector<std::tuple<PEName, MessagePE>> nexts;
+      
+      //eliminar los PEs que hayan cumplido sus tiempos
+      for(auto &p: this->cores){
+        if(p.restante() <= 0 && p.contienePlanificacion()){
+          auto v = p.getPE()->nextPE(p.getMessage());
+          for(auto &m: v){
+            nexts.push_back(m);
+          }
+          this->ejecutando.erase(p.getPE()->getId());
+          p.remove();
+        }
+      }
 
       for(auto n: nexts){
         PEName name = std::get<0>(n);
         MessagePE m = std::get<1>(n);
         std::stringstream ss;
         ss << "Enviando el mensaje " << m.getId();
+        ss << " " << nexts.size();
         this->traza->puntoCPU(time(), ss);
         this->enviarMensaje(name, m);
       }
 
-      //eliminar los PEs que hayan cumplido sus tiempos
-      for(auto &p: this->cores){
-        if(p.restante() <= 0){
-          p.remove();
-        }
-      }
+
     }
     
     if(!this->input_buffer.empty()){
       this->intentar_agregar();
     }
-
   }
 }
 
@@ -160,6 +178,7 @@ void CPU::intentar_agregar(){
             MessagePE m = std::get<1>(entrada);
 
             p.set(std::make_tuple(pe, m));
+            this->ejecutando.insert({pe->getId(), true});
             a_eliminar.push_back(it);
             break;
           }
