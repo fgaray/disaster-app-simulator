@@ -65,7 +65,6 @@ void CPU::inner_body(){
         MessagePE m = std::get<1>(n);
         std::stringstream ss;
         ss << "Enviando el mensaje " << m.getId();
-        ss << " " << nexts.size();
         this->traza->puntoCPU(time(), ss);
         this->enviarMensaje(name, m);
       }

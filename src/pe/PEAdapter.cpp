@@ -15,5 +15,5 @@ std::vector<std::tuple<PEName, MessagePE>> PEAdapter::nextPE(MessagePE message){
 
 
 PEName PEAdapter::getName(){
-  return PEName::PEAssembler;
+  return PEName::PEAdapter;
 }

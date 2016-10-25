@@ -1,12 +1,11 @@
-#ifndef _H_PEBroker_
-#define _H_PEBroker_
+#ifndef _H_PECollector_
+#define _H_PECollector_
 
 #include "PE.hpp"
 #include "../common/Config.hpp"
 #include "PEName.hpp"
-#include "MessageBroker.hpp"
 
-class PEBroker: public PE{
+class PECollector: public PE{
 	private:
 
 	public:

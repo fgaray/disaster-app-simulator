@@ -1,7 +1,7 @@
 #include "PEBroker.hpp"
 
 
-
+static Id currentId = 0;
 
 double  PEBroker::getCostTime(){
 	double cost = BROKER_COST;
@@ -10,14 +10,16 @@ double  PEBroker::getCostTime(){
 
 std::vector<std::tuple<PEName, MessagePE>> PEBroker::nextPE(MessagePE message){
   //envía el mismo mensaje sin modificar a PEAssembler
-	return {std::make_tuple(PEName::PEUnigram, message),
-			std::make_tuple(PEName::PEBigram, message),
-			std::make_tuple(PEName::PEPOStag, message),
-			std::make_tuple(PEName::PENMentions, message),
-			std::make_tuple(PEName::PENHashtags, message),
-			std::make_tuple(PEName::PEPMentions, message),
-			std::make_tuple(PEName::PEPHashtags, message),
-			std::make_tuple(PEName::PESizetweet, message)
+	MessageBroker mensaje(DEFAULT_MESSAGE_SIZE, currentId);
+	currentId++;
+	return {std::make_tuple(PEName::PEUnigram, mensaje),
+			std::make_tuple(PEName::PEBigram, mensaje),
+			std::make_tuple(PEName::PEPOStag, mensaje),
+			std::make_tuple(PEName::PENMentions, mensaje),
+			std::make_tuple(PEName::PENHashtags, mensaje),
+			std::make_tuple(PEName::PEPMentions, mensaje),
+			std::make_tuple(PEName::PEPHashtags, mensaje),
+			std::make_tuple(PEName::PESizetweet, mensaje)
 	};
 }
 

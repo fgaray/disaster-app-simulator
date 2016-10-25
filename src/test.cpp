@@ -20,6 +20,14 @@
 #include "pe/PEPOStag.hpp"
 #include "pe/PESizetweet.hpp"
 #include "pe/PEUnigram.hpp"
+#include "pe/PEAdapter.hpp"
+#include "pe/PECollector.hpp"
+#include "pe/PEBroker.hpp"
+#include "pe/PETrainer.hpp"
+#include "pe/PEFilter.hpp"
+#include "pe/PEModel.hpp"
+#include "pe/PEFSelection.hpp"
+#include "pe/PEAssembler.hpp"
 
 #include "common/Distribution.hpp"
 
@@ -46,16 +54,16 @@ class MockPE: public PE{
 
 class TestBasicSource: public Source{
   private:
-    std::shared_ptr<Traza> traza;
+    //std::shared_ptr<Traza> traza;
 
   public:
-    TestBasicSource(double et, handle<RedTubo> red_tubo): Source(et, red_tubo){
+    TestBasicSource(double et, handle<RedTubo> red_tubo, std::shared_ptr<Traza> traza): Source(et, red_tubo, traza){
 
     }
 
     void inner_body(){
 
-      auto distribucion = std::shared_ptr<Distribution>(new Distribution(AMOUNT_OF_TWEETS, TWEET_PER_SECOND));
+      //auto distribucion = std::shared_ptr<Distribution>(new Distribution(AMOUNT_OF_TWEETS, TWEET_PER_SECOND));
 
       std::stringstream ss;
       ss << "Iniciando simulación, tiempo final: ";
@@ -63,20 +71,20 @@ class TestBasicSource: public Source{
 
       this->traza->puntoSource(time(), ss);
       unsigned int cantidad_menajes = 0;
-      while(time() < this->end_time && cantidad_menajes < AMOUNT_OF_TWEETS){
-        auto tiempo_arribo = distribucion->GeneradorExp();
+      while(time() < this->end_time && cantidad_menajes < 10){
+        //auto tiempo_arribo = distribucion->GeneradorExp();
         //this->porcentaje();
         // TODO: Hacer el envío de los mensajes a la red
         // Cuando se terminen de enviar mensajes, hacer break
 
         auto destino = PEName::MockPE;
         auto mensaje = MessagePE(DEFAULT_MESSAGE_SIZE);
-        this->traza->puntoSource(time(), "Generando un nuevo mensaje" + to_string(cantidad_menajes));
+        this->traza->puntoSource(time(), "Generando un nuevo mensaje");
 
         this->red_tubo->enviarMensaje(destino, mensaje);
         //enviamos un mensaje cada 0.5 segundos
-        hold(tiempo_arribo);
-        //hold(10);
+        //hold(tiempo_arribo);
+        hold(10);
         cantidad_menajes++;
       }
 
@@ -133,7 +141,7 @@ void test_simulacion_basica(){
 
   red_tubo->setTraza(traza);
 
-  handle<TestBasicSource> src(new TestBasicSource(END_SIM_TIME, red_tubo));
+  handle<TestBasicSource> src(new TestBasicSource(END_SIM_TIME, red_tubo, traza));
   src->setTraza(traza);
   src->activate();
 
@@ -159,14 +167,25 @@ void test_simulacion_completa(){
 
   auto traza = std::shared_ptr<Traza>(new Traza);
 
+  auto peAdapter = std::shared_ptr<PE>(new PEAdapter);
+  auto peCollector = std::shared_ptr<PE>(new PECollector);
+  auto peFilter = std::shared_ptr<PE>(new PEFilter);
+  auto peBroker = std::shared_ptr<PE>(new PEBroker);
+
   auto peBigram = std::shared_ptr<PE>(new PEBigram);
   auto peNHashtags = std::shared_ptr<PE>(new PENHashtags);
   auto peNMentions = std::shared_ptr<PE>(new PENMentions);
   auto pePHashtags = std::shared_ptr<PE>(new PEPHashtags);
+
   auto pePMentions = std::shared_ptr<PE>(new PEPMentions);
   auto pePOStag = std::shared_ptr<PE>(new PEPOStag);
   auto pePSizetweet = std::shared_ptr<PE>(new PESizetweet);
   auto peUnigram = std::shared_ptr<PE>(new PEUnigram);
+
+  auto peModel = std::shared_ptr<PE>(new PEModel);
+  auto peAssembler = std::shared_ptr<PE>(new PEAssembler);
+  auto peFSelection = std::shared_ptr<PE>(new PEFSelection);
+  auto peTrainer = std::shared_ptr<PE>(new PETrainer);
 
 
   //una vez tenemos los PEs, tenemos que asignarlos a una CPU
@@ -185,24 +204,43 @@ void test_simulacion_completa(){
         peUnigram
       }));
 
+  auto cpu3 = handle<CPU>(new CPU({
+        peAdapter,
+        peCollector,
+        peFilter,
+        peBroker
+      }));
+
+  auto cpu4 = handle<CPU>(new CPU({
+        peModel,
+        peAssembler,
+        peFSelection,
+        peTrainer
+      }));  
+
 
   cpu1->setTraza(traza);
   cpu2->setTraza(traza);
+  cpu3->setTraza(traza);
+  cpu4->setTraza(traza);
 
   auto red_tubo = handle<RedTubo>(new RedTubo{
         cpu1,
-        cpu2
+        cpu2,
+        cpu3,
+        cpu4
       });
 
   red_tubo->setTraza(traza);
 
-  handle<TestBasicSource> src(new TestBasicSource(END_SIM_TIME, red_tubo));
-  src->setTraza(traza);
+  handle<Source> src(new Source(END_SIM_TIME, red_tubo, traza));
   src->activate();
 
   src->addEndCallback(red_tubo);
   src->addEndCallback(cpu1);
   src->addEndCallback(cpu2);
+  src->addEndCallback(cpu3);
+  src->addEndCallback(cpu4);
 
   sim->run();
 
@@ -217,8 +255,8 @@ void test_simulacion_completa(){
 
 int main(int argc, char *argv[])
 {
-  test_simulacion_basica();
-  //test_simulacion_completa();
+  //test_simulacion_basica();
+  test_simulacion_completa();
   
   return 0;
 }
