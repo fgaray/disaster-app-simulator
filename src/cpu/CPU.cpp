@@ -1,5 +1,6 @@
 #include "CPU.hpp"
 
+#include "../pe/PEName.hpp"
 
 void CPU::inner_body(){
   while(this->run){
@@ -47,6 +48,10 @@ void CPU::inner_body(){
       hold(to_hold);
 
       std::vector<std::tuple<PEName, MessagePE>> nexts;
+
+      if(core.getPE()->getName() == PEName::PEAssembler){
+        cout << nexts.size() << endl;
+      }
       
       //eliminar los PEs que hayan cumplido sus tiempos
       for(auto &p: this->cores){
@@ -60,11 +65,14 @@ void CPU::inner_body(){
         }
       }
 
+
+
       for(auto n: nexts){
         PEName name = std::get<0>(n);
         MessagePE m = std::get<1>(n);
         std::stringstream ss;
         ss << "Enviando el mensaje " << m.getId();
+        ss << " " << nexts.size();
         this->traza->puntoCPU(time(), ss);
         this->enviarMensaje(name, m);
       }
