@@ -24,7 +24,7 @@ const double TRAINER_COST = 1500;
 const double ADAPTER_COST = 1500;
 const double COLLECTOR_COST = 1500;
 
-const double TWEET_PER_SECOND = 2;
+const double TWEET_PER_SECOND = 50;
 const double AMOUNT_OF_TWEETS = 10000;
 
 // El tiempo en que la simulación termina de ejecutar todo

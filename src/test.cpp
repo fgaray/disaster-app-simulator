@@ -21,6 +21,8 @@
 #include "pe/PESizetweet.hpp"
 #include "pe/PEUnigram.hpp"
 
+#include "common/Distribution.hpp"
+
 
 using namespace std;
 
@@ -53,6 +55,7 @@ class TestBasicSource: public Source{
 
     void inner_body(){
 
+      auto distribucion = std::shared_ptr<Distribution>(new Distribution(AMOUNT_OF_TWEETS, TWEET_PER_SECOND));
 
       std::stringstream ss;
       ss << "Iniciando simulación, tiempo final: ";
@@ -60,18 +63,20 @@ class TestBasicSource: public Source{
 
       this->traza->puntoSource(time(), ss);
       unsigned int cantidad_menajes = 0;
-      while(time() < this->end_time && cantidad_menajes < 10){
+      while(time() < this->end_time && cantidad_menajes < AMOUNT_OF_TWEETS){
+        auto tiempo_arribo = distribucion->GeneradorExp();
         //this->porcentaje();
         // TODO: Hacer el envío de los mensajes a la red
         // Cuando se terminen de enviar mensajes, hacer break
 
         auto destino = PEName::MockPE;
         auto mensaje = MessagePE(DEFAULT_MESSAGE_SIZE);
-        this->traza->puntoSource(time(), "Generando un nuevo mensaje");
+        this->traza->puntoSource(time(), "Generando un nuevo mensaje" + to_string(cantidad_menajes));
 
         this->red_tubo->enviarMensaje(destino, mensaje);
         //enviamos un mensaje cada 0.5 segundos
-        hold(10);
+        hold(tiempo_arribo);
+        //hold(10);
         cantidad_menajes++;
       }
 
