@@ -7,7 +7,7 @@ void CPU::inner_body(){
     //vemos si current PE puede ser ejecutado (no está en un core siendo
     //ejecutado ahora)
 
-    auto found = std::find_if(this->cores.begin(), this->cores.end(), [this](const std::unique_ptr<Core> &core){
+    auto found = std::find_if(this->cores.begin(), this->cores.end(), [this](const handle<Core> &core){
         return core->ejecutando(*(this->current_pe));
       });
 
@@ -30,7 +30,7 @@ void CPU::inner_body(){
         auto mensaje = mensajes.front();
         mensajes.pop();
 
-        auto core_vacio_iterator = std::find_if(this->cores.begin(), this->cores.end(), [](const std::unique_ptr<Core> &core){
+        auto core_vacio_iterator = std::find_if(this->cores.begin(), this->cores.end(), [](const handle<Core> &core){
             return core->empty();
             });
 
@@ -45,8 +45,6 @@ void CPU::inner_body(){
           ss << "Ejecutando PE " << peNameToString(pe->getName()) << " con Id " << pe->getId();
           ss << " en el core " << numeroCore << " de la CPU ";
           this->traza->puntoCPU(time(), ss);
-
-          cout << (*core_vacio_iterator)->terminated() << endl;
 
           (*core_vacio_iterator)->ejecutar(pe, mensaje);
         }
@@ -82,9 +80,9 @@ CPU::CPU(std::initializer_list<std::shared_ptr<PE>> il): Process("CPU"){
 
 
   for(unsigned int i = 0; i < this->numero_cores; i++){
-    auto core = std::unique_ptr<Core>(new Core);
+    auto core = handle<Core>(new Core);
     core->setTraza(this->traza);
-    this->cores.push_back(std::move(core));
+    this->cores.push_back(core);
   }
 
 
@@ -98,6 +96,9 @@ CPU::CPU(std::initializer_list<std::shared_ptr<PE>> il): Process("CPU"){
 
 
 }
+
+
+
 
 void CPU::recibirMessage(Id destino, MessagePE message){
   //acabamos de recibir un mensaje con el PE de destino, buscamos el pe

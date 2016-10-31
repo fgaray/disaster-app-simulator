@@ -44,7 +44,7 @@ class CPU: public Process{
 
     std::unordered_map<Id, std::queue<MessagePE>> cola_pes;
     std::vector<PE_ptr>::iterator current_pe;
-    std::vector<std::unique_ptr<Core>> cores;
+    std::vector<handle<Core>> cores;
     void notificarTerminoPE(std::vector<std::tuple<PEName, MessagePE>> mensajes);
 
   public:
@@ -62,6 +62,7 @@ class CPU: public Process{
     std::vector<std::tuple<PEName, Id>> getNamesPEs();
 
     function<void()> getEndCallback();
+    void setCores(std::initializer_list<std::shared_ptr<Core>> cores);
 
 };
 
