@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <iterator>
 #include <queue>
 #include <iostream>
 #include <unordered_map>
@@ -14,29 +15,7 @@
 #include "../mobile/MessageMD.hpp"
 #include "../pe/PE.hpp"
 #include "../common/Process.hpp"
-
-
-class Planificacion{
-  private:
-    bool contiene;
-    PE_ptr pe;
-    MessagePE message;
-    double tiempo_restante;
-
-  public:
-    Planificacion();
-    std::tuple<PE_ptr, MessagePE> get();
-    void set(std::tuple<PE_ptr, MessagePE> planificacion);
-    void ejecutar(double t);
-    bool contienePlanificacion();
-    MessagePE getMessage();
-    double restante() const;
-    void remove();
-    PE_ptr getPE();
-    void setCurrentTime(double t);
-};
-
-
+#include "Core.hpp"
 
 /**
  * Un CPU tiene varios Cores para el cual se debe hacer planificación de los PE
@@ -57,16 +36,16 @@ class CPU: public Process{
   protected:
     //Los PEs asignados a esta CPU. Ellos comparten el número de cores que
     //existen.
-    size_t numero_cores;
+    unsigned int numero_cores;
     std::vector<PE_ptr> pes;
-    std::vector<std::tuple<Id, MessagePE>> input_buffer;
     void enviarMensaje(PEName destino, MessagePE message);
     void enviarMensaje3G(Id destino, MessageMD message);
     std::function<void(PEName, MessagePE)> envio_mensaje_callback;
-    std::vector<Planificacion> cores;
-    std::unordered_map<Id, bool> ejecutando;
-    
-    void intentar_agregar();
+
+    std::unordered_map<Id, std::queue<MessagePE>> cola_pes;
+    std::vector<PE_ptr>::iterator current_pe;
+    std::vector<std::unique_ptr<Core>> cores;
+    void notificarTerminoPE(std::vector<std::tuple<PEName, MessagePE>> mensajes);
 
   public:
     CPU(std::initializer_list<std::shared_ptr<PE>> il);
@@ -81,8 +60,9 @@ class CPU: public Process{
     bool contienePE(Id id);
     std::vector<Id> getIdsPEs();
     std::vector<std::tuple<PEName, Id>> getNamesPEs();
-    bool existePlanificacion();
-    Planificacion &getCorePlanificado();
+
+    function<void()> getEndCallback();
+
 };
 
 typedef handle<CPU> CPU_ptr;

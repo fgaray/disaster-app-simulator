@@ -11,7 +11,7 @@ OBJS=$(SRCS:.cpp=.o) pe/pe.o cpu/cpu.o metric/metric.o common/common.o mobile/mo
 OBJS_NO_MAIN=pe/pe.o cpu/cpu.o metric/metric.o common/common.o mobile/mobile.o
 HEADERS=$(SRCS:.cpp=.hpp)
 
-all: simulador
+all: test
 
 test: $(OBJS_NO_MAIN) test.cpp Source.o
 	@echo [CPP] test.o

@@ -26,6 +26,10 @@ void Traza::puntoSource(double time, const std::string &str){
   SALIDA << ANSI_COLOR_CYAN << "[" << time << "] " << str << ANSI_COLOR_RESET << std::endl;
 }
 
+void Traza::puntoCore(double time, const std::string &str){
+  SALIDA << ANSI_COLOR_MAGENTA << "[" << time << "] " << str << ANSI_COLOR_RESET << std::endl;
+}
+
 
 void Traza::puntoRedTubo(double time, const std::stringstream &str){
   this->puntoRedTubo(time, str.str());
@@ -41,4 +45,8 @@ void Traza::puntoFin(double time, const std::stringstream &str){
 
 void Traza::puntoSource(double time, const std::stringstream &str){
   this->puntoSource(time, str.str());
+}
+
+void Traza::puntoCore(double time, const std::stringstream &str){
+  this->puntoCore(time, str.str());
 }

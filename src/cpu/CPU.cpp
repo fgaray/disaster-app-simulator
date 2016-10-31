@@ -4,108 +4,111 @@
 
 void CPU::inner_body(){
   while(this->run){
-    if(!this->existePlanificacion() && this->input_buffer.empty()){
-      intentar_agregar();
-      this->passivate();
-    }
+    //vemos si current PE puede ser ejecutado (no está en un core siendo
+    //ejecutado ahora)
 
-    if(this->existePlanificacion()){
+    auto found = std::find_if(this->cores.begin(), this->cores.end(), [this](const std::unique_ptr<Core> &core){
+        return core->ejecutando(*(this->current_pe));
+      });
 
-      //buscamos la CPU/PE que tenga el tiempo más proximo a salir desde la CPU
-
-
-      std::sort(this->cores.begin(), this->cores.end(),
-          [](const Planificacion &p1, const Planificacion &p2){
-            return p1.restante() < p2.restante();
-          });
-
-      //seleccionamos un core que esté vacio
-
-      Planificacion &core = this->getCorePlanificado();
-
-      core.setCurrentTime(time());
-      double to_hold = core.restante();
-
-      //restamos el tiempo esperado a todos los cores
-      for(auto &p: this->cores){
-        if(p.contienePlanificacion()){
-          p.ejecutar(to_hold);
-          std::stringstream ss2;
-          ss2 << ">>>Ejecutando en core, ";
-          ss2 << peNameToString(p.getPE()->getName());
-          ss2 << ", le quedan a este PE ";
-          ss2 << "" << p.restante();
-          ss2 << " en próxima ejecución";
-          this->traza->puntoCPU(time(), ss2);
-        }
-      }
-
-      //vamos a esperar el tiempo que le queda a este core por ejecutarse
-      std::stringstream ss2;
-      ss2 << "Ejecutando en core, tenemos que esperar ";
-      ss2 << to_hold;
-      this->traza->puntoCPU(time(), ss2);
-      hold(to_hold);
-
-      std::vector<std::tuple<PEName, MessagePE>> nexts;
-
-      if(core.getPE()->getName() == PEName::PEAssembler){
-        cout << nexts.size() << endl;
-      }
+    if(found == this->cores.end()){
+      //entonces este PE no se está ejecutando en ningun core, hay que asignar
+      //el mensaje al pe para que corra en el core
       
-      //eliminar los PEs que hayan cumplido sus tiempos
-      for(auto &p: this->cores){
-        if(p.restante() <= 0 && p.contienePlanificacion()){
-          auto v = p.getPE()->nextPE(p.getMessage());
-          for(auto &m: v){
-            nexts.push_back(m);
-          }
-          this->ejecutando.erase(p.getPE()->getId());
-          p.remove();
+      //Seleccionamos el primer core que esté vacio
+
+
+      //vemos si hay mensajes primero
+
+      auto mensajes_found = this->cola_pes.find((*current_pe)->getId());
+      assert(mensajes_found != this->cola_pes.end());
+
+      auto &mensajes = (*mensajes_found).second;
+
+      if(!mensajes.empty()){
+
+        auto mensaje = mensajes.front();
+        mensajes.pop();
+
+        auto core_vacio_iterator = std::find_if(this->cores.begin(), this->cores.end(), [](const std::unique_ptr<Core> &core){
+            return core->empty();
+            });
+
+        if(core_vacio_iterator != this->cores.end()){
+          //encontramos un core vacio, entonces le asignamos este PE
+
+          auto pe = *(this->current_pe);
+
+          size_t numeroCore = std::distance(this->cores.begin(), core_vacio_iterator);
+
+          std::stringstream ss;
+          ss << "Ejecutando PE " << peNameToString(pe->getName()) << " con Id " << pe->getId();
+          ss << " en el core " << numeroCore << " de la CPU ";
+          this->traza->puntoCPU(time(), ss);
+
+          cout << (*core_vacio_iterator)->terminated() << endl;
+
+          (*core_vacio_iterator)->ejecutar(pe, mensaje);
         }
       }
-
-
-
-      for(auto n: nexts){
-        PEName name = std::get<0>(n);
-        MessagePE m = std::get<1>(n);
-        std::stringstream ss;
-        ss << "Enviando el mensaje " << m.getId();
-        ss << " " << nexts.size();
-        this->traza->puntoCPU(time(), ss);
-        this->enviarMensaje(name, m);
-      }
-
-
     }
-    
-    if(!this->input_buffer.empty()){
-      this->intentar_agregar();
+    //en caso que no haya algun core vacio o que el PE se esté ya ejecutando,
+    //tenemos que continuar probando otros pes, si probamos todos, entonces hay
+    //dos posibilidades, 
+
+
+
+
+    //pasamos al siguiente
+    this->current_pe++;
+    if(this->current_pe == this->pes.end()){
+      this->current_pe = this->pes.begin();
+      //no pudimos planificar ningun PE, esperamos a que nos despierten ya sea
+      //por la llegada de un mensaje o por que un PE liberó un core
+      passivate();
     }
   }
 }
+
 
 CPU::CPU(std::initializer_list<std::shared_ptr<PE>> il): Process("CPU"){
   for(auto p: il){
     this->pes.push_back(p);
+    this->cola_pes.insert({p->getId(), std::queue<MessagePE>()});
   }
+
   this->numero_cores = 4;
   this->run = true;
 
+
   for(unsigned int i = 0; i < this->numero_cores; i++){
-    this->cores.push_back(Planificacion());
+    auto core = std::unique_ptr<Core>(new Core);
+    core->setTraza(this->traza);
+    this->cores.push_back(std::move(core));
   }
+
+
+  for(auto it = this->cores.begin(); it != this->cores.end(); it++){
+    (*it)->set_cpu_callback([this](std::vector<std::tuple<PEName, MessagePE>> mensajes){
+        this->notificarTerminoPE(mensajes);
+      });
+  }
+
+  this->current_pe = this->pes.begin();
+
 
 }
 
 void CPU::recibirMessage(Id destino, MessagePE message){
-  this->activate();
-  this->input_buffer.push_back(std::make_pair(destino, message));
-}
+  //acabamos de recibir un mensaje con el PE de destino, buscamos el pe
+  //correspondiente primero
 
-void CPU::enviarMensaje(PEName destino, MessagePE message){
-  this->envio_mensaje_callback(destino, message);
+  auto cola_pe = this->cola_pes.find(destino);
+  assert(cola_pe != this->cola_pes.end());
+
+  //Agregamos el mensaje a la cola del pe correspondiente
+  (*cola_pe).second.push(message);
+  this->activate();
 }
 
 
@@ -150,125 +153,31 @@ std::vector<std::tuple<PEName, Id>> CPU::getNamesPEs(){
 }
 
 
-void CPU::intentar_agregar(){
-  // intentamos agregar solamente si el buffer de entrada tiene algo
 
-  if(!this->input_buffer.empty()){
-    //buscamos algun core que esté libre
+void CPU::notificarTerminoPE(std::vector<std::tuple<PEName, MessagePE>> mensajes){
+  //enviamos los mensajes que nos entregan y dado que ahora quedó un Core libre,
+  //hay que intentar agregar un PE al sistema
 
-    //buscamos un PE que no se esté ejecutando actualmente
-
-
-    std::vector<std::vector<std::tuple<Id, MessagePE>>::iterator> a_eliminar;
-    
-    for(auto it = this->input_buffer.begin(); it != this->input_buffer.end(); it++){
-      auto entrada = *it;
-      Id pe_destino = std::get<0>(entrada);
-      auto resultado = this->ejecutando.find(pe_destino);
-      if(resultado != this->ejecutando.end()){
-        //continuamos dado que el PE sigue ejecutandose
-        continue;
-      }else{
-        //podemos intentar agregar un nuevo PE, hay que ver si hay una
-        //planificacion que esté libre
-        for(auto &p: this->cores){
-          if(!p.contienePlanificacion()){
-            //buscamos un PE con ese ID
-
-            auto found = std::find_if(this->pes.begin(), this->pes.end(),
-                [pe_destino](const PE_ptr &pe){
-                  return pe->getId() == pe_destino;
-                });
-            assert(found != this->pes.end());
-
-            auto pe = *found;
-            MessagePE m = std::get<1>(entrada);
-
-            p.set(std::make_tuple(pe, m));
-            this->ejecutando.insert({pe->getId(), true});
-            a_eliminar.push_back(it);
-            break;
-          }
-        }
-      }
-    }
-
-    for(auto it: a_eliminar){
-      this->input_buffer.erase(it);
-    }
+  for(auto t: mensajes){
+    PEName name = std::get<0>(t);
+    MessagePE message = std::get<1>(t);
+    std::stringstream ss;
+    ss << "Enviando mensaje hacia ";
+    ss << peNameToString(name);
+    this->traza->puntoCPU(time(), ss);
+    this->envio_mensaje_callback(name, message);
   }
+
+
+  this->activate();
 }
 
-bool CPU::existePlanificacion(){
-  for(auto p: this->cores){
-    if(p.contienePlanificacion()){
-      return true;
+
+function<void()> CPU::getEndCallback(){
+  return [this](){
+    for(auto &core: this->cores){
+      core->endSimulation();
     }
-  }
-  return false;
-}
-
-
-Planificacion &CPU::getCorePlanificado(){
-  for(auto &p: this->cores){
-    if(p.contienePlanificacion()){
-      return p;
-    }
-  }
-  assert(false);
-}
-
-
-/*********** PLANIFICACION *******************/
-
-
-
-Planificacion::Planificacion(){
-  this->contiene = false; 
-}
-
-
-void Planificacion::remove(){
-  this->contiene = false;
-}
-
-void Planificacion::set(std::tuple<PE_ptr, MessagePE> planificacion){
-  this->pe = std::get<0>(planificacion);
-  this->message = std::get<1>(planificacion);
-  this->contiene = true;
-  this->tiempo_restante = this->pe->getCostTime();
-}
-
-void Planificacion::ejecutar(double t){
-  this->tiempo_restante = this->tiempo_restante - t;
-  if(this->tiempo_restante <= 0){
-    this->tiempo_restante = 0;
-  }
-}
-
-
-double Planificacion::restante() const{
-  return this->tiempo_restante;
-}
-
-bool Planificacion::contienePlanificacion(){
-  return this->contiene;
-}
-
-
-
-PE_ptr Planificacion::getPE(){
-  assert(this->contiene == true);
-  return this->pe;
-}
-
-void Planificacion::setCurrentTime(double t){
-  assert(this->contiene == true);
-  return this->pe->setCurrentTime(t);
-}
-
-
-
-MessagePE Planificacion::getMessage(){
-  return this->message;
+    this->run = false;
+  };
 }

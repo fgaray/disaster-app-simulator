@@ -32,12 +32,14 @@ class Traza{
     void puntoRedTubo(double time, const std::string &str);
     void puntoFin(double time, const std::string &str);
     void puntoSource(double time, const std::string &str);
+    void puntoCore(double time, const std::string &str);
 
     void punto(double time, const std::stringstream &str);
     void puntoCPU(double time, const std::stringstream &str);
     void puntoRedTubo(double time, const std::stringstream &str);
     void puntoFin(double time, const std::stringstream &str);
     void puntoSource(double time, const std::stringstream &str);
+    void puntoCore(double time, const std::stringstream &str);
 
 
 

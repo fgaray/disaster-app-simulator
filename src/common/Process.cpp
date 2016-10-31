@@ -13,6 +13,7 @@ void Process::endSimulation(){
 void Process::setTraza(std::shared_ptr<Traza> traza){
   this->traza = traza;
 }
+
 function<void()> Process::getEndCallback(){
   return [this](){
     this->endSimulation();

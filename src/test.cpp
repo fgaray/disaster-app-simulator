@@ -71,7 +71,7 @@ class TestBasicSource: public Source{
 
       this->traza->puntoSource(time(), ss);
       unsigned int cantidad_menajes = 0;
-      while(time() < this->end_time && cantidad_menajes < 10){
+      while(time() < this->end_time && cantidad_menajes < 1){
         //auto tiempo_arribo = distribucion->GeneradorExp();
         //this->porcentaje();
         // TODO: Hacer el envío de los mensajes a la red
@@ -255,8 +255,8 @@ void test_simulacion_completa(){
 
 int main(int argc, char *argv[])
 {
-  //test_simulacion_basica();
-  test_simulacion_completa();
+  test_simulacion_basica();
+  //test_simulacion_completa();
   
   return 0;
 }
