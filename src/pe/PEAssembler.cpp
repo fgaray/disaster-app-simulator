@@ -14,15 +14,12 @@ std::vector<std::tuple<PEName, MessagePE>> PEAssembler::nextPE(MessagePE message
 	if (found == th.end())
 	{
 		th.insert({mId, 1});
-	}
-	else{
+	}else{
 		int cantM = (*found).second;
-		if (cantM < 8)
+		if (cantM + 1 < 8)
 		{
-			cantM++;
-			th.insert({mId, cantM});
-		}
-		else{
+			(*found).second++;
+		}else{
 			th.erase(mId);
 			MessagePE nuevomensaje(DEFAULT_MESSAGE_SIZE);
 			return {std::make_tuple(PEName::PEFSelection, nuevomensaje)};
