@@ -46,6 +46,7 @@ class CPU: public Process{
     std::vector<PE_ptr>::iterator current_pe;
     std::vector<handle<Core>> cores;
     void notificarTerminoPE(std::vector<std::tuple<PEName, MessagePE>> mensajes);
+    unsigned int number;
 
   public:
     CPU(std::initializer_list<std::shared_ptr<PE>> il);
@@ -63,6 +64,7 @@ class CPU: public Process{
 
     function<void()> getEndCallback();
     void setCores(std::initializer_list<std::shared_ptr<Core>> cores);
+    void setNumber(unsigned int number);
 
 };
 

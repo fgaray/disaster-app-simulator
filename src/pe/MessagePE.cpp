@@ -43,3 +43,13 @@ Id MessagePE::getId(){
 void MessagePE::setDestino(Id id){
   this->d = id;
 }
+
+
+
+void MessagePE::setTweetId(Id tweet){
+  this->tweet = tweet;
+}
+
+Id MessagePE::getTweetId(){
+  return this->tweet;
+}

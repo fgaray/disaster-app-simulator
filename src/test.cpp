@@ -216,13 +216,17 @@ void test_simulacion_completa(){
         peAssembler,
         peFSelection,
         peTrainer
-      }));  
+      }));
 
 
   cpu1->setTraza(traza);
   cpu2->setTraza(traza);
   cpu3->setTraza(traza);
   cpu4->setTraza(traza);
+  cpu1->setNumber(1);
+  cpu2->setNumber(2);
+  cpu3->setNumber(3);
+  cpu4->setNumber(4);
 
   auto red_tubo = handle<RedTubo>(new RedTubo{
         cpu1,
@@ -255,8 +259,8 @@ void test_simulacion_completa(){
 
 int main(int argc, char *argv[])
 {
-  test_simulacion_basica();
-  //test_simulacion_completa();
+  //test_simulacion_basica();
+  test_simulacion_completa();
   
   return 0;
 }

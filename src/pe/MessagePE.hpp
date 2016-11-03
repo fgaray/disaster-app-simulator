@@ -25,6 +25,7 @@ class MessagePE{
   private:
     Id d;
     Id id_message;
+    Id tweet;
     unsigned int size;
     bool size_seteado;
   public:
@@ -35,6 +36,9 @@ class MessagePE{
     unsigned int getSize();
     Id getId();
     void setDestino(Id id);
+
+    void setTweetId(Id tweet);
+    Id getTweetId();
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include "PE.hpp"
 #include "../common/Config.hpp"
 #include "PEName.hpp"
-#include "MessageBroker.hpp"
+#include "MessagePE.hpp"
 
 class PEBroker: public PE{
 	private:

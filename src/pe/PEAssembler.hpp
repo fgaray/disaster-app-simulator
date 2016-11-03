@@ -4,7 +4,6 @@
 #include "PE.hpp"
 #include "../common/Config.hpp"
 #include "PEName.hpp"
-#include "MessageBroker.hpp"
 #include <unordered_map>
 
 class PEAssembler: public PE{

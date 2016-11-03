@@ -9,9 +9,7 @@ double  PEAssembler::getCostTime(){
 }
 
 std::vector<std::tuple<PEName, MessagePE>> PEAssembler::nextPE(MessagePE message){
-	MessagePE &m = message;
-	MessageBroker &mensaje = static_cast<MessageBroker&>(m);
-  Id mId = mensaje.getIdTweet();
+  Id mId = message.getTweetId();
 	auto found = th.find(mId);
 	if (found == th.end())
 	{

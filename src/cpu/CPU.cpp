@@ -43,7 +43,7 @@ void CPU::inner_body(){
 
           std::stringstream ss;
           ss << "Ejecutando PE " << peNameToString(pe->getName()) << " con Id " << pe->getId();
-          ss << " en el core " << numeroCore << " de la CPU ";
+          ss << " en el core " << numeroCore << " de la CPU " << this->number;
           this->traza->puntoCPU(time(), ss);
 
           (*core_vacio_iterator)->ejecutar(pe, mensaje);
@@ -181,4 +181,9 @@ function<void()> CPU::getEndCallback(){
     }
     this->run = false;
   };
+}
+
+
+void CPU::setNumber(unsigned int number){
+  this->number = number;
 }
