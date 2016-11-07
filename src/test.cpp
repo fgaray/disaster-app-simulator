@@ -36,6 +36,7 @@ using namespace std;
 
 void test_simulacion_basica();
 void test_simulacion_completa();
+void test_problema();
 
 class MockPE: public PE{
   public:
@@ -255,12 +256,73 @@ void test_simulacion_completa(){
 }
 
 
+class Clase2: public process{
+
+  public:
+    Clase2(): process("Clase 2"){
+    }
+    void inner_body(){
+      while(true){
+        cout << "Hola desde Clase 2" << endl;
+        hold(1);
+      }
+    }
+
+    void detener(){
+      cout << "Deteniendo" << endl;
+      hold(10);
+      cout << "Detenido" << endl;
+    }
+
+};
+
+
+class Clase1: public process{
+  private:
+    handle<Clase2> c2;
+
+  public:
+    Clase1(handle<Clase2> c2): process("Clase1"){
+      this->c2 = c2;
+    }
+    void inner_body(){
+      while(true){
+        cout << "Hola desde Clase 1" << endl;
+        hold(1);
+        //vamos a intentar hacer que duerma clase 2, al hacerlo deberíamos parar
+        //nosotros tambien ya que estamos dentro del inner_body, o eso es lo que
+        //se cree
+        this->c2->detener();
+      }
+    }
+};
+
+
+
+void test_problema(){
+ auto sim = std::unique_ptr<simulation>(simulation::instance());
+ sim->begin_simulation(new sqsDll());
+ handle<Clase2> c2(new Clase2);
+ handle<Clase1> c1(new Clase1(c2));
+ c1->activate();
+
+ sim->run();
+
+ // Listo!
+ sim->end_simulation();
+}
+
+
+
+
+
 
 
 int main(int argc, char *argv[])
 {
   //test_simulacion_basica();
   test_simulacion_completa();
+  //test_problema();
   
   return 0;
 }

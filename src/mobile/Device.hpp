@@ -9,9 +9,9 @@
 #include "../common/UniqueIdGenerator.hpp"
 #include "../common/Undefined.hpp"
 #include "MessageMD.hpp"
+#include "Movimiento.hpp"
 
 typedef std::function<void(Id, MessageMD)> send_callback;
-typedef std::tuple<double, double, double> position;
 
 class Device: public Process{
   private:
@@ -19,16 +19,18 @@ class Device: public Process{
     send_callback send_message;
     queue<position> posiciones;
     double x, y;
+    handle<Movimiento> movimiento;
 
     void inner_body();
 
   public:
-    Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_callback _send_message);
+    Device(std::function<void(std::shared_ptr<Device>)> move_device, send_callback send_message, std::queue<position> posiciones);
     Id getId() const;
     void agregarPosicion(double time, double _x, double _y);
 
     double getX() const;
     double getY() const;
+    void endSimulation();
 
 };
 
