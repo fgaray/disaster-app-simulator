@@ -10,7 +10,6 @@ class MessageMD{
   private:
     Id d;
   public:
-    MessageMD();
     MessageMD(Id destino);
     Id getDestino();
 };

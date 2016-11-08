@@ -64,6 +64,9 @@ const char* peNameToString(PEName name){
     case PEName::MockPE:
       return "MockPE";
       break;
+    case PEName::RedMovil:
+      return "RedMovil";
+      break;
     default:
       std::cout << static_cast<int>(name) << std::endl;
       return "Caso no existe";

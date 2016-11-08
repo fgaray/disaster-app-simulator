@@ -26,8 +26,10 @@ class MessagePE{
     Id d;
     Id id_message;
     Id tweet;
+    Id dispositivo_movil;
     unsigned int size;
     bool size_seteado;
+    bool dispositivo_movil_seted;
   public:
     MessagePE(Id destino, unsigned int size);
     MessagePE(unsigned int size);
@@ -39,6 +41,9 @@ class MessagePE{
 
     void setTweetId(Id tweet);
     Id getTweetId();
+
+    Id getDispositivoMovil();
+    void setDispositivoMovil(Id dispositivo_movil);
 };
 
 #endif

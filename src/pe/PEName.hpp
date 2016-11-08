@@ -23,6 +23,8 @@ enum class PEName{
 	PEAdapter,
 	PECollector,
   END,
+  //Movile
+  RedMovil,
   //Testing
   SinkNode,
   MockPE

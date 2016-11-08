@@ -1,5 +1,6 @@
 #include "Device.hpp"
 
+static Id current_id = 0;
 
 Device::Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_callback _send_message, std::queue<position> posiciones): Process("Device"){
   this->move_device = _move_device;
@@ -7,7 +8,8 @@ Device::Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_c
   this->x = 0;
   this->y = 0;
   this->posiciones = posiciones;
-
+  this->id = current_id;
+  current_id++;
 
   this->movimiento = handle<Movimiento>(
       new Movimiento(
@@ -26,11 +28,23 @@ Device::Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_c
 
 
 Id Device::getId() const{
-  throw UNDEFINED;
+  return this->id;
 }
 
 void Device::inner_body(){
-  throw UNDEFINED;
+  while(this->run){
+    if(this->mensajes.empty()){
+      this->passivate();
+    }
+
+    MessageMD mensaje = this->mensajes.front();
+    this->mensajes.pop();
+
+    hold(TIEMPO_ESPERA_TAGEO_PERSONA);
+
+    this->send_message(mensaje);
+
+  }
 }
 
 void Device::agregarPosicion(double time, double _x, double _y){

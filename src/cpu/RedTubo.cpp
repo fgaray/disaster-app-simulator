@@ -88,6 +88,14 @@ void RedTubo::enviarMensaje(PEName name, MessagePE message){
     ss2 << "Recibido un mensaje final, se termina...";
     this->traza->puntoRedTubo(time(), ss2);
     return;
+  }else if(name == PEName::RedMovil){
+    std::stringstream ss2;
+    ss2 << "Recibido un mensaje para la red 3g, redirigiendo...";
+    this->traza->puntoRedTubo(time(), ss2);
+
+    MessageMD mmd(message.getDispositivoMovil());
+    this->red_movil->enviarMensajeHaciaMD(message.getDispositivoMovil(), mmd);
+    return;
   }
 
   std::stringstream ss2;
@@ -248,4 +256,10 @@ void RedTubo::entregarMensaje(Id id, Packet p){
   assert(cpu != this->cpus.end());
 
   (*cpu).second->recibirMessage(id, p.getMessage());
+}
+
+
+
+void RedTubo::setRedMovil(handle<Network3G> red_movil){
+  this->red_movil = red_movil;
 }

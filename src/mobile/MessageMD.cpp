@@ -5,9 +5,6 @@ MessageMD::MessageMD(Id destino){
 }
 
 
-MessageMD::MessageMD(){
-}
-
 Id MessageMD::getDestino(){
   return this->d;
 }

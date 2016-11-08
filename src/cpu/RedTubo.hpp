@@ -14,6 +14,7 @@
 #include "../common/Config.hpp"
 #include "../common/RoundRobinIterator.hpp"
 #include "../common/Traza.hpp"
+#include "../mobile/Network3G.hpp"
 
 
 typedef std::vector<std::tuple<Id, Packet>> buffer;
@@ -45,6 +46,7 @@ class RedTubo: public Process{
     // vector al mento de obtener el iterator
     std::unordered_map<PEName, std::vector<Id>> translation_table_tmp;
 
+    handle<Network3G> red_movil;
 
   public:
     std::unordered_map<PEName, RoundRobinIterator> translation_table;
@@ -55,6 +57,7 @@ class RedTubo: public Process{
     bool tuboLleno();
     void intentarAgregarPaquete();
     void entregarMensaje(Id id, Packet p);
+    void setRedMovil(handle<Network3G> red_movil);
 
 
     /**

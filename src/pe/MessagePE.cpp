@@ -9,6 +9,7 @@ MessagePE::MessagePE(Id destino, unsigned int size){
   this->id_message = current_id;
   current_id++;
   this->size_seteado = true;
+  this->dispositivo_movil_seted = false;
 }
 
 MessagePE::MessagePE(unsigned int size){
@@ -16,6 +17,8 @@ MessagePE::MessagePE(unsigned int size){
   this->id_message = current_id;
   current_id++;
   this->size_seteado = true;
+  this->dispositivo_movil = -1;
+  this->dispositivo_movil_seted = false;
 }
 
 MessagePE::MessagePE(){
@@ -52,4 +55,16 @@ void MessagePE::setTweetId(Id tweet){
 
 Id MessagePE::getTweetId(){
   return this->tweet;
+}
+
+
+
+Id MessagePE::getDispositivoMovil(){
+  assert(this->dispositivo_movil_seted != false);
+  return this->dispositivo_movil;
+}
+
+void MessagePE::setDispositivoMovil(Id dispositivo_movil){
+  this->dispositivo_movil = dispositivo_movil;
+  this->dispositivo_movil_seted = true;
 }

@@ -6,6 +6,8 @@
 
 // Cuanto se demora cada paquete en viajar por la red
 const double LATENCIA_RED = 100;
+
+// PEs
 const double UNIGRAM_COST = 1500;
 const double BIGRAM_COST = 1500;
 const double POSTAGS_COST = 1500; //Creo que este proceso es el más costoso o no? (Tito?)
@@ -23,6 +25,8 @@ const double PYBOSSA_COST = 1500;
 const double TRAINER_COST = 1500;
 const double ADAPTER_COST = 1500;
 const double COLLECTOR_COST = 1500;
+
+const double TIEMPO_ESPERA_TAGEO_PERSONA = 5000;
 
 const double TWEET_PER_SECOND = 50;
 const double AMOUNT_OF_TWEETS = 1;
