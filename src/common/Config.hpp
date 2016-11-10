@@ -25,6 +25,7 @@ const double PYBOSSA_COST = 1500;
 const double TRAINER_COST = 1500;
 const double ADAPTER_COST = 1500;
 const double COLLECTOR_COST = 1500;
+const double PELASTPE_COST = 1500;
 
 const double TIEMPO_ESPERA_TAGEO_PERSONA = 5000;
 
@@ -35,6 +36,9 @@ const double AMOUNT_OF_TWEETS = 1;
 const double END_SIM_TIME = 100000;
 
 const unsigned int MAXIMO_MENSAJES = 10;
+
+//Max numero de device en la red
+const unsigned int MAX_AMOUNT_DEVICE = 10;
 
 
 // Tamaño del paquete maximo a enviar por la red en bits
