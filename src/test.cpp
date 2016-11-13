@@ -10,6 +10,7 @@
 #include "cpu/RedTubo.hpp"
 #include "Source.hpp"
 #include "common/Traza.hpp"
+#include "mobile/Traza.hpp"
 
 
 #include "pe/PEBigram.hpp"
@@ -30,6 +31,7 @@
 #include "pe/PEAssembler.hpp"
 
 #include "common/Distribution.hpp"
+
 
 
 using namespace std;
@@ -160,6 +162,18 @@ void test_simulacion_completa(){
   auto sim = std::unique_ptr<simulation>(simulation::instance());
   sim->begin_simulation(new sqsDll());
 
+  // creamos los dispositivos móviles
+
+  vector<handle<Device>> devices;
+
+  trazas_devices trazas = parsear_traza("traza_limpia.csv");
+
+
+
+
+
+
+
   //probemos primero la red tubo con una CPU básica 
 
   //creamos una CPU que va a ejecutar dos PEs, uno que es el sink node y otro
@@ -238,6 +252,22 @@ void test_simulacion_completa(){
 
   red_tubo->setTraza(traza);
 
+
+  //unsigned int i = 0;
+  //for(auto t: trazas){
+    //auto id = t.first;
+    //auto trz = t.second;
+
+    //if(i < 10){
+      //break;
+    //}
+  //}
+
+
+
+
+
+
   handle<Source> src(new Source(END_SIM_TIME, red_tubo, traza));
   src->activate();
 
@@ -256,61 +286,58 @@ void test_simulacion_completa(){
 }
 
 
-class Clase2: public process{
+//class Clase2: public process{
 
-  public:
-    Clase2(): process("Clase 2"){
-    }
-    void inner_body(){
-      while(true){
-        cout << "Hola desde Clase 2" << endl;
-        hold(1);
-      }
-    }
+  //public:
 
-    void detener(){
-      cout << "Deteniendo" << endl;
-      hold(10);
-      cout << "Detenido" << endl;
-    }
+    //function<void(Clase2*, double)> run;
 
-};
+    //Clase2(): process("Clase 2"){
+    //}
+    //void inner_body(){
+      //while(true){
+        //this->run(this, 10);
+      //}
+    //}
 
 
-class Clase1: public process{
-  private:
-    handle<Clase2> c2;
+//};
 
-  public:
-    Clase1(handle<Clase2> c2): process("Clase1"){
-      this->c2 = c2;
-    }
-    void inner_body(){
-      while(true){
-        cout << "Hola desde Clase 1" << endl;
-        hold(1);
-        //vamos a intentar hacer que duerma clase 2, al hacerlo deberíamos parar
-        //nosotros tambien ya que estamos dentro del inner_body, o eso es lo que
-        //se cree
-        this->c2->detener();
-      }
-    }
-};
+
+//class Clase1: public process{
+  //private:
+    
+
+  //public:
+    //Clase1(handle<Clase2> c2): process("Clase1"){
+      //c2->run = [this](Clase2 *that, double to_hold){
+        //that->passivate();
+        //cout << "Vamos a esperar " << to_hold;
+      //};
+    //}
+    //void inner_body(){
+      //while(true){
+        
+      //}
+    //}
+//};
 
 
 
-void test_problema(){
- auto sim = std::unique_ptr<simulation>(simulation::instance());
- sim->begin_simulation(new sqsDll());
- handle<Clase2> c2(new Clase2);
- handle<Clase1> c1(new Clase1(c2));
- c1->activate();
+//void test_problema(){
+ //auto sim = std::unique_ptr<simulation>(simulation::instance());
+ //sim->begin_simulation(new sqsDll());
+ //handle<Clase2> c2(new Clase2);
+ //handle<Clase1> c1(new Clase1(c2));
+ //c1->activate();
 
- sim->run();
+ //sim->run();
 
- // Listo!
- sim->end_simulation();
-}
+
+
+ //// Listo!
+ //sim->end_simulation();
+//}
 
 
 
