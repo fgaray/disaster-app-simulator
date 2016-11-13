@@ -2,11 +2,12 @@
 
 static Id current_id = 0;
 
-Device::Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_callback _send_message, std::queue<position> posiciones): Process("Device"){
+Device::Device(std::function<void(Device*)> _move_device, send_callback _send_message, std::queue<position> posiciones): Process("Device"){
   this->move_device = _move_device;
   this->send_message = _send_message;
-  this->x = 0;
-  this->y = 0;
+
+  std::tie(std::ignore, this->x, this->y) = posiciones.front();
+
   this->posiciones = posiciones;
   this->id = current_id;
   current_id++;
@@ -16,6 +17,7 @@ Device::Device(std::function<void(std::shared_ptr<Device>)> _move_device, send_c
         [this](double x, double y){
           this->x = x;
           this->y = y;
+          this->move_device(this);
           position next = this->posiciones.front();
           if(this->posiciones.size() > 1){
             // En caso de tener más de una siguiente posicion, sacamos el que

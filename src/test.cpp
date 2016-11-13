@@ -164,7 +164,6 @@ void test_simulacion_completa(){
 
   // creamos los dispositivos móviles
 
-  vector<handle<Device>> devices;
 
   trazas_devices trazas = parsear_traza("traza_limpia.csv");
 
@@ -252,18 +251,27 @@ void test_simulacion_completa(){
 
   red_tubo->setTraza(traza);
 
-
-  //unsigned int i = 0;
-  //for(auto t: trazas){
-    //auto id = t.first;
-    //auto trz = t.second;
-
-    //if(i < 10){
-      //break;
-    //}
-  //}
+  handle<Network3G> network3g = new Network3G();
 
 
+  vector<handle<Device>> devices;
+
+  unsigned int i = 0;
+  for(auto t: trazas){
+    auto trz = t.second;
+
+    devices.push_back(handle<Device>(new Device(
+            network3g->getCallbackNotificarMovimiento(),
+            network3g->getSendCallback(),
+            trz
+      )));
+
+    if(i >= 10){
+      break;
+    }
+
+    i++;
+  }
 
 
 

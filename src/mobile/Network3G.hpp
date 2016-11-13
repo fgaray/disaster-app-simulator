@@ -34,11 +34,14 @@ class Network3G: public Process{
     //(Cuando el device se cambia de antena)
 
     void enviarMensajeHaciaMD(Id hacia, MessageMD m);
-    void enviarMensajeHaciaCluster(Id desde, MessageMD m);
+    void enviarMensajeHaciaCluster(MessageMD m);
 
-    std::function<void(Id, MessageMD)> getSendCallback();
+    std::function<void(MessageMD)> getSendCallback();
     std::function<void(std::shared_ptr<Device>)> getMoveCallback();
 
+    std::function<void(Device*)> getCallbackNotificarMovimiento();
+
+    void notificarMovimientoDevice(Device *d);
 
 };
 

@@ -16,7 +16,7 @@ typedef std::function<void(MessageMD)> send_callback;
 
 class Device: public Process{
   private:
-    std::function<void(std::shared_ptr<Device>)> move_device;
+    std::function<void(Device*)> move_device;
     send_callback send_message;
     queue<position> posiciones;
     queue<MessageMD> mensajes;
@@ -27,7 +27,7 @@ class Device: public Process{
     void inner_body();
 
   public:
-    Device(std::function<void(std::shared_ptr<Device>)> move_device, send_callback send_message, std::queue<position> posiciones);
+    Device(std::function<void(Device*)> move_device, send_callback send_message, std::queue<position> posiciones);
     Id getId() const;
     void agregarPosicion(double time, double _x, double _y);
 
