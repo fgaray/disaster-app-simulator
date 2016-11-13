@@ -28,6 +28,11 @@ class Network3G: public Process{
   public:
     Network3G();
 
+    //Funcion que divide mensaje original y envia paquetes a antena
+
+    //Funcion que recibe paquetes random sueltos y los envia a la nueva antena
+    //(Cuando el device se cambia de antena)
+
     void enviarMensajeHaciaMD(Id hacia, MessageMD m);
     void enviarMensajeHaciaCluster(Id desde, MessageMD m);
 

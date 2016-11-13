@@ -22,6 +22,7 @@ enum class PEName{
 	PEPybossa,
 	PEAdapter,
 	PECollector,
+	PELastPE,
   END,
   //Movile
   RedMovil,
