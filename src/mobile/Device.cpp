@@ -12,6 +12,7 @@ Device::Device(std::function<void(Device*)> _move_device, send_callback _send_me
   this->id = current_id;
   current_id++;
 
+
   this->movimiento = handle<Movimiento>(
       new Movimiento(
         [this](double x, double y){
@@ -26,6 +27,8 @@ Device::Device(std::function<void(Device*)> _move_device, send_callback _send_me
           }
           return next;
         }));
+
+  this->movimiento->setNext(posiciones.front());
 }
 
 
