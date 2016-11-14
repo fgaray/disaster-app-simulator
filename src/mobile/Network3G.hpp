@@ -19,14 +19,16 @@
 class Network3G: public Process{
   private:
 
-    std::unordered_map<Id, std::shared_ptr<Antena>> devices_antenas;
+    std::unordered_map<Id, handle<Antena>> devices_antenas;
+    std::unordered_map<Id, handle<Antena>> antenas;
 
-    std::unordered_map<Id, std::shared_ptr<Device>> devices;
+    //Solo para constructor de la red (asignar device a antenas)
+    //std::unordered_map<Id, std::shared_ptr<Device>> devices_tmp;
 
     void inner_body();
 
   public:
-    Network3G();
+    Network3G(std::initializer_list<handle<Device>> dv, std::initializer_list<handle<Antena>> al);
 
     //Funcion que divide mensaje original y envia paquetes a antena
 
