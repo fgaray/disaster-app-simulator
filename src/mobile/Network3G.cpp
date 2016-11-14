@@ -20,9 +20,17 @@ Network3G::Network3G(std::initializer_list<handle<Device>> dv, std::initializer_
       }
     }
     std::sort(dist_vect.begin(), dist_vect.end(), [](auto &left, auto &right) {
-      return std::get<2>(left) < std::get<2>(right);
+      return std::get<1>(left) < std::get<1>(right);
     });
-    this->devices_antenas.insert({device->getId(), (get<1>(dist_vect)).first});
+
+    std::vector<handle<Antena>> dist_vec_no_tupla;
+
+    for(auto antena: dist_vect){
+      dist_vec_no_tupla.push_back(std::get<0>(antena));
+    }
+    
+
+    this->devices_antenas.insert({device->getId(), dist_vec_no_tupla});
   }
 
 }
