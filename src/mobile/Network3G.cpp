@@ -1,7 +1,37 @@
 #include "Network3G.hpp"
 
+#include <algorithm>
 
-Network3G::Network3G(): Process("Network"){
+
+
+Network3G::Network3G(std::initializer_list<handle<Device>> dv, std::initializer_list<handle<Antena>> al): Process("Network"){
+  for (auto ant : al){
+    this->antenas.insert({ant->getId(), ant});
+  }
+
+  for (auto device : dv){
+    //Para cada device, encontrar antena
+    std::vector<std::tuple<handle<Antena>, double>> dist_vect;
+    for (auto ant = this->antenas.begin(); ant != this->antenas.end(); ++ant ){
+      double dev_dist = ant->second->distancia(device);
+
+      if((*ant).second->getRadio() > dev_dist){
+        dist_vect.push_back(std::make_tuple((*ant).second, dev_dist));
+      }
+    }
+    std::sort(dist_vect.begin(), dist_vect.end(), [](auto &left, auto &right) {
+      return std::get<1>(left) < std::get<1>(right);
+    });
+
+    std::vector<handle<Antena>> dist_vec_no_tupla;
+
+    for(auto antena: dist_vect){
+      dist_vec_no_tupla.push_back(std::get<0>(antena));
+    }
+    
+
+    this->devices_antenas.insert({device->getId(), dist_vec_no_tupla});
+  }
 
 }
 

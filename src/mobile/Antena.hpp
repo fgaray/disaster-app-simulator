@@ -6,14 +6,23 @@
 
 #include <memory>
 #include <vector>
+#include <math.h>
 
-class Antena{
+#include "../common/Process.hpp"
+#include "../common/Undefined.hpp"
+
+class Antena: public Process{
   private:
+  	Id id;
     double x, y, radio;
 
   public:
     Antena(double _x, double _y, double _radio);
-    double distancia(std::shared_ptr<Device> device) const;
+    double distancia(handle<Device> device) const;
+    Id getId();
+    double getRadio();
+
+    void inner_body();
 
 };
 
