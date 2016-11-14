@@ -266,7 +266,7 @@ void test_simulacion_completa(){
             trz
       )));
 
-    if(i >= 10){
+    if(i >= 1){
       break;
     }
 

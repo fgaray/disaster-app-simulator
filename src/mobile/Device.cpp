@@ -28,7 +28,6 @@ Device::Device(std::function<void(Device*)> _move_device, send_callback _send_me
           return next;
         }));
 
-  this->movimiento->setNext(posiciones.front());
 }
 
 
@@ -37,6 +36,7 @@ Id Device::getId() const{
 }
 
 void Device::inner_body(){
+  this->movimiento->setNext(posiciones.front());
   while(this->run){
     if(this->mensajes.empty()){
       this->passivate();
