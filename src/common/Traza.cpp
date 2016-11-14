@@ -30,6 +30,10 @@ void Traza::puntoCore(double time, const std::string &str){
   SALIDA << ANSI_COLOR_MAGENTA << "[" << time << "] " << str << ANSI_COLOR_RESET << std::endl;
 }
 
+void Traza::puntoRed3G(double time, const std::string &str){
+  SALIDA << ANSI_COLOR_BLUE << "[" << time << "]" << str << ANSI_COLOR_BLUE << std::endl;
+}
+
 
 void Traza::puntoRedTubo(double time, const std::stringstream &str){
   this->puntoRedTubo(time, str.str());
@@ -49,4 +53,8 @@ void Traza::puntoSource(double time, const std::stringstream &str){
 
 void Traza::puntoCore(double time, const std::stringstream &str){
   this->puntoCore(time, str.str());
+}
+
+void Traza::puntoRed3G(double time, const std::stringstream &str){
+  this->puntoRed3G(time, str.str());
 }

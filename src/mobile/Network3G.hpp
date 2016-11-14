@@ -22,6 +22,8 @@ class Network3G: public Process{
     std::unordered_map<Id, handle<Antena>> devices_antenas;
     std::unordered_map<Id, handle<Antena>> antenas;
 
+    buffer input_buffer;
+
     //Solo para constructor de la red (asignar device a antenas)
     //std::unordered_map<Id, std::shared_ptr<Device>> devices_tmp;
 

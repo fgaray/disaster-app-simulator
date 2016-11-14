@@ -23,11 +23,7 @@ Network3G::Network3G(std::initializer_list<handle<Device>> dv, std::initializer_
         return std::get<1>(left) < std::get<1>(right);
         });
 
-
     this->devices_antenas.insert({device->getId(), std::get<0>(dist_vect.at(0))});
-
-    // vector.get(0) no funciona
-    // vector.at(0) tampoco
   }
 
 }

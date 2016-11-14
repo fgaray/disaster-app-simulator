@@ -33,6 +33,7 @@ class Traza{
     void puntoFin(double time, const std::string &str);
     void puntoSource(double time, const std::string &str);
     void puntoCore(double time, const std::string &str);
+    void puntoRed3G(double time, const std::string &str);
 
     void punto(double time, const std::stringstream &str);
     void puntoCPU(double time, const std::stringstream &str);
@@ -40,6 +41,7 @@ class Traza{
     void puntoFin(double time, const std::stringstream &str);
     void puntoSource(double time, const std::stringstream &str);
     void puntoCore(double time, const std::stringstream &str);
+    void puntoRed3G(double time, const std::stringstream &str);
 
 
 
