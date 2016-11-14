@@ -23,14 +23,11 @@ Network3G::Network3G(std::initializer_list<handle<Device>> dv, std::initializer_
       return std::get<1>(left) < std::get<1>(right);
     });
 
-    std::vector<handle<Antena>> dist_vec_no_tupla;
 
-    for(auto antena: dist_vect){
-      dist_vec_no_tupla.push_back(std::get<0>(antena));
-    }
-    
+    this->devices_antenas.insert({device->getId(), std::get<1>(dist_vect.at(0))});
 
-    this->devices_antenas.insert({device->getId(), dist_vec_no_tupla});
+    // vector.get(0) no funciona
+    // vector.at(0) tampoco
   }
 
 }

@@ -251,10 +251,11 @@ void test_simulacion_completa(){
 
   red_tubo->setTraza(traza);
 
-  handle<Network3G> network3g = new Network3G();
-
-
   vector<handle<Device>> devices;
+
+  vector<handle<Antena>> antenas;
+
+  handle<Network3G> network3g = new Network3G({devices, antenas});
 
   unsigned int i = 0;
   for(auto t: trazas){
