@@ -19,7 +19,7 @@
 class Network3G: public Process{
   private:
 
-    std::unordered_map<Id, std::vector<handle<Antena>>> devices_antenas;
+    std::unordered_map<Id, handle<Antena>> devices_antenas;
     std::unordered_map<Id, handle<Antena>> antenas;
 
     //Solo para constructor de la red (asignar device a antenas)
