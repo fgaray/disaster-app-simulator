@@ -45,6 +45,7 @@ void Device::inner_body(){
     MessageMD mensaje = this->mensajes.front();
     this->mensajes.pop();
 
+    this->mensaje.setTag();
     hold(TIEMPO_ESPERA_TAGEO_PERSONA);
 
     this->send_message(mensaje);

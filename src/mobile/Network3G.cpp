@@ -10,6 +10,7 @@ Network3G::Network3G(std::initializer_list<handle<Device>> dv, std::initializer_
   }
 
   for (auto device : dv){
+    this->devices.insert({device->getId(), device});
     //Para cada device, encontrar antena
     std::vector<std::tuple<handle<Antena>, double>> dist_vect;
     for (auto ant = this->antenas.begin(); ant != this->antenas.end(); ++ant ){
@@ -26,6 +27,23 @@ Network3G::Network3G(std::initializer_list<handle<Device>> dv, std::initializer_
     this->devices_antenas.insert({device->getId(), std::get<0>(dist_vect.at(0))});
   }
 
+}
+
+Id Network3G::buscarNuevaAnt(handle<Device> device){
+  std::vector<std::tuple<handle<Antena>, double>> dist_vect;
+  for (auto ant = this->antenas.begin(); ant != this->antenas.end(); ++ant ){
+    double dev_dist = ant->second->distancia(device);
+
+    if((*ant).second->getRadio() > dev_dist){
+      dist_vect.push_back(std::make_tuple((*ant).second, dev_dist));
+    }
+  }
+  std::sort(dist_vect.begin(), dist_vect.end(), [](auto &left, auto &right) {
+      return std::get<1>(left) < std::get<1>(right);
+      });
+
+  this->devices_antenas.insert({device->getId(), std::get<0>(dist_vect.at(0))});
+  return std::get<0>(dist_vect.at(0))->getId();
 }
 
 void Network3G::enviarMensajeHaciaMD(Id hacia, MessageMD m){
@@ -169,17 +187,34 @@ void Network3G::inner_body(){
         Id id_antena = std::get<0>(tupla);
         Id id_device = std::get<1>(tupla);
 
-        if(p.getRemainingTime() <= 0){
-          //hay que ver si era el final
-          if(p.isLast()){
-            //era el ultimo, entonces pasamos el mensaje a la CPU
-            this->entregarMensaje(id_antena, id_device, p);
-          }
+        auto ant = this->antenas.find(id_antena);
+        auto dev = this->devices.find(id_device);
+
+        if ((*ant).second->distancia(dev) > (*ant).second->getRadio())
+        {
+          devices_antenas.erase(id_device);
+          Id idnew_antena = buscarNuevaAnt(dev);
+          input_buffer.push_back(std::make_tuple(idnew_antena, dev, p));
+          hold(1); //numero random
           //sacamos el elemento del heap
           a_eliminar.push_back(it);
           //ahora sacamos el mensaje de la tabla hash de manera de permitir
           //que entre otro posible paquete del mismo mensjae
           this->existe.erase(p.getMessage().getId());
+        }
+        else{
+          if(p.getRemainingTime() <= 0){
+            //hay que ver si era el final
+            if(p.isLast()){
+              //era el ultimo, entonces pasamos el mensaje a la CPU
+              this->entregarMensaje(id_antena, id_device, p);
+            }
+            //sacamos el elemento del heap
+            a_eliminar.push_back(it);
+            //ahora sacamos el mensaje de la tabla hash de manera de permitir
+            //que entre otro posible paquete del mismo mensjae
+            this->existe.erase(p.getMessage().getId());
+          }
         }
       }
 
@@ -211,7 +246,7 @@ void Network3G::entregarMensaje(Id id_antena, Id id_device, PacketMD p){
   auto antena = this->antenas.find(id_antena);
   assert(antena != this->antenas.end());
 
-  //(*antena).second->recibirMessage(id_antena, id_device, p.getMessage());
+  (*antena).second->recibirMessage(id_device, p.getMessage());
 }
 
 

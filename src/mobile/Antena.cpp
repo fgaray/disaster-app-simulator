@@ -25,5 +25,5 @@ double Antena::getRadio(){
 
 
 void Antena::inner_body(){
-  throw UNDEFINED;
+
 }

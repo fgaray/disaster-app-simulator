@@ -1,13 +1,18 @@
 #include "MessageMD.hpp"
 
+static Id current_id = 0;
+
 MessageMD::MessageMD(Id destino, unsigned int size){
   this->d = destino;
   this->size = size;
+  this->id_message = current_id;
+  current_id++;
   this->tageado = false;
 }
 
 MessageMD::MessageMD(){
-
+	this->id_message = current_id;
+	current_id++;
 }
 
 unsigned int MessageMD::getSize(){

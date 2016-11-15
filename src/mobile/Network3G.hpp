@@ -23,6 +23,7 @@ class Network3G: public Process{
 
     std::unordered_map<Id, handle<Antena>> devices_antenas;
     std::unordered_map<Id, handle<Antena>> antenas;
+    std::unordered_map<Id, handle<Device>> devices;
 
     std::vector<std::tuple<Id, Id, PacketMD>> current;
 
@@ -51,6 +52,7 @@ class Network3G: public Process{
     void entregarMensaje(Id id_antena, Id id_device, PacketMD p);
     void intentarAgregarPaquete();
     bool redSaturada();
+    Id buscarNuevaAnt(handle<Device> device);
 
     std::function<void(MessageMD)> getSendCallback();
     std::function<void(std::shared_ptr<Device>)> getMoveCallback();
