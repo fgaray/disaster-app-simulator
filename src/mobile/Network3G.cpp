@@ -11,6 +11,7 @@ Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>>
 
   for (auto device : dv){
     this->devices.insert({device->getId(), device});
+    
     //Para cada device, encontrar antena
     std::vector<std::tuple<handle<Antena>, double>> dist_vect;
     for (auto ant = this->antenas.begin(); ant != this->antenas.end(); ++ant ){
@@ -190,16 +191,19 @@ void Network3G::inner_body(){
         auto ant = this->antenas.find(id_antena);
         auto dev = this->devices.find(id_device);
 
+        // en caso que el dispositivo ya no se encuentre en la misma antena
         if ((*ant).second->distancia((*dev).second) > (*ant).second->getRadio())
         {
           devices_antenas.erase(id_device);
           Id idnew_antena = buscarNuevaAnt((*dev).second);
           input_buffer.push_back(std::make_tuple(idnew_antena, (*dev).second->getId(), p));
-          hold(1); //numero random
+          hold(10); //numero random
+          //se entrega el mensaje a la antena
+          this->entregarMensaje(id_antena, id_device, p);
           //sacamos el elemento del heap
           a_eliminar.push_back(it);
           //ahora sacamos el mensaje de la tabla hash de manera de permitir
-          //que entre otro posible paquete del mismo mensjae
+          //que entre otro posible paquete del mismo mensaje
           this->existe.erase(p.getMessage().getId());
         }
         else{
@@ -239,9 +243,9 @@ bool Network3G::redSaturada(){
 }
 
 void Network3G::entregarMensaje(Id id_antena, Id id_device, PacketMD p){
-  //tenemos que encontrar la CPU a la cual vamos a enviar el mensaje del
-  //paquete. Para un mensaje, buscamos en cual de todas las CPUs se encuentra el
-  //PE con el ID, si no lo encontramos, entonces en alguna parte estamos mal.
+  //tenemos que encontrar la Antena a la cual vamos a enviar el mensaje del
+  //paquete. Para un mensaje, buscamos en cual de todas las antenas se encuentra el
+  //device con el ID, si no lo encontramos, entonces en alguna parte estamos mal.
 
   auto antena = this->antenas.find(id_antena);
   assert(antena != this->antenas.end());
