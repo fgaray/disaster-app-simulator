@@ -287,6 +287,8 @@ void test_simulacion_completa(){
 
 
   handle<Network3G> network3g = new Network3G({devices}, {antenas}, red_tubo->getCallbackEnvioMensaje());
+  red_tubo->setRedMovil(network3g);
+
 
 
   handle<Source> src(new Source(END_SIM_TIME, red_tubo, traza));

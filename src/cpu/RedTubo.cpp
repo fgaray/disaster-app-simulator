@@ -261,7 +261,7 @@ void RedTubo::entregarMensaje(Id id, Packet p){
 
 
 void RedTubo::setRedMovil(handle<Network3G> red_movil){
-  this->red_movil = red_movil;
+  //this->red_movil = red_movil;
 }
 
 
