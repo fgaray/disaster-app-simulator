@@ -212,10 +212,14 @@ void Network3G::inner_body(){
         // en caso que el dispositivo ya no se encuentre en la misma antena
         if ((*ant).second->distancia((*dev).second) > (*ant).second->getRadio())
         {
+          //Se actualiza el mapa con la nueva antena
           devices_antenas.erase(id_device);
           Id idnew_antena = buscarNuevaAnt((*dev).second);
           input_buffer.push_back(std::make_tuple(idnew_antena, (*dev).second->getId(), p));
-          hold(10); //numero random
+          
+          //se hace un hold que considera la busqueda de la nueva antena 
+          //y el envio del mensaje a la nueva antena
+          hold(BUSQUEDA_ANTENA+LATENCIA_RED); 
           //se entrega el mensaje a la antena
           this->entregarMensaje(id_antena, id_device, p);
           //sacamos el elemento del heap
@@ -236,6 +240,8 @@ void Network3G::inner_body(){
             //ahora sacamos el mensaje de la tabla hash de manera de permitir
             //que entre otro posible paquete del mismo mensjae
             this->existe.erase(p.getMessage().getId());
+            //se espera el tiempo que demora el envío del mensaje
+            hold(LATENCIA_RED);
           }
         }
       }

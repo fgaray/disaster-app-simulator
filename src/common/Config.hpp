@@ -6,6 +6,7 @@
 
 // Cuanto se demora cada paquete en viajar por la red
 const double LATENCIA_RED = 100;
+const double BUSQUEDA_ANTENA = 100;
 
 // PEs
 const double UNIGRAM_COST = 1500;
