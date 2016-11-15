@@ -14,6 +14,7 @@ class MessageMD{
     bool tageado;
   public:
     MessageMD(Id destino, unsigned int size);
+    MessageMD();
     Id getDestino();
     Id getId();
     unsigned int getSize();

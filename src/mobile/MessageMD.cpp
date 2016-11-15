@@ -5,6 +5,11 @@ MessageMD::MessageMD(Id destino, unsigned int size){
   this->size = size;
   this->tageado = false;
 }
+
+MessageMD::MessageMD(){
+
+}
+
 unsigned int MessageMD::getSize(){
 	return this->size;
 }
