@@ -10,6 +10,8 @@
 #include "../common/Process.hpp"
 #include "../common/Undefined.hpp"
 #include "../common/UniqueIdGenerator.hpp"
+#include "../pe/PEName.hpp"
+#include "../pe/MessagePE.hpp"
 
 #include "MessageMD.hpp"
 #include "Antena.hpp"
@@ -39,7 +41,7 @@ class Network3G: public Process{
     void inner_body();
 
   public:
-    Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>> al);
+    Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>> al, std::function<void(PEName, MessagePE)> callback);
 
     //Funcion que divide mensaje original y envia paquetes a antena
 

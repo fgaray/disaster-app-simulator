@@ -255,17 +255,26 @@ void test_simulacion_completa(){
 
   vector<handle<Antena>> antenas;
 
-  handle<Network3G> network3g = new Network3G({devices}, {antenas});
+  antenas.push_back(new Antena(3497.2485983592023, 7191.88031045605, 2000));
+  antenas.push_back(new Antena(3872.978286460858, 6722.218200328981, 2000));
+  antenas.push_back(new Antena(4214.101292763677, 6306.938018742941, 2000));
+  antenas.push_back(new Antena(3432.979046447077, 6667.836271787952, 2000));
+  antenas.push_back(new Antena(3521.967656786943, 5852.1073436725155, 2000));
+  antenas.push_back(new Antena(4481.067123783274, 6692.555330215692, 2000));
+  antenas.push_back(new Antena(4901.291117054862, 5802.6692268170345, 2000));
+  antenas.push_back(new Antena(5751.626726969136, 5525.815772426341, 2000));
+  antenas.push_back(new Antena(5351.177980439739, 6692.555330215692, 2000));
+  antenas.push_back(new Antena(6171.8507202407245, 6148.736044805401, 2000));
+  antenas.push_back(new Antena(7101.287317123767, 5950.9835773834775, 2000));
+  antenas.push_back(new Antena(6512.973726543543, 6870.532550895424, 2000));
+  antenas.push_back(new Antena(6443.76036294587, 7473.677576532292, 2000));
+
 
   unsigned int i = 0;
   for(auto t: trazas){
     auto trz = t.second;
 
-    devices.push_back(handle<Device>(new Device(
-            network3g->getCallbackNotificarMovimiento(),
-            network3g->getSendCallback(),
-            trz
-      )));
+    devices.push_back(handle<Device>(new Device(trz)));
 
     if(i >= 1){
       break;
@@ -275,6 +284,7 @@ void test_simulacion_completa(){
   }
 
 
+  handle<Network3G> network3g = new Network3G({devices}, {antenas}, red_tubo->getCallbackEnvioMensaje());
 
 
   handle<Source> src(new Source(END_SIM_TIME, red_tubo, traza));

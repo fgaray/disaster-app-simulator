@@ -30,6 +30,7 @@ class MessagePE{
     unsigned int size;
     bool size_seteado;
     bool dispositivo_movil_seted;
+    bool tag;
   public:
     MessagePE(Id destino, unsigned int size);
     MessagePE(unsigned int size);
@@ -44,6 +45,7 @@ class MessagePE{
 
     Id getDispositivoMovil();
     void setDispositivoMovil(Id dispositivo_movil);
+    void setTag();
 };
 
 #endif

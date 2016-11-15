@@ -27,7 +27,7 @@ void Antena::recibirMessage(Id id_device, MessageMD m){
 
   //se asume que vienen los paquetes reconstruidos desde la red3g, donde fueron simulados.
   // se añade el mensaje a una cola de mensajes.
-  this->cola_ms.push_back(std::make_tuple(id_device, m));
+  this->cola_ms.push(std::make_tuple(id_device, m));
   this->activate();
 }
 
@@ -36,36 +36,25 @@ void Antena::inner_body(){
     if(this->cola_ms.empty()){
       this->traza->puntoRed3G(time(), "No hay más mensajes por enviar a dispositivos en la antena, esperando...");
       this->passivate();
-    }
-    else{
-      std::vector<std::vector<std::tuple<Id, MessageMD>>::iterator> a_eliminar;
-      for(auto it = this->cola_ms.begin(); it != this->cola_ms.end();it++){
-        auto tupla = *it;
-        Id id_device = std::get<0>(tupla);
-        MessageMD mensaje = std::get<1>(tupla);
+    }else{
 
-      /*  std::stringstream ss;
-        ss << "Enviando mensaje a dispositivo";
-        ss << id_device;
-        ss << " con mensaje ";
-        ss << mensaje.getId();
-        ss << ", vamos a esperar ";
-        ss << LATENCIA_RED;
-        this->traza->puntoRed3G(time(), ss);*/
+      //obtenemos el mensaje de la cola
+      auto m = std::get<1>(this->cola_ms.front());
+      this->cola_ms.pop();
 
-        hold(LATENCIA_RED);
+      hold(LATENCIA_RED);
 
-        //(*mensaje)->setTag();
-        a_eliminar.push_back(tupla);
-        //a_eliminar.push_back(std::make_tuple(id_device,mensaje));
+      m.setTag();
 
-      }
-      for(auto m: a_eliminar){
-        this->cola_ms.erase(m);
-        std::pop_heap(this->cola_ms.begin(), this->cola_ms.end());
-      }
+      this->responder_mensaje(m);
 
     }
     
   }
+}
+
+
+
+void Antena::setResponderCallback(std::function<void(MessageMD)> callback){
+  this->responder_mensaje = callback;
 }

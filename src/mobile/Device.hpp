@@ -27,13 +27,16 @@ class Device: public Process{
     void inner_body();
 
   public:
-    Device(std::function<void(Device*)> move_device, send_callback send_message, std::queue<position> posiciones);
+    Device(std::queue<position> posiciones);
     Id getId() const;
     void agregarPosicion(double time, double _x, double _y);
 
     double getX() const;
     double getY() const;
     void endSimulation();
+
+    void setSendCallback(send_callback callback);
+    void setMoveCallback(std::function<void(Device*)> callback);
 
 };
 

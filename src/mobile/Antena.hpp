@@ -24,7 +24,8 @@ class Antena: public Process{
     double x, y, radio;
     //buffer_antena input_buffer;
     //std::unordered_map<Id, MessageMD> cola_ms;
-    std::vector<std::tuple<Id, handle<MessageMD>>> cola_ms;
+    std::queue<std::tuple<Id, MessageMD>> cola_ms;
+    std::function<void(MessageMD)> responder_mensaje;
 
   public:
     Antena(double _x, double _y, double _radio);
@@ -35,6 +36,10 @@ class Antena: public Process{
     void recibirMessage(Id id_device, MessageMD m);
 
     void inner_body();
+
+    std::function<void(MessageMD)> getAntenaResponderCallback();
+
+    void setResponderCallback(std::function<void(MessageMD)> callback);
 
 };
 

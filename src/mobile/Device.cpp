@@ -2,9 +2,7 @@
 
 static Id current_id = 0;
 
-Device::Device(std::function<void(Device*)> _move_device, send_callback _send_message, std::queue<position> posiciones): Process("Device"){
-  this->move_device = _move_device;
-  this->send_message = _send_message;
+Device::Device(std::function<void(Device*)> _move_device): Process("Device"){
 
   std::tie(std::ignore, this->x, this->y) = posiciones.front();
 
@@ -70,4 +68,13 @@ double Device::getY() const{
 void Device::endSimulation(){
   this->movimiento->endSimulation();
   Process::endSimulation();
+}
+
+
+void Device::setSendCallback(send_callback callback){
+  this->send_message = callback;
+}
+
+void Device::setMoveCallback(std::function<void(Device*)> callback){
+  this->move_device = callback;
 }

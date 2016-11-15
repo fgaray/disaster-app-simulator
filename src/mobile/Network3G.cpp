@@ -1,11 +1,18 @@
 #include "Network3G.hpp"
 
 #include <algorithm>
+#include "../pe/PEName.hpp"
+#include "../pe/MessagePE.hpp"
 
 
 
-Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>> al): Process("Network"){
+Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>> al, std::function<void(PEName, MessagePE)> callback): Process("Network"){
   for (auto ant : al){
+    ant->setResponderCallback([callback](MessageMD m){
+          MessagePE mpe;
+          mpe.setTag();
+          callback(PEName::PEPybossa, mpe);
+        });
     this->antenas.insert({ant->getId(), ant});
   }
 

@@ -68,6 +68,9 @@ class RedTubo: public Process{
      * */
     void enviarMensaje(PEName name, MessagePE message);
 
+
+    std::function<void(PEName, MessagePE)> getCallbackEnvioMensaje();
+
 };
 
 #endif
