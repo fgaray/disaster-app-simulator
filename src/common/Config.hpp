@@ -33,7 +33,7 @@ const double TWEET_PER_SECOND = 50;
 const double AMOUNT_OF_TWEETS = 1;
 
 // El tiempo en que la simulación termina de ejecutar todo
-const double END_SIM_TIME = 100000;
+const double END_SIM_TIME = 200000;
 
 const unsigned int MAXIMO_MENSAJES = 10;
 
