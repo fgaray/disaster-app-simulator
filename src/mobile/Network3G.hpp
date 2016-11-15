@@ -39,7 +39,7 @@ class Network3G: public Process{
     void inner_body();
 
   public:
-    Network3G(std::initializer_list<handle<Device>> dv, std::initializer_list<handle<Antena>> al);
+    Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>> al);
 
     //Funcion que divide mensaje original y envia paquetes a antena
 

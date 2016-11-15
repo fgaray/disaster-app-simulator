@@ -4,7 +4,7 @@
 
 
 
-Network3G::Network3G(std::initializer_list<handle<Device>> dv, std::initializer_list<handle<Antena>> al): Process("Network"){
+Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>> al): Process("Network"){
   for (auto ant : al){
     this->antenas.insert({ant->getId(), ant});
   }

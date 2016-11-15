@@ -255,7 +255,7 @@ void test_simulacion_completa(){
 
   vector<handle<Antena>> antenas;
 
-  handle<Network3G> network3g = new Network3G({devices, antenas});
+  handle<Network3G> network3g = new Network3G({devices}, {antenas});
 
   unsigned int i = 0;
   for(auto t: trazas){
