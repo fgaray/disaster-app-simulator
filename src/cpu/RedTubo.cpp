@@ -93,7 +93,7 @@ void RedTubo::enviarMensaje(PEName name, MessagePE message){
     ss2 << "Recibido un mensaje para la red 3g, redirigiendo...";
     this->traza->puntoRedTubo(time(), ss2);
 
-    MessageMD mmd(message.getDispositivoMovil());
+    MessageMD mmd(message.getDispositivoMovil(), message.getSize());
     this->red_movil->enviarMensajeHaciaMD(message.getDispositivoMovil(), mmd);
     return;
   }

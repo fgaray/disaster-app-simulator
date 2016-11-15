@@ -9,9 +9,15 @@
 class MessageMD{
   private:
     Id d;
+    Id id_message;
+    unsigned int size;
+    bool tageado;
   public:
-    MessageMD(Id destino);
+    MessageMD(Id destino, unsigned int size);
     Id getDestino();
+    Id getId();
+    unsigned int getSize();
+    void setTag();
 };
 
 #endif

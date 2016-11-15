@@ -14,7 +14,9 @@
 #include "MessageMD.hpp"
 #include "Antena.hpp"
 #include "Device.hpp"
+#include "PacketMD.hpp"
 
+typedef std::vector<std::tuple<Id, Id, PacketMD>> buffer2;
 
 class Network3G: public Process{
   private:
@@ -22,7 +24,13 @@ class Network3G: public Process{
     std::unordered_map<Id, handle<Antena>> devices_antenas;
     std::unordered_map<Id, handle<Antena>> antenas;
 
-    buffer input_buffer;
+    std::vector<std::tuple<Id, Id, PacketMD>> current;
+
+    std::unordered_map<Id, bool> existe;
+
+    buffer2 input_buffer;
+    buffer2 red_buffer;
+    buffer2 output_buffer;
 
     //Solo para constructor de la red (asignar device a antenas)
     //std::unordered_map<Id, std::shared_ptr<Device>> devices_tmp;
@@ -38,7 +46,11 @@ class Network3G: public Process{
     //(Cuando el device se cambia de antena)
 
     void enviarMensajeHaciaMD(Id hacia, MessageMD m);
+    void enviarMensajeAntena(Id antena, Id device, MessageMD m);
     void enviarMensajeHaciaCluster(MessageMD m);
+    void entregarMensaje(Id id_antena, Id id_device, PacketMD p);
+    void intentarAgregarPaquete();
+    bool redSaturada();
 
     std::function<void(MessageMD)> getSendCallback();
     std::function<void(std::shared_ptr<Device>)> getMoveCallback();

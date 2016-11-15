@@ -29,7 +29,7 @@ class PacketMD{
      * @param last Si es el último paquete que componen el mensaje
      *
      * */
-    Packet(MessagePE message, unsigned int number, bool last);
+    PacketMD(MessageMD message, unsigned int number, bool last);
 
     unsigned int getMessageSize();
     unsigned int getPacketSize();

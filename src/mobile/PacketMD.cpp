@@ -20,7 +20,7 @@ unsigned int PacketMD::getPacketSize(){
   return this->size;
 }
 
-MessagePE PacketMD::getMessage(){
+MessageMD PacketMD::getMessage(){
   return this->message;
 }
 

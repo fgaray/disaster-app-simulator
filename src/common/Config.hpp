@@ -48,10 +48,14 @@ const unsigned int PACKET_SIZE = 100;
 // En bps
 const unsigned int VELOCIDAD_RED_TUBO = 10000*1000; // 1MB/s
 
+const unsigned int VELOCIDAD_RED_3G = 10000*1000; // 1MB/s
+
 //Este es el ancho de banda en un instante dentro de la red en bits. Lo usamos
 //para identificar cuanto es el máximo de paquetes que pueden estar dentro de la
 //red en un momento.
 const unsigned int ANCHO_BANDA_INSTANTE = 1000;
+
+const unsigned int ANCHO_BANDA_INSTANTE_3G = 1000;
 
 // En bitss
 const unsigned int DEFAULT_MESSAGE_SIZE = 200;
