@@ -13,11 +13,15 @@ Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>>
           mpe.setTag();
           callback(PEName::PEPybossa, mpe);
         });
+
     this->antenas.insert({ant->getId(), ant});
   }
 
+
   for (auto device : dv){
     this->devices.insert({device->getId(), device});
+    device->setMoveCallback(this->getCallbackNotificarMovimiento());
+    device->setSendCallback(this->getSendCallback());
     
     //Para cada device, encontrar antena
     std::vector<std::tuple<handle<Antena>, double>> dist_vect;
@@ -139,6 +143,13 @@ std::function<void(std::shared_ptr<Device>)> Network3G::getMoveCallback(){
 }
 
 void Network3G::inner_body(){
+
+  for(auto d: this->devices){
+    d.second->iniciar_mov();
+  }
+
+
+
   while(this->run){
     if(this->current.empty()){
       this->intentarAgregarPaquete();

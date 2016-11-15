@@ -274,7 +274,9 @@ void test_simulacion_completa(){
   for(auto t: trazas){
     auto trz = t.second;
 
-    devices.push_back(handle<Device>(new Device(trz)));
+    devices.push_back(handle<Device>(new Device(
+            trz
+      )));
 
     if(i >= 1){
       break;

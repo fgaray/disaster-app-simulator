@@ -37,6 +37,7 @@ class Device: public Process{
 
     void setSendCallback(send_callback callback);
     void setMoveCallback(std::function<void(Device*)> callback);
+    void iniciar_mov();
 
 };
 
