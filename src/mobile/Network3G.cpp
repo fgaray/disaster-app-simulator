@@ -190,11 +190,11 @@ void Network3G::inner_body(){
         auto ant = this->antenas.find(id_antena);
         auto dev = this->devices.find(id_device);
 
-        if ((*ant).second->distancia(dev) > (*ant).second->getRadio())
+        if ((*ant).second->distancia((*dev).second) > (*ant).second->getRadio())
         {
           devices_antenas.erase(id_device);
-          Id idnew_antena = buscarNuevaAnt(dev);
-          input_buffer.push_back(std::make_tuple(idnew_antena, dev, p));
+          Id idnew_antena = buscarNuevaAnt((*dev).second);
+          input_buffer.push_back(std::make_tuple(idnew_antena, (*dev).second->getId(), p));
           hold(1); //numero random
           //sacamos el elemento del heap
           a_eliminar.push_back(it);
@@ -246,7 +246,7 @@ void Network3G::entregarMensaje(Id id_antena, Id id_device, PacketMD p){
   auto antena = this->antenas.find(id_antena);
   assert(antena != this->antenas.end());
 
-  (*antena).second->recibirMessage(id_device, p.getMessage());
+  (*antena).second->recibirMensaje(id_device, p.getMessage());
 }
 
 
