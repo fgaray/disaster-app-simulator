@@ -23,6 +23,9 @@ double Antena::getRadio(){
   return radio;
 }
 
+void Antena::recibirMessage(Id id_device, MessageMD m){
+
+}
 
 void Antena::inner_body(){
 

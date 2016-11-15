@@ -246,7 +246,7 @@ void Network3G::entregarMensaje(Id id_antena, Id id_device, PacketMD p){
   auto antena = this->antenas.find(id_antena);
   assert(antena != this->antenas.end());
 
-  (*antena).second->recibirMensaje(id_device, p.getMessage());
+  (*antena).second->recibirMessage(id_device, p.getMessage());
 }
 
 

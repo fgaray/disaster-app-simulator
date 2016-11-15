@@ -24,7 +24,7 @@ class Antena: public Process{
     Id getId();
     double getRadio();
 
-    void recibirMensaje();
+    void recibirMessage(Id id_device, MessageMD m);
 
     void inner_body();
 
