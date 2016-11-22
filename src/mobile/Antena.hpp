@@ -17,6 +17,7 @@
 //#include "../common/Undefined.hpp"
 #include "../common/Config.hpp"
 
+typedef std::vector<std::tuple<Id, Id, PacketMD>> buffer_antena;
 
 class Antena: public Process{
   private:
@@ -24,17 +25,19 @@ class Antena: public Process{
     double x, y, radio;
     //buffer_antena input_buffer;
     //std::unordered_map<Id, MessageMD> cola_ms;
-    std::queue<std::tuple<Id, MessageMD>> cola_ms;
+    std::vector<std::tuple<Id, PacketMD>> cola_ps;
     std::function<void(MessageMD)> responder_mensaje;
-
+    std::vector<handle<Device>> devices;
   public:
     Antena(double _x, double _y, double _radio);
-    double distancia(handle<Device> device) const;
+    double distancia(Device *device) const;
     Id getId();
     double getRadio();
 
-    void recibirMessage(Id id_device, MessageMD m);
+    //void recibirMessage(Id id_device, MessageMD m);
 
+    void Antena::entregarPaquetesDevice(Id id_device, buffer_antena paquetes);
+    void Antena::recibirPaquetes(buffer2 paquetes);
     void inner_body();
 
     std::function<void(MessageMD)> getAntenaResponderCallback();

@@ -51,6 +51,11 @@ void Device::inner_body(){
   }
 }
 
+
+void recibirPaquetesAntena(Id id_antena, PacketMD p){
+
+} 
+
 void Device::agregarPosicion(double time, double _x, double _y){
   this->posiciones.push(std::make_tuple<>(time, _x, _y));
 }

@@ -27,7 +27,6 @@ Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>>
     std::vector<std::tuple<handle<Antena>, double>> dist_vect;
     for (auto ant = this->antenas.begin(); ant != this->antenas.end(); ++ant ){
       double dev_dist = ant->second->distancia(device);
-
       if((*ant).second->getRadio() > dev_dist){
         dist_vect.push_back(std::make_tuple((*ant).second, dev_dist));
       }
@@ -39,6 +38,23 @@ Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>>
     this->devices_antenas.insert({device->getId(), std::get<0>(dist_vect.at(0))});
   }
 
+}
+
+Id Network3G::buscarNuevaAnt(Device *device){
+  std::vector<std::tuple<handle<Antena>, double>> dist_vect;
+  for (auto ant = this->antenas.begin(); ant != this->antenas.end(); ++ant ){
+    double dev_dist = ant->second->distancia(device);
+
+    if((*ant).second->getRadio() > dev_dist){
+      dist_vect.push_back(std::make_tuple((*ant).second, dev_dist));
+    }
+  }
+  std::sort(dist_vect.begin(), dist_vect.end(), [](auto &left, auto &right) {
+      return std::get<1>(left) < std::get<1>(right);
+      });
+
+  this->devices_antenas.insert({device->getId(), std::get<0>(dist_vect.at(0))});
+  return std::get<0>(dist_vect.at(0))->getId();
 }
 
 Id Network3G::buscarNuevaAnt(handle<Device> device){
@@ -56,6 +72,45 @@ Id Network3G::buscarNuevaAnt(handle<Device> device){
 
   this->devices_antenas.insert({device->getId(), std::get<0>(dist_vect.at(0))});
   return std::get<0>(dist_vect.at(0))->getId();
+}
+
+
+bool Network3G::handover(Id id_device, Id id_antena, buffer2 temporal_buffer){
+  
+  auto ant = this->antenas.find(id_antena);
+  auto dev = this->devices.find(id_device);
+   
+  //se comprueba si el device sigue o no en la misma antena
+  //
+  //en caso que ya no este en el radio de la misma antena
+  if ((ant*).second->distancia((dev*).second) > (ant*).second->getRadio())
+  {
+    //Se actualiza el mapa con la nueva antena
+    devices_antenas.erase(id_device);
+    Id idnew_antena = buscarNuevaAnt((dev*).second);
+    //input_buffer.push_back(std::make_tuple(idnew_antena, (dev*).second->getId(), p));
+    buffer_rebotados.push_back(std::make_tuple(idnew_antena, (dev*).second->getId(), p));
+      
+    auto new_ant = this->antenas.find(idnew_antena);
+    (new_ant*).second->devices.insert(dev);	  
+    //se hace un hold que considera la busqueda de la nueva antena 
+    //y el envio del mensaje a la nueva antena
+    hold(BUSQUEDA_ANTENA+LATENCIA_RED);
+    //se agregan los paquetes a un buffer de rebotados
+    
+    if
+
+    //this->entregarMensaje(id_antena, id_device, p);
+  
+    //ahora sacamos el mensaje de la tabla hash de manera de permitir
+    //que entre otro posible paquete del mismo mensaje
+    return false;
+  }
+  else
+  {
+    (ant*).second->devices.insert(dev);	  
+    return true;	  
+  }
 }
 
 void Network3G::enviarMensajeHaciaMD(Id hacia, MessageMD m){
@@ -87,10 +142,11 @@ void Network3G::enviarMensajeHaciaMD(Id hacia, MessageMD m){
 }
 
 void Network3G::enviarMensajeAntena(Id antena, Id device, MessageMD message){
-
+  // se crea un buffer temporal de paquetes vector<Id, Id, PacketMD>
+  buffer2 temporal_buffer;
   // el mensaje es dividido en paquetes que son puestos en un buffer2 de entrada
   // de la red 3g a la espera de ser enviados por la red.
-
+  
   std::stringstream ss2;
   ss2 << "Recibido un mensaje con destino ";
   ss2 << antena;
@@ -102,9 +158,10 @@ void Network3G::enviarMensajeAntena(Id antena, Id device, MessageMD message){
   //el mensaje a enviar no puede tener un size cero
   assert(message.getSize() != 0);
 
+  //se divide y agrega los paquetes al buffer temporal
   for(unsigned int restante = message.getSize();restante > 0;restante = restante - PACKET_SIZE, number++){
     PacketMD pkt(message, number, last);
-    this->input_buffer.push_back(std::make_tuple(antena, device, pkt));
+    this->temporal_buffer.push_back(std::make_tuple(antena, device, pkt));
   }
 
   std::stringstream ss;
@@ -118,13 +175,19 @@ void Network3G::enviarMensajeAntena(Id antena, Id device, MessageMD message){
   ss << PACKET_SIZE << " bits";
   this->traza->puntoRed3G(time(), ss);
 
+  // se llama la funcion handover para ver si el device cambio de antena
+  asset(this->handover(device, antena, temporal_buffer);
+  
   //deberiamos haber agregado al menos un mensaje
-  assert(this->input_buffer.size() != 0);
+  assert(this->buffer_temporal.size() != 0);
 
-  std::get<2>(this->input_buffer.at(this->input_buffer.size() - 1));
-
-  this->traza->puntoRed3G(time(), "Volviendo a activar la red");
-  this->activate();
+  std::get<2>(this->temporal_buffer.at(this->input_buffer.size() - 1)).setLast(true);
+  
+  auto ant = this->antenas.find(id_antena);
+  
+  (ant*).second->recibirPaquetes(temporal_buffer);
+  //entregarPaquetesAntena(temporal_buffer);
+ // this->traza->puntoRed3G(time(), "Volviendo a activar la red");
 }
 
 void Network3G::enviarMensajeHaciaCluster(MessageMD m){
@@ -201,49 +264,11 @@ void Network3G::inner_body(){
       std::vector<std::vector<std::tuple<Id, Id, PacketMD>>::iterator> a_eliminar;
 
       for(auto it = this->current.begin(); it != this->current.end();it++){
-        auto tupla = *it;
-        PacketMD p = std::get<2>(tupla);
-        Id id_antena = std::get<0>(tupla);
-        Id id_device = std::get<1>(tupla);
-
-        auto ant = this->antenas.find(id_antena);
-        auto dev = this->devices.find(id_device);
 
         // en caso que el dispositivo ya no se encuentre en la misma antena
-        if ((*ant).second->distancia((*dev).second) > (*ant).second->getRadio())
-        {
-          //Se actualiza el mapa con la nueva antena
-          devices_antenas.erase(id_device);
-          Id idnew_antena = buscarNuevaAnt((*dev).second);
-          input_buffer.push_back(std::make_tuple(idnew_antena, (*dev).second->getId(), p));
-          
-          //se hace un hold que considera la busqueda de la nueva antena 
-          //y el envio del mensaje a la nueva antena
-          hold(BUSQUEDA_ANTENA+LATENCIA_RED); 
-          //se entrega el mensaje a la antena
-          this->entregarMensaje(id_antena, id_device, p);
-          //sacamos el elemento del heap
-          a_eliminar.push_back(it);
-          //ahora sacamos el mensaje de la tabla hash de manera de permitir
-          //que entre otro posible paquete del mismo mensaje
-          this->existe.erase(p.getMessage().getId());
-        }
-        else{
-          if(p.getRemainingTime() <= 0){
-            //hay que ver si era el final
-            if(p.isLast()){
-              //era el ultimo, entonces pasamos el mensaje a la CPU
-              this->entregarMensaje(id_antena, id_device, p);
-            }
-            //sacamos el elemento del heap
-            a_eliminar.push_back(it);
-            //ahora sacamos el mensaje de la tabla hash de manera de permitir
-            //que entre otro posible paquete del mismo mensjae
-            this->existe.erase(p.getMessage().getId());
-            //se espera el tiempo que demora el envío del mensaje
-            hold(LATENCIA_RED);
-          }
-        }
+        //
+        	
+        handover(*it, a_eliminar);
       }
 
       for(auto it: a_eliminar){
@@ -266,7 +291,7 @@ bool Network3G::redSaturada(){
   return total > ANCHO_BANDA_INSTANTE_3G;
 }
 
-void Network3G::entregarMensaje(Id id_antena, Id id_device, PacketMD p){
+void Network3G::entregarPaquete(Id id_antena, Id id_device, PacketMD p){
   //tenemos que encontrar la Antena a la cual vamos a enviar el mensaje del
   //paquete. Para un mensaje, buscamos en cual de todas las antenas se encuentra el
   //device con el ID, si no lo encontramos, entonces en alguna parte estamos mal.
@@ -286,7 +311,7 @@ std::function<void(Device*)> Network3G::getCallbackNotificarMovimiento(){
 
 
 void Network3G::notificarMovimientoDevice(Device *d){
-  throw UNDEFINED;
+  ant->distancia(d);
 }
 
 

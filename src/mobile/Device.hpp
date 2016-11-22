@@ -10,9 +10,12 @@
 #include "../common/Undefined.hpp"
 #include "MessageMD.hpp"
 #include "Movimiento.hpp"
+#include "PacketMD.hpp"
+#include "Antena.hpp"
 #include "../common/Config.hpp"
 
 typedef std::function<void(MessageMD)> send_callback;
+typedef std::vector<std::tuple<Id, Id, PacketMD>> buffer_device;
 
 class Device: public Process{
   private:
@@ -23,7 +26,7 @@ class Device: public Process{
     double x, y;
     handle<Movimiento> movimiento;
     Id id;
-
+    buffer_device paquetes;
     void inner_body();
 
   public:
@@ -35,6 +38,7 @@ class Device: public Process{
     double getY() const;
     void endSimulation();
 
+    void recibirPaquetesAntena(Id id_antena, PacketMD p); 
     void setSendCallback(send_callback callback);
     void setMoveCallback(std::function<void(Device*)> callback);
     void iniciar_mov();

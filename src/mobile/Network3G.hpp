@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <queue>
 
 #include "../common/IP.hpp"
 #include "../common/Process.hpp"
@@ -31,8 +32,7 @@ class Network3G: public Process{
 
     std::unordered_map<Id, bool> existe;
 
-    buffer2 input_buffer;
-    buffer2 red_buffer;
+    buffer2 buffer_rebotados;
     buffer2 output_buffer;
 
     //Solo para constructor de la red (asignar device a antenas)
@@ -51,11 +51,14 @@ class Network3G: public Process{
     void enviarMensajeHaciaMD(Id hacia, MessageMD m);
     void enviarMensajeAntena(Id antena, Id device, MessageMD m);
     void enviarMensajeHaciaCluster(MessageMD m);
-    void entregarMensaje(Id id_antena, Id id_device, PacketMD p);
+    void entregarPaquete(Id id_antena, Id id_device, PacketMD p);
     void intentarAgregarPaquete();
     bool redSaturada();
     Id buscarNuevaAnt(handle<Device> device);
+    Id buscarNuevaAnt(Device *device);
 
+    bool Network3G::handover(Id id_device, Id id_antena, buffer2 temporal_buffer){
+    //void Network3G::handover(tuple<Id,Id,PacketMD> *t, std::vector<std::vector<std::tuple<Id, Id, PacketMD>>::iterator> a_eliminar );
     std::function<void(MessageMD)> getSendCallback();
     std::function<void(std::shared_ptr<Device>)> getMoveCallback();
 
