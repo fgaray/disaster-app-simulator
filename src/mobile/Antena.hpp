@@ -5,6 +5,7 @@
 #include "Device.hpp"
 #include "PacketMD.hpp"
 #include "MessageMD.hpp"
+#include "Network3G.hpp"
 
 #include <unordered_map>
 #include <memory>
@@ -26,6 +27,7 @@ class Antena: public Process{
     //std::unordered_map<Id, MessageMD> cola_ms;
     std::queue<std::tuple<Id, MessageMD>> cola_ms;
     std::function<void(MessageMD)> responder_mensaje;
+    handle<Network3G> red_movil;
 
   public:
     Antena(double _x, double _y, double _radio);
@@ -40,6 +42,7 @@ class Antena: public Process{
     std::function<void(MessageMD)> getAntenaResponderCallback();
 
     void setResponderCallback(std::function<void(MessageMD)> callback);
+    void setRedMovil(handle<Network3G> red_movil);
 
 };
 

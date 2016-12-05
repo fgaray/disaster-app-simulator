@@ -45,7 +45,7 @@ void Antena::inner_body(){
       hold(LATENCIA_RED);
 
       m.setTag();
-
+      this->red_movil->enviarMensajeHaciaCluster(m);
       this->responder_mensaje(m);
 
     }
@@ -57,4 +57,8 @@ void Antena::inner_body(){
 
 void Antena::setResponderCallback(std::function<void(MessageMD)> callback){
   this->responder_mensaje = callback;
+}
+
+void Antena::setRedMovil(handle<Network3G> red_movil){
+  this->red_movil = red_movil;
 }

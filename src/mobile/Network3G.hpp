@@ -9,9 +9,11 @@
 #include "../common/IP.hpp"
 #include "../common/Process.hpp"
 #include "../common/Undefined.hpp"
+#include "../common/Config.hpp"
 #include "../common/UniqueIdGenerator.hpp"
 #include "../pe/PEName.hpp"
 #include "../pe/MessagePE.hpp"
+#include "../cpu/RedTubo.hpp"
 
 #include "MessageMD.hpp"
 #include "Antena.hpp"
@@ -34,6 +36,7 @@ class Network3G: public Process{
     buffer2 input_buffer;
     buffer2 red_buffer;
     buffer2 output_buffer;
+    handle<RedTubo> red_tubo;
 
     //Solo para constructor de la red (asignar device a antenas)
     //std::unordered_map<Id, std::shared_ptr<Device>> devices_tmp;
@@ -60,8 +63,8 @@ class Network3G: public Process{
     std::function<void(std::shared_ptr<Device>)> getMoveCallback();
 
     std::function<void(Device*)> getCallbackNotificarMovimiento();
-
     void notificarMovimientoDevice(Device *d);
+    void setRedTubo(handle<RedTubo> red_tubo);
 
 };
 

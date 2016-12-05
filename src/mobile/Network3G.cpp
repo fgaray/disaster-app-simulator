@@ -128,9 +128,14 @@ void Network3G::enviarMensajeAntena(Id antena, Id device, MessageMD message){
 }
 
 void Network3G::enviarMensajeHaciaCluster(MessageMD m){
-  throw UNDEFINED;
+  MessagePE mnsjePE();
+  mnsjePE.setTag();
+  this->red_tubo->enviarMensaje(PEName::PEPybossa, mnsjePE);
 }
 
+void Network3G::setRedTubo(handle<RedTubo> red_tubo){
+  this->red_tubo = red_tubo;
+}
 
 std::function<void(MessageMD)> Network3G::getSendCallback(){
   return [this](MessageMD message){

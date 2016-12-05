@@ -270,6 +270,7 @@ void test_simulacion_completa(){
   antenas.push_back(new Antena(6443.76036294587, 7473.677576532292, 2000));
 
 
+
   unsigned int i = 0;
   for(auto t: trazas){
     auto trz = t.second;
@@ -288,7 +289,11 @@ void test_simulacion_completa(){
 
   handle<Network3G> network3g = new Network3G({devices}, {antenas}, red_tubo->getCallbackEnvioMensaje());
   red_tubo->setRedMovil(network3g);
+  network3g->setRedTubo(red_tubo);
 
+  for(auto a: antenas){
+    a->setRedMovil(network3g);
+  }
 
 
   handle<Source> src(new Source(END_SIM_TIME, red_tubo, traza));
