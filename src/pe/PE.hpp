@@ -22,6 +22,8 @@ class PE{
   protected:
     Id id;
     double currentTime;
+    double suma;
+    size_t cantidad;
   public:
     PE(){
       //cremos un ID de acuerdo a UniqueIdGenerator
@@ -58,6 +60,11 @@ class PE{
      * Cada 1000 es 1 segundo
      * */
     virtual double getCostTime() = 0;
+
+    void sumarTiempoToken(double tiempo){
+      this->suma = suma + tiempo;
+      this->cantidad++;
+    }
 
 };
 

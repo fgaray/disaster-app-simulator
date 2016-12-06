@@ -25,6 +25,7 @@ void Core::inner_body(){
     double to_hold = this->current_pe->getCostTime();
     hold(to_hold);
     this->tiempo_uso += to_hold;
+    this->current_pe->sumarTiempoToken(to_hold);
 
     //notificamos a la CPU que estamos ready
     this->cpu_callback(this->current_pe->nextPE(this->message));

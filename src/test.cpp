@@ -320,6 +320,11 @@ void test_simulacion_completa(){
   maximo_procesado = max(maximo_procesado, cpu3->getTokensProcesados());
   maximo_procesado = max(maximo_procesado, cpu4->getTokensProcesados());
 
+  cout << "Tokens procesados CPU 1: " << cpu1->getTokensProcesados() << endl;
+  cout << "Tokens procesados CPU 2: " << cpu2->getTokensProcesados() << endl;
+  cout << "Tokens procesados CPU 3: " << cpu3->getTokensProcesados() << endl;
+  cout << "Tokens procesados CPU 4: " << cpu4->getTokensProcesados() << endl;
+
   double suma =
     (double)cpu1->getTokensProcesados()/(double)maximo_procesado +
     (double)cpu2->getTokensProcesados()/(double)maximo_procesado +
