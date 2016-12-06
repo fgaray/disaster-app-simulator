@@ -45,7 +45,7 @@ const double END_SIM_TIME = 10000000;
 const unsigned int MAXIMO_MENSAJES = 1000;
 
 //Max numero de device en la red
-const unsigned int MAX_AMOUNT_DEVICE = 10;
+const unsigned int MAX_AMOUNT_DEVICE = 1;
 
 
 // Tamaño del paquete maximo a enviar por la red en bits

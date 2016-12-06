@@ -66,7 +66,7 @@ double PEModel::getPrecision(){
 
 
 double PEModel::getThroughput(){
-  return (double)this->terminados / (double)this->tiempo_final;
+  return (double)this->terminados / ((double)this->tiempo_final / 1000.0);
 }
 
 
@@ -76,5 +76,5 @@ unsigned int PEModel::getTotalMensajes(){
 
 
 double PEModel::getTotalMensajesTiempo(){
-  return this->tiempo_final;
+  return this->tiempo_final / 1000.0;
 }
