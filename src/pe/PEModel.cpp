@@ -11,6 +11,8 @@ double  PEModel::getCostTime(){
 
 PEModel::PEModel():PE(){
 	this->precision = 0.5;
+  this->tiempo_final = 0;
+  this->terminados = 0;
 }
 
 std::vector<std::tuple<PEName, MessagePE>> PEModel::nextPE(MessagePE message){
@@ -42,6 +44,8 @@ std::vector<std::tuple<PEName, MessagePE>> PEModel::nextPE(MessagePE message){
 			}
 			
 		}
+    this->terminados++;
+    this->tiempo_final = currentTime;
 		return {};
 	}
 	else{
@@ -58,4 +62,19 @@ PEName PEModel::getName(){
 
 double PEModel::getPrecision(){
 	return this->precision;
+}
+
+
+double PEModel::getThroughput(){
+  return (double)this->terminados / ((double)this->tiempo_final / 1000.0);
+}
+
+
+unsigned int PEModel::getTotalMensajes(){
+  return this->terminados;
+}
+
+
+double PEModel::getTotalMensajesTiempo(){
+  return this->tiempo_final / 1000.0;
 }

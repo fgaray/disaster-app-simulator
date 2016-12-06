@@ -14,6 +14,7 @@ class Source: public process {
     std::vector<std::function<void()>> end_callbacks;
     handle<RedTubo> red_tubo;
     std::shared_ptr<Traza> traza;
+    unsigned int total_mensajes;
 
     double end_time;
     void inner_body();
@@ -30,6 +31,8 @@ class Source: public process {
     void addEndCallback(Process &p);
 
     void addEndCallback(handle<Process> p);
+
+    unsigned int getTotalMensajes();
 };
 
 #endif

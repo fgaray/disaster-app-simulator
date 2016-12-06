@@ -8,12 +8,17 @@
 class PEModel: public PE{
 	private:
 		double precision;
+    unsigned int terminados;
+    double tiempo_final;
 	public:
 		PEModel();
 		double getCostTime();
 		std::vector<std::tuple<PEName, MessagePE>> nextPE(MessagePE message);
     PEName getName();
     double getPrecision();
+    double getThroughput();
+    double getTotalMensajesTiempo();
+    unsigned int getTotalMensajes();
 };
 
 #endif

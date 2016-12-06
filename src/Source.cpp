@@ -5,6 +5,7 @@ Source::Source(double et, handle<RedTubo> red, std::shared_ptr<Traza> traza): pr
   this->end_time = et;
   this->red_tubo = red;
   this->traza = traza;
+  this->total_mensajes = 0;
 }
 
 Source::~Source(){
@@ -27,6 +28,7 @@ void Source::inner_body(){
         auto destino = PEName::PEAdapter;
         auto mensaje = MessagePE(DEFAULT_MESSAGE_SIZE);
         this->traza->puntoSource(time(), "Generando un nuevo mensaje "+to_string(cantidad_menajes));
+        total_mensajes++;
 
         this->red_tubo->enviarMensaje(destino, mensaje);
         //enviamos un mensaje cada 0.5 segundos
@@ -68,4 +70,10 @@ void Source::addEndCallback(Process &p){
 
 void Source::addEndCallback(handle<Process> p){
   this->end_callbacks.push_back(p->getEndCallback());
+}
+
+
+
+unsigned int Source::getTotalMensajes(){
+  return this->total_mensajes;
 }

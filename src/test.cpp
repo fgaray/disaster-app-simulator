@@ -307,7 +307,6 @@ void test_simulacion_completa(){
 
 
   cout << "Largo promedio de las colas " << obtenerPromedio() << endl;
-  cout << "Precision del modelo " << peModel->getPrecision() << endl;
 
   cout << "Utilización CPU 1: " << cpu1->utilizacion() << endl;
   cout << "Utilización CPU 2: " << cpu2->utilizacion() << endl;
@@ -321,6 +320,11 @@ void test_simulacion_completa(){
   maximo_procesado = max(maximo_procesado, cpu3->getTokensProcesados());
   maximo_procesado = max(maximo_procesado, cpu4->getTokensProcesados());
 
+  cout << "Tokens procesados CPU 1: " << cpu1->getTokensProcesados() << endl;
+  cout << "Tokens procesados CPU 2: " << cpu2->getTokensProcesados() << endl;
+  cout << "Tokens procesados CPU 3: " << cpu3->getTokensProcesados() << endl;
+  cout << "Tokens procesados CPU 4: " << cpu4->getTokensProcesados() << endl;
+
   double suma =
     (double)cpu1->getTokensProcesados()/(double)maximo_procesado +
     (double)cpu2->getTokensProcesados()/(double)maximo_procesado +
@@ -332,12 +336,30 @@ void test_simulacion_completa(){
 
   cout << "Eficiencia: " << eficiencia << endl;
 
-    
+
+  cout << "Tiempo Promedio PEAdapter: " << peAdapter->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PECollector: " << peCollector->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEFilter: " << peFilter->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEBroker: " << peBroker->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEBigram: " << peBigram->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PENHashtags: " << peNHashtags->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PENMentions: " << peNMentions->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEPHashtags: " << pePHashtags->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEPMentions: " << pePMentions->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEPOStag: " << pePOStag->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PESizetweet: " << pePSizetweet->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEModel: " << peModel->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEAssembler: " << peAssembler->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEFSelection: " << peFSelection->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PETrainer: " << peFSelection->getTiempoPromedio() << endl;
+
+
+  cout << "Total mensajes a procesar: " << src->getTotalMensajes() << endl;
+  cout << "Total mensajes tiempo procesados: " << peModel->getTotalMensajesTiempo() << endl;
+  cout << "Total mensajes procesados: " << peModel->getTotalMensajes() << endl;
+  cout << "Throughput: " << peModel->getThroughput() << endl;
 
   
-
-
-
 
   // Listo!
   sim->end_simulation();

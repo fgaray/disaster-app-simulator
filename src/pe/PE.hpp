@@ -22,15 +22,20 @@ class PE{
   protected:
     Id id;
     double currentTime;
+    double suma;
+    size_t cantidad;
   public:
     PE(){
       //cremos un ID de acuerdo a UniqueIdGenerator
       this->id = unique_id();
+      this->suma = 0;
+      this->cantidad = 0;
     }
 
     Id getId(){
       return this->id;
     }
+
 
     /**
      * Entrega el Id del siguiente PE a ser ejecutado. Se puede buscar el Id en
@@ -58,6 +63,16 @@ class PE{
      * Cada 1000 es 1 segundo
      * */
     virtual double getCostTime() = 0;
+
+    void sumarTiempoToken(double tiempo){
+      this->suma = suma + tiempo;
+      this->cantidad++;
+    }
+
+    double getTiempoPromedio(){
+      return (double)this->suma / (double)this->cantidad;
+    }
+
 
 };
 
