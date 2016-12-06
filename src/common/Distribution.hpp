@@ -11,7 +11,7 @@
 class Distribution{
   private:
     double cantidad_tweets;  // number of experiments
-    std::default_random_engine generator;
+    
     double lambda;
   public:
   	Distribution(double _cantidad_tweets, double _lambda);
