@@ -7,7 +7,7 @@ double  PEFSelection::getCostTime(){
 
 std::vector<std::tuple<PEName, MessagePE>> PEFSelection::nextPE(MessagePE message){
   //envía el mismo mensaje sin modificar a PEAssembler
-	return {std::make_tuple(PEName::PEFSelection, message)};
+	return {std::make_tuple(PEName::PETrainer, message)};
 }
 
 
