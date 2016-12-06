@@ -2,6 +2,7 @@
 
 #include "../pe/PEName.hpp"
 #include "../metric/LargoPromedioCola.hpp"
+#include "../metric/BalanceCarga.hpp"
 
 void CPU::inner_body(){
   while(this->run){
@@ -51,6 +52,7 @@ void CPU::inner_body(){
         }
 
         agregarTamano((*mensajes_found).second.size());
+        agregarBalance(peNameToString((*(this->current_pe))->getName()), (*mensajes_found).second.size());
 
 
       }
@@ -193,4 +195,15 @@ function<void()> CPU::getEndCallback(){
 
 void CPU::setNumber(unsigned int number){
   this->number = number;
+}
+
+
+double CPU::utilizacion(){
+  double total = 0;
+
+  for(auto core: this->cores){
+    total += core->utilizacion();
+  }
+
+  return total;
 }

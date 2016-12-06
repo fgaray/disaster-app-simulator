@@ -33,6 +33,7 @@
 #include "common/Distribution.hpp"
 
 #include "metric/LargoPromedioCola.hpp"
+#include "metric/BalanceCarga.hpp"
 
 
 using namespace std;
@@ -303,6 +304,15 @@ void test_simulacion_completa(){
 
   sim->run();
 
+
+  cout << "Largo promedio de las colas " << obtenerPromedio() << endl;
+
+  cout << "Utilización CPU 1: " << cpu1->utilizacion() << endl;
+  cout << "Utilización CPU 2: " << cpu2->utilizacion() << endl;
+  cout << "Utilización CPU 3: " << cpu3->utilizacion() << endl;
+  cout << "Utilización CPU 4: " << cpu4->utilizacion() << endl;
+
+
   // Listo!
   sim->end_simulation();
 
@@ -374,7 +384,7 @@ int main(int argc, char *argv[])
   //test_simulacion_basica();
   test_simulacion_completa();
 
-  cout << "Largo promedio de las colas " << obtenerPromedio() << endl;
+
 
   //test_problema();
   
