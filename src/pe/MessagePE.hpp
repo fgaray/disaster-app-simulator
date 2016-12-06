@@ -46,6 +46,7 @@ class MessagePE{
     Id getDispositivoMovil();
     void setDispositivoMovil(Id dispositivo_movil);
     void setTag();
+    bool getTag();
 };
 
 #endif

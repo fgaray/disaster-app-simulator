@@ -198,7 +198,7 @@ void test_simulacion_completa(){
   auto pePSizetweet = std::shared_ptr<PE>(new PESizetweet);
   auto peUnigram = std::shared_ptr<PE>(new PEUnigram);
 
-  auto peModel = std::shared_ptr<PE>(new PEModel);
+  auto peModel = std::shared_ptr<PEModel>(new PEModel);
   auto peAssembler = std::shared_ptr<PE>(new PEAssembler);
   auto peFSelection = std::shared_ptr<PE>(new PEFSelection);
   auto peTrainer = std::shared_ptr<PE>(new PETrainer);
@@ -306,6 +306,7 @@ void test_simulacion_completa(){
 
 
   cout << "Largo promedio de las colas " << obtenerPromedio() << endl;
+  cout << "Precision del modelo " << peModel->getPrecision() << endl;
 
   cout << "Utilización CPU 1: " << cpu1->utilizacion() << endl;
   cout << "Utilización CPU 2: " << cpu2->utilizacion() << endl;
