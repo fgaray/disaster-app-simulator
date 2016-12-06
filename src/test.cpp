@@ -199,7 +199,7 @@ void test_simulacion_completa(){
   auto pePSizetweet = std::shared_ptr<PE>(new PESizetweet);
   auto peUnigram = std::shared_ptr<PE>(new PEUnigram);
 
-  auto peModel = std::shared_ptr<PEModel>(new PEModel);
+  auto peModel = std::shared_ptr<PE>(new PEModel);
   auto peAssembler = std::shared_ptr<PE>(new PEAssembler);
   auto peFSelection = std::shared_ptr<PE>(new PEFSelection);
   auto peTrainer = std::shared_ptr<PE>(new PETrainer);
@@ -307,7 +307,6 @@ void test_simulacion_completa(){
 
 
   cout << "Largo promedio de las colas " << obtenerPromedio() << endl;
-  cout << "Precision del modelo " << peModel->getPrecision() << endl;
 
   cout << "Utilización CPU 1: " << cpu1->utilizacion() << endl;
   cout << "Utilización CPU 2: " << cpu2->utilizacion() << endl;
@@ -337,12 +336,25 @@ void test_simulacion_completa(){
 
   cout << "Eficiencia: " << eficiencia << endl;
 
-    
+
+  cout << "Tiempo Promedio PEAdapter: " << peAdapter->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PECollector: " << peCollector->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEFilter: " << peFilter->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEBroker: " << peBroker->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEBigram: " << peBigram->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PENHashtags: " << peNHashtags->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PENMentions: " << peNMentions->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEPHashtags: " << pePHashtags->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEPMentions: " << pePMentions->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEPOStag: " << pePOStag->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PESizetweet: " << pePSizetweet->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEModel: " << peModel->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEAssembler: " << peAssembler->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PEFSelection: " << peFSelection->getTiempoPromedio() << endl;
+  cout << "Tiempo Promedio PETrainer: " << peFSelection->getTiempoPromedio() << endl;
+
 
   
-
-
-
 
   // Listo!
   sim->end_simulation();
