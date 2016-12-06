@@ -46,6 +46,11 @@ void CPU::inner_body(){
           std::stringstream ss;
           ss << "Ejecutando PE " << peNameToString(pe->getName()) << " con Id " << pe->getId();
           ss << " en el core " << numeroCore << " de la CPU " << this->number;
+
+          if(this->number == 4){
+            ss << " " << this->utilizacion();
+          }
+
           this->traza->puntoCPU(time(), ss);
 
           (*core_vacio_iterator)->ejecutar(pe, mensaje);
@@ -87,7 +92,7 @@ CPU::CPU(std::initializer_list<std::shared_ptr<PE>> il): Process("CPU"){
 
 
   for(unsigned int i = 0; i < this->numero_cores; i++){
-    auto core = handle<Core>(new Core);
+    auto core = handle<Core>(new Core(this->number));
     core->setTraza(this->traza);
     this->cores.push_back(core);
   }
@@ -197,6 +202,9 @@ function<void()> CPU::getEndCallback(){
 
 void CPU::setNumber(unsigned int number){
   this->number = number;
+  for(auto core: this->cores){
+    core->setNumberCPU(number);
+  }
 }
 
 

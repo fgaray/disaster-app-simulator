@@ -17,19 +17,20 @@ class Core: public Process{
     MessagePE message;
     bool isEmpty;
     size_t id;
-
+    unsigned int cpu;
 
     double tiempo_iddle, tiempo_uso;
     double tiempo_parada;
 
   public:
-    Core();
+    Core(unsigned int cpu);
     void inner_body();
     void set_cpu_callback(std::function<void(std::vector<std::tuple<PEName, MessagePE>>)> fn);
     bool empty() const;
     bool ejecutando(PE_ptr pe) const;
     void ejecutar(PE_ptr pe, MessagePE message);
     double utilizacion();
+    void setNumberCPU(unsigned int cpu);
 
 };
 

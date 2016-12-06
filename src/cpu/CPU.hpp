@@ -47,6 +47,7 @@ class CPU: public Process{
     std::vector<handle<Core>> cores;
     void notificarTerminoPE(std::vector<std::tuple<PEName, MessagePE>> mensajes);
     unsigned int number;
+    unsigned int cpu;
 
     size_t tokens_procesados;
 

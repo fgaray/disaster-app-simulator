@@ -5,7 +5,7 @@
 static size_t globalId = 0;
 static std::default_random_engine generator;
 
-Core::Core(): Process("Core"){
+Core::Core(unsigned int cpu): Process("Core"){
   this->isEmpty = true;
   this->current_pe = nullptr;
   this->tiempo_iddle = 0;
@@ -13,6 +13,7 @@ Core::Core(): Process("Core"){
   this->tiempo_parada = 0;
   this->id = globalId;
   globalId++;
+  this->cpu = cpu;
 }
 
 
@@ -79,5 +80,16 @@ void Core::ejecutar(PE_ptr pe, MessagePE message){
 
 double Core::utilizacion(){
   double total = this->tiempo_iddle + this->tiempo_uso;
-  return 100.0 * this->tiempo_uso / total;
+  double calculado =  100.0 * this->tiempo_uso / total;
+
+  if(total == 0){
+    return 0;
+  }else{
+    return calculado;
+  }
+}
+
+
+void Core::setNumberCPU(unsigned int cpu){
+  this->cpu = cpu;
 }
