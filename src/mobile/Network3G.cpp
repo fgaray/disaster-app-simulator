@@ -9,6 +9,7 @@
 Network3G::Network3G(std::vector<handle<Device>> dv, std::vector<handle<Antena>> al, std::function<void(PEName, MessagePE)> callback): Process("Network"){
   for (auto ant : al){
     ant->setResponderCallback([callback](MessageMD m){
+          std::cout << "Enviado mensaje de vuelta" << std::endl;
           MessagePE mpe;
           mpe.setTag();
           callback(PEName::PEPybossa, mpe);
@@ -79,7 +80,7 @@ void Network3G::enviarMensajeHaciaMD(Id hacia, MessageMD m){
   Id next_antena = (*found_index).second->getId();
 
   std::stringstream ss;
-  ss << "Destino encontrado, enviando a antena";
+  ss << "Destino encontrado, enviando a antena ";
   ss << next_antena;
 
   this->traza->puntoRed3G(time(), ss);
@@ -286,7 +287,6 @@ std::function<void(Device*)> Network3G::getCallbackNotificarMovimiento(){
 
 
 void Network3G::notificarMovimientoDevice(Device *d){
-  throw UNDEFINED;
 }
 
 

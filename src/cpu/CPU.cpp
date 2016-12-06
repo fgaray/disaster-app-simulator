@@ -1,6 +1,7 @@
 #include "CPU.hpp"
 
 #include "../pe/PEName.hpp"
+#include "../metric/LargoPromedioCola.hpp"
 
 void CPU::inner_body(){
   while(this->run){
@@ -48,6 +49,10 @@ void CPU::inner_body(){
 
           (*core_vacio_iterator)->ejecutar(pe, mensaje);
         }
+
+        agregarTamano((*mensajes_found).second.size());
+
+
       }
     }
     //en caso que no haya algun core vacio o que el PE se esté ya ejecutando,
@@ -109,6 +114,8 @@ void CPU::recibirMessage(Id destino, MessagePE message){
 
   //Agregamos el mensaje a la cola del pe correspondiente
   (*cola_pe).second.push(message);
+
+  agregarTamano((*cola_pe).second.size());
   this->activate();
 }
 

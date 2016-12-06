@@ -31,12 +31,12 @@ const double PELASTPE_COST = 1500;
 const double TIEMPO_ESPERA_TAGEO_PERSONA = 5000;
 
 const double TWEET_PER_SECOND = 50;
-const double AMOUNT_OF_TWEETS = 1;
+const double AMOUNT_OF_TWEETS = 1000;
 
 // El tiempo en que la simulación termina de ejecutar todo
-const double END_SIM_TIME = 200000;
+const double END_SIM_TIME = 10000000;
 
-const unsigned int MAXIMO_MENSAJES = 10;
+const unsigned int MAXIMO_MENSAJES = 1000;
 
 //Max numero de device en la red
 const unsigned int MAX_AMOUNT_DEVICE = 10;

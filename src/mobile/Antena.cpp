@@ -44,6 +44,8 @@ void Antena::inner_body(){
 
       hold(LATENCIA_RED);
 
+      this->traza->puntoRed3G(time(), "Enviamdo mensaje a dispositivo");
+
       m.setTag();
 
       this->responder_mensaje(m);

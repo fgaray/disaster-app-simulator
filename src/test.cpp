@@ -32,6 +32,7 @@
 
 #include "common/Distribution.hpp"
 
+#include "metric/LargoPromedioCola.hpp"
 
 
 using namespace std;
@@ -372,6 +373,9 @@ int main(int argc, char *argv[])
 {
   //test_simulacion_basica();
   test_simulacion_completa();
+
+  cout << "Largo promedio de las colas " << obtenerPromedio() << endl;
+
   //test_problema();
   
   return 0;

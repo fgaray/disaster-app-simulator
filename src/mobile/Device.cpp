@@ -12,20 +12,20 @@ Device::Device(std::queue<position> posiciones): Process("Device"){
 
 
 
-  this->movimiento = handle<Movimiento>(
-      new Movimiento(
-        [this](double x, double y){
-          this->x = x;
-          this->y = y;
-          this->move_device(this);
-          position next = this->posiciones.front();
-          if(this->posiciones.size() > 1){
-            // En caso de tener más de una siguiente posicion, sacamos el que
-            // está en la cima de la cola para representar el movimiento
-            this->posiciones.pop();
-          }
-          return next;
-        }));
+  //this->movimiento = handle<Movimiento>(
+      //new Movimiento(
+        //[this](double x, double y){
+          //this->x = x;
+          //this->y = y;
+          //this->move_device(this);
+          //position next = this->posiciones.front();
+          //if(this->posiciones.size() > 1){
+             //En caso de tener más de una siguiente posicion, sacamos el que
+             //está en la cima de la cola para representar el movimiento
+            //this->posiciones.pop();
+          //}
+          //return next;
+        //}));
 
 }
 
@@ -66,7 +66,7 @@ double Device::getY() const{
 
 
 void Device::endSimulation(){
-  this->movimiento->endSimulation();
+  //this->movimiento->endSimulation();
   Process::endSimulation();
 }
 
@@ -81,5 +81,5 @@ void Device::setMoveCallback(std::function<void(Device*)> callback){
 
 
 void Device::iniciar_mov(){
-  this->movimiento->setNext(posiciones.front());
+  //this->movimiento->setNext(posiciones.front());
 }
