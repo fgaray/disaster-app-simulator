@@ -36,7 +36,7 @@ const double VAR_PRECISION_3 = 0.01;
 const double TIEMPO_ESPERA_TAGEO_PERSONA = 5000;
 
 const double TWEET_PER_SECOND = 50;
-const double AMOUNT_OF_TWEETS = 1;
+const double AMOUNT_OF_TWEETS = 100;
 
 
 // El tiempo en que la simulación termina de ejecutar todo

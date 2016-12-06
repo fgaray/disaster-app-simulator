@@ -199,7 +199,7 @@ void test_simulacion_completa(){
   auto pePSizetweet = std::shared_ptr<PE>(new PESizetweet);
   auto peUnigram = std::shared_ptr<PE>(new PEUnigram);
 
-  auto peModel = std::shared_ptr<PE>(new PEModel);
+  auto peModel = std::shared_ptr<PEModel>(new PEModel);
   auto peAssembler = std::shared_ptr<PE>(new PEAssembler);
   auto peFSelection = std::shared_ptr<PE>(new PEFSelection);
   auto peTrainer = std::shared_ptr<PE>(new PETrainer);
@@ -353,6 +353,11 @@ void test_simulacion_completa(){
   cout << "Tiempo Promedio PEFSelection: " << peFSelection->getTiempoPromedio() << endl;
   cout << "Tiempo Promedio PETrainer: " << peFSelection->getTiempoPromedio() << endl;
 
+
+  cout << "Total mensajes a procesar: " << src->getTotalMensajes() << endl;
+  cout << "Total mensajes tiempo procesados: " << peModel->getTotalMensajesTiempo() << endl;
+  cout << "Total mensajes procesados: " << peModel->getTotalMensajes() << endl;
+  cout << "Throughput: " << peModel->getThroughput() << endl;
 
   
 

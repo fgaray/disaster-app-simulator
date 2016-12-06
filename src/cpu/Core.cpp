@@ -22,6 +22,7 @@ void Core::inner_body(){
     assert(this->current_pe != nullptr);
 
     this->traza->puntoCore(time(), ">>>Ejecutando PE en core");
+    this->current_pe->setCurrentTime(time());
     double to_hold = this->current_pe->getCostTime();
     hold(to_hold);
     this->tiempo_uso += to_hold;
