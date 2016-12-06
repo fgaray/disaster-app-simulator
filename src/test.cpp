@@ -3,6 +3,7 @@
 #include <cassert>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 #include "pe/PE.hpp"
 #include "pe/PEName.hpp"
 #include "pe/SinkNode.hpp"
@@ -312,6 +313,30 @@ void test_simulacion_completa(){
   cout << "Utilización CPU 2: " << cpu2->utilizacion() << endl;
   cout << "Utilización CPU 3: " << cpu3->utilizacion() << endl;
   cout << "Utilización CPU 4: " << cpu4->utilizacion() << endl;
+
+  //eficiencia
+  size_t maximo_procesado = 0;
+  maximo_procesado = max(maximo_procesado, cpu1->getTokensProcesados());
+  maximo_procesado = max(maximo_procesado, cpu2->getTokensProcesados());
+  maximo_procesado = max(maximo_procesado, cpu3->getTokensProcesados());
+  maximo_procesado = max(maximo_procesado, cpu4->getTokensProcesados());
+
+  double suma =
+    (double)cpu1->getTokensProcesados()/(double)maximo_procesado +
+    (double)cpu2->getTokensProcesados()/(double)maximo_procesado +
+    (double)cpu3->getTokensProcesados()/(double)maximo_procesado +
+    (double)cpu4->getTokensProcesados()/(double)maximo_procesado
+    ;
+
+  double eficiencia = 1/4.0 * suma;
+
+  cout << "Eficiencia: " << eficiencia << endl;
+
+    
+
+  
+
+
 
 
   // Listo!
