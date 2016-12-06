@@ -16,6 +16,7 @@ class Distribution{
   public:
   	Distribution(double _cantidad_tweets, double _lambda);
     double GeneradorExp();
+    double GeneradorNorm();
 
 };
 

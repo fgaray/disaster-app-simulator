@@ -3,6 +3,7 @@
 #include "../common/Distribution.hpp"
 
 static size_t globalId = 0;
+static std::default_random_engine generator;
 
 Core::Core(): Process("Core"){
   this->isEmpty = true;
@@ -22,8 +23,23 @@ void Core::inner_body(){
     assert(this->current_pe != nullptr);
 
     this->traza->puntoCore(time(), ">>>Ejecutando PE en core");
-    double to_hold = this->current_pe->getCostTime();
+    double media = this->current_pe->getCostTime();
+
+
+    
+    std::normal_distribution<double> distribution(media,(media/2));
+
+    double to_hold = distribution(generator);
+
+    //auto distribucion = std::shared_ptr<Distribution>(new Distribution(media, media/2));
+    //auto to_hold = distribucion->GeneradorNorm();
+
     hold(to_hold);
+
+    std::stringstream ss;
+    ss << "Vamos a esperar " << to_hold;
+    this->traza->puntoCore(time(), ss);
+
     this->tiempo_uso += to_hold;
 
     //notificamos a la CPU que estamos ready
