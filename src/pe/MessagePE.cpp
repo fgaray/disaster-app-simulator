@@ -75,3 +75,7 @@ void MessagePE::setDispositivoMovil(Id dispositivo_movil){
 void MessagePE::setTag(){
   this->tag = true;
 }
+
+bool MessagePE::getTag(){
+  return this->tag;
+}

@@ -17,8 +17,8 @@ const double PMENTIONS_COST = 1500;
 const double NHASHTAGS_COST = 1500;
 const double PHASHTAGS_COST = 1500;
 const double SIZETWEET_COST = 1500;
-const double BROKER_COST = 0;
-const double FILTER_COST = 0;
+const double BROKER_COST = 10;
+const double FILTER_COST = 10;
 const double ASSEMBLER_COST = 1500;
 const double FSELECTION_COST = 1500;
 const double MODEL_COST = 2000;
@@ -28,12 +28,16 @@ const double ADAPTER_COST = 1500;
 const double COLLECTOR_COST = 1500;
 const double PELASTPE_COST = 1500;
 
-const double MODEL_PRECISION = 10;
+const double MODEL_PRECISION = 50;
+const double VAR_PRECISION_1 = 0.1;
+const double VAR_PRECISION_2 = 0.05;
+const double VAR_PRECISION_3 = 0.01;
 
 const double TIEMPO_ESPERA_TAGEO_PERSONA = 5000;
 
 const double TWEET_PER_SECOND = 50;
 const double AMOUNT_OF_TWEETS = 1;
+
 
 // El tiempo en que la simulación termina de ejecutar todo
 const double END_SIM_TIME = 10000000;

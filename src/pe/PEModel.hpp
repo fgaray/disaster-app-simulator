@@ -7,11 +7,13 @@
 
 class PEModel: public PE{
 	private:
-
+		double precision;
 	public:
+		PEModel();
 		double getCostTime();
 		std::vector<std::tuple<PEName, MessagePE>> nextPE(MessagePE message);
     PEName getName();
+    double getPrecision();
 };
 
 #endif

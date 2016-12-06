@@ -1,6 +1,6 @@
 #include "PETrainer.hpp"
 
-static int count_tweet = 0;
+
 
 
 double  PETrainer::getCostTime(){
@@ -9,11 +9,7 @@ double  PETrainer::getCostTime(){
 }
 
 std::vector<std::tuple<PEName, MessagePE>> PETrainer::nextPE(MessagePE message){
-	count_tweet++;
-	if (count_tweet == MODEL_PRECISION)
-	{
-		return {std::make_tuple(PEName::END, message)};
-	}
+	message.setTag();
   //envía el mismo mensaje sin modificar a PEAssembler
 	return {std::make_tuple(PEName::PEModel, message)};
 }
