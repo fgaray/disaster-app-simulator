@@ -48,6 +48,8 @@ class CPU: public Process{
     void notificarTerminoPE(std::vector<std::tuple<PEName, MessagePE>> mensajes);
     unsigned int number;
 
+    size_t tokens_procesados;
+
 
 
   public:
@@ -68,6 +70,7 @@ class CPU: public Process{
     void setCores(std::initializer_list<std::shared_ptr<Core>> cores);
     void setNumber(unsigned int number);
     double utilizacion();
+    size_t getTokensProcesados();
 
 };
 

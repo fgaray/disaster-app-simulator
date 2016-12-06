@@ -101,6 +101,7 @@ CPU::CPU(std::initializer_list<std::shared_ptr<PE>> il): Process("CPU"){
 
   this->current_pe = this->pes.begin();
 
+  this->tokens_procesados = 0;
 
 }
 
@@ -168,6 +169,7 @@ void CPU::notificarTerminoPE(std::vector<std::tuple<PEName, MessagePE>> mensajes
   //enviamos los mensajes que nos entregan y dado que ahora quedó un Core libre,
   //hay que intentar agregar un PE al sistema
 
+  this->tokens_procesados++;
   for(auto t: mensajes){
     PEName name = std::get<0>(t);
     MessagePE message = std::get<1>(t);
@@ -201,9 +203,16 @@ void CPU::setNumber(unsigned int number){
 double CPU::utilizacion(){
   double total = 0;
 
+  cout << this->cores.size() << endl;
+
   for(auto core: this->cores){
     total += core->utilizacion();
   }
 
   return total;
+}
+
+
+size_t CPU::getTokensProcesados(){
+  return this->tokens_procesados;
 }

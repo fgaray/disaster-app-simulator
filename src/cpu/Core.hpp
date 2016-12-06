@@ -16,6 +16,8 @@ class Core: public Process{
     std::function<void(std::vector<std::tuple<PEName, MessagePE>>)> cpu_callback;
     MessagePE message;
     bool isEmpty;
+    size_t id;
+
 
     double tiempo_iddle, tiempo_uso;
     double tiempo_parada;

@@ -2,12 +2,16 @@
 
 #include "../common/Distribution.hpp"
 
+static size_t globalId = 0;
+
 Core::Core(): Process("Core"){
   this->isEmpty = true;
   this->current_pe = nullptr;
   this->tiempo_iddle = 0;
   this->tiempo_uso = 0;
   this->tiempo_parada = 0;
+  this->id = globalId;
+  globalId++;
 }
 
 
